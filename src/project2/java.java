@@ -6,7 +6,7 @@ package project2;
 
 /**
  *
- * @author arjan
+ * @author josua
  */
 public class java {
 
