@@ -38,6 +38,11 @@ public class HoofdMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setText("DeelnemerBeheer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Toernooi");
 
@@ -45,13 +50,13 @@ public class HoofdMenu extends javax.swing.JFrame {
 
         jButton4.setText("Masterclass");
 
-        jLabel1.setText("Hier kun je spelers toevoegen/wijzigen");
+        jLabel1.setText("Hier kun je deelnemers toevoegen/wijzigen/verwijderen");
 
-        jLabel2.setText("Hier kun je een toernooi toevoegen/wijzigen");
+        jLabel2.setText("Hier kun je een toernooi, deelnemers, opstelling en de rating toevoegen/wijzigen/verwijderen");
 
-        jLabel3.setText("Hier kun je een faciliteit toevoegen/wijzigen");
+        jLabel3.setText("Hier kun je een faciliteit toevoegen/wijzigen/verwijderen");
 
-        jLabel4.setText("Hier kun je een masterclass toevoegen/wijzigen");
+        jLabel4.setText("Hier kun je een masterclass, deelnemer, faciliteit en rating  toevoegen/wijzigen/verwijderen");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,6 +101,12 @@ public class HoofdMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // open nieuw scherm
+        new DeelnemerBeheer().setVisible(true);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -74,6 +74,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="DeelnemerBeheer"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
@@ -92,22 +95,22 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hier kun je spelers toevoegen/wijzigen"/>
+        <Property name="text" type="java.lang.String" value="Hier kun je deelnemers toevoegen/wijzigen/verwijderen"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hier kun je een toernooi toevoegen/wijzigen"/>
+        <Property name="text" type="java.lang.String" value="Hier kun je een toernooi, deelnemers, opstelling en de rating toevoegen/wijzigen/verwijderen"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hier kun je een faciliteit toevoegen/wijzigen"/>
+        <Property name="text" type="java.lang.String" value="Hier kun je een faciliteit toevoegen/wijzigen/verwijderen"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hier kun je een masterclass toevoegen/wijzigen"/>
+        <Property name="text" type="java.lang.String" value="Hier kun je een masterclass, deelnemer, faciliteit en rating  toevoegen/wijzigen/verwijderen"/>
       </Properties>
     </Component>
   </SubComponents>
