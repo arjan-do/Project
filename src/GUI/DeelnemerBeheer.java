@@ -144,12 +144,14 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     
     
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
-        //create new window to add a new deelnemer
+        new DeelnemerToevoegen().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        //create new window to edit a new deelnemer
-        //add a existing deelnemer to windows as a parameter 
+        //todo: deelnemer uit lijst halen en meegeven als parameter
+        new DeelnemerWijzigen().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed

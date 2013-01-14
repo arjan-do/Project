@@ -4,22 +4,31 @@
  */
 package GUI;
 
+import Models.Deelnemer;
 import javax.swing.ButtonGroup;
 
 /**
  *
  * @author arjan
  */
-public class DeelnemerToevoegen extends javax.swing.JFrame {
+public class DeelnemerWijzigen extends javax.swing.JFrame {
 
     /**
      * Creates new form DeelnemerToevoegen
      */
-    public DeelnemerToevoegen() {
+    
+    Deelnemer deelnemer;
+    
+    public DeelnemerWijzigen() {
         initComponents();
-        FillComponents();
     }
 
+    public DeelnemerWijzigen(Deelnemer deelnemer) {
+        initComponents();
+        this.deelnemer = deelnemer;
+        FillComponents();
+    }
+    
     private void FillComponents(){
         ButtonGroup bekend = new ButtonGroup();
         bekend.add(RadioButton_BekendJa);
@@ -83,7 +92,7 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
 
         RadioButton_BekendNee.setText("Nee");
 
-        Button_Toevoegen.setText("Toevoegen");
+        Button_Toevoegen.setText("Toepassen");
         Button_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_ToevoegenActionPerformed(evt);
@@ -206,13 +215,13 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerWijzigen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerWijzigen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerWijzigen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerWijzigen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -222,7 +231,7 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new DeelnemerToevoegen().setVisible(true);
+                new DeelnemerWijzigen().setVisible(true);
             }
         });
     }
