@@ -5,6 +5,7 @@
 package GUI;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,12 +18,14 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
      */
     public DeelnemerBeheer() {
         initComponents();
+        FillComponents();
     }
 
-    // initializing all components
-    private void initcomponents(){
-        
-        
+    // filling all components
+    private void FillComponents(){
+        String[] kolommen = {"Voornaam", "Achternaam", "Rating"};
+        DefaultTableModel model = new DefaultTableModel(kolommen, 0);
+        Table_Deelnemers.setModel(model);
     }
     
     
@@ -93,7 +96,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Zoeken op Naam:");
+        jLabel1.setText("Zoeken:");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
