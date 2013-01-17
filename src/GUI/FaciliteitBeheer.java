@@ -131,7 +131,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
-        //new DeelnemerToevoegen().setVisible(true);
+        new FaciliteitToevoegen().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
