@@ -191,7 +191,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                                                          + "Or achternaam like '" + input + "%'");
             
             ResultSet res = stat.executeQuery();
-            
+            System.out.println("bla");
             int size =0;
             if(res != null)
             {
@@ -208,7 +208,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             
         }catch(SQLException ex)
         {
-            
+            System.out.println(ex);
         }
     
         
