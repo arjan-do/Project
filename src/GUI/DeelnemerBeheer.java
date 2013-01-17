@@ -5,7 +5,7 @@
 package GUI;
 
 
-import configuration.SimpleDataSourceV2;
+import Configuration.SimpleDataSourceV2;
 import Models.Deelnemer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
