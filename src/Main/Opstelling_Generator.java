@@ -11,36 +11,68 @@ package Main;
 public class Opstelling_Generator {
     
     public static void main(String[] args) {
+        new Opstelling_Generator().calculatetavels(11);
         
-        double aantal = 90;
+    }
+    
+    private int[] calculatetavels(int ammount_of_players){
+        double aantal = ammount_of_players;
+       
+        //              1,2,3,4,5,6,7,8
+        int[] tavels = {0,0,0,0,0,0,0,0};
         
-        double a = aantal / 8;   
+        tavels[7] = (int)(aantal / 8);
+        int ex = (int)(aantal - (tavels[7] * 8));
+        int max_table = 8;
         
-        int a_int = (int)a;
-        
-        double ex = a - a_int;
-        
-        int tavels_acht = a_int;
-        int tavels_extra = 1;
-        int tavels_extra_spelers = (int)(ex * 8);
-        
-        if (tavels_extra_spelers < 7){
+        if ((ex != 0) && (aantal > 8)){
+            tavels[ex - 1] = 1;
             
-            double tmpa = tavels_extra;
-            double tmpb = tavels_extra_spelers;
-            int tmpc = tavels_acht;
-            boolean running = true;
-            
-            do {
+            do{
+                if (tavels[7] != 0){
+                    max_table = 8;
+                } else if (tavels[6] != 0) {
+                    max_table = 7;
+                } else if (tavels[5] != 0) {
+                    max_table = 6;
+                } else if (tavels[4] != 0) {
+                    max_table = 5;
+                } else if (tavels[3] != 0) {
+                    max_table = 4;
+                } else if (tavels[2] != 0) {
+                    max_table = 3;
+                } else if (tavels[1] != 0) {
+                    max_table = 2;
+                } else if (tavels[0] != 0) {
+                    max_table = 1;
+                }
                 
-            } while (running);
+                tavels[max_table - 1] --;
+                tavels[max_table - 2] ++;
+                tavels[ex - 1] --;
+                tavels[ex] ++;
+                ex ++;
+                        
+            }   while((tavels[ex - 1] != 0) && (ex < max_table));
             
+        } else {
+            tavels[ex - 1] = 1;
         }
         
         
-        //System.out.println(acht);
-        //System.out.println(zeven);
+   
         
+        // log only do not include in finale version
+        System.out.println(tavels[0]);
+        System.out.println(tavels[1]);
+        System.out.println(tavels[2]);
+        System.out.println(tavels[3]);
+        System.out.println(tavels[4]);
+        System.out.println(tavels[5]);
+        System.out.println(tavels[6]);
+        System.out.println(tavels[7]);
+        // end of log only
+        return tavels;
     }
     
 }
