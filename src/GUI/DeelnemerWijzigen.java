@@ -65,6 +65,7 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         RadioButton_BekendJa = new javax.swing.JRadioButton();
         RadioButton_BekendNee = new javax.swing.JRadioButton();
         Button_Toevoegen = new javax.swing.JButton();
+        Button_Back = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -99,6 +100,13 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
             }
         });
 
+        Button_Back.setText("Back");
+        Button_Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_BackActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,9 +114,6 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(Button_Toevoegen))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(layout.createSequentialGroup()
@@ -139,7 +144,11 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
                                     .add(TextField_Straat)
                                     .add(TextField_Achternaam)
                                     .add(TextField_Voornaam))))
-                        .add(0, 0, Short.MAX_VALUE)))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(Button_Back)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(Button_Toevoegen)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -183,7 +192,9 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
                     .add(RadioButton_BekendJa)
                     .add(RadioButton_BekendNee))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(Button_Toevoegen)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(Button_Toevoegen)
+                    .add(Button_Back))
                 .addContainerGap())
         );
 
@@ -193,6 +204,13 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         // create querry to add new deelnemer to database
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
+
+    private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
+        // Open DeelnemerBeheer
+        new DeelnemerBeheer().setVisible(true);
+        // Close current Window
+        this.dispose();
+    }//GEN-LAST:event_Button_BackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,6 +254,7 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Button_Back;
     private javax.swing.JButton Button_Toevoegen;
     private javax.swing.JRadioButton RadioButton_BekendJa;
     private javax.swing.JRadioButton RadioButton_BekendNee;
