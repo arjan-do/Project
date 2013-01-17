@@ -4,6 +4,7 @@
  */
 package GUI;
 
+
 import Configuration.SimpleDataSourceV2;
 import Models.Deelnemer;
 import java.sql.Connection;
@@ -20,9 +21,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DeelnemerBeheer extends javax.swing.JFrame {
 
-        private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
-    
-    
+
+    private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
     /**
      * Creates new form DeelnemerBeheer
      */
@@ -181,6 +181,8 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         //renew querry and search on name enterd in TextField_Zoekenopnaam
         String input = TextField_Zoekopnaam.getText();
         try{
+            
+            
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement("Select *"
@@ -190,6 +192,18 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             
             ResultSet res = stat.executeQuery();
             
+            int size =0;
+            if(res != null)
+            {
+                res.beforeFirst();
+                res.last();
+                size = res.getRow();
+                System.out.println(size);
+            }
+            while(res.next())
+                    {
+                        
+                    }
         
             
         }catch(SQLException ex)
