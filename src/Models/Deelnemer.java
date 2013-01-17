@@ -103,6 +103,11 @@ public class Deelnemer {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "Deelnemer{" + "D_code=" + D_code + ", Voornaam=" + Voornaam + ", Achternaam=" + Achternaam + ", Postcode=" + Postcode + ", Woonplaats=" + Woonplaats + ", Telefoon=" + Telefoon + ", Huisnummer=" + Huisnummer + ", isbekend=" + isbekend + ", rating=" + rating + '}';
+    }
     
     
 }

@@ -4,6 +4,13 @@
  */
 package GUI;
 
+import Configuration.SimpleDataSourceV2;
+import Models.Deelnemer;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,6 +20,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DeelnemerBeheer extends javax.swing.JFrame {
 
+        private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
+    
+    
     /**
      * Creates new form DeelnemerBeheer
      */
@@ -169,6 +179,25 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
         //renew querry and search on name enterd in TextField_Zoekenopnaam
+        String input = TextField_Zoekopnaam.getText();
+        try{
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement("Select *"
+                                                         + "From Deelnemer"
+                                                         + "Where voornaam like '" + input + "%'"
+                                                         + "Or achternaam like '" + input + "%'");
+            
+            ResultSet res = stat.executeQuery();
+            
+        
+            
+        }catch(SQLException ex)
+        {
+            
+        }
+    
+        
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
 
     /**
