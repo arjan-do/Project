@@ -31,6 +31,13 @@ public class Deelnemer {
         this.isbekend = isbetaald;
         this.rating = rating;
     }
+    
+    public Deelnemer(String Voornaam, String Achternaam, int rating)
+    {
+        this.Voornaam = Voornaam;
+        this.Achternaam = Achternaam;
+        this.rating = rating;
+    }
 
     public String getAchternaam() {
         return Achternaam;
@@ -109,5 +116,10 @@ public class Deelnemer {
         return "Deelnemer{" + "D_code=" + D_code + ", Voornaam=" + Voornaam + ", Achternaam=" + Achternaam + ", Postcode=" + Postcode + ", Woonplaats=" + Woonplaats + ", Telefoon=" + Telefoon + ", Huisnummer=" + Huisnummer + ", isbekend=" + isbekend + ", rating=" + rating + '}';
     }
     
+        public String[] getInfo(){
+        return new String[]{ this.Voornaam , this.Achternaam,"" + this.rating};
+    }
     
 }
+
+

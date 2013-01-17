@@ -7,21 +7,20 @@ package GUI;
 
 import configuration.SimpleDataSourceV2;
 import Models.Deelnemer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author arjan
  */
 public class DeelnemerBeheer extends javax.swing.JFrame {
-
-
+    private int size;
+    DefaultTableModel model = new DefaultTableModel();
     private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
     /**
      * Creates new form DeelnemerBeheer
@@ -34,9 +33,11 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     // filling all components
     private void FillComponents(){
         String[] kolommen = {"Voornaam", "Achternaam", "Rating"};
-        DefaultTableModel model = new DefaultTableModel(kolommen, 0);
+        model = new DefaultTableModel(kolommen, 0);
         Table_Deelnemers.setModel(model);
     }
+    
+
     
     
     /**
@@ -165,8 +166,10 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        if(JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION){
             //remove a deelnemer from the list
+
+            
         }
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
@@ -178,40 +181,47 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
-        //renew querry and search on name enterd in TextField_Zoekenopnaam
+        //String 'input' made for easiness, not having to type "Textfield_Zoekopnaam.getText(); multiple times.
         String input = TextField_Zoekopnaam.getText();
+        
+        //setRowCount to refresh the model.
+        model.setRowCount(0);
         try{
             
+            //SQL Statement.
+        String sql = "Select * from deelnemer where voornaam like ? or achternaam like ?";    
             
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement("Select *"
-                                                         + "From Deelnemer"
-                                                         + "Where voornaam like '" + input + "%'"
-                                                         + "Or achternaam like '" + input + "%'");
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            //input of the textfield + "%" for the SQL Statement.
+            stat.setString(1, input +'%' );
+            stat.setString(2, input + '%');
             
             ResultSet res = stat.executeQuery();
-            System.out.println("bla");
-            int size =0;
-            if(res != null)
-            {
-                res.beforeFirst();
-                res.last();
-                size = res.getRow();
-                System.out.println(size);
-            }
+            
+            
             while(res.next())
                     {
                         
+                        
+                        Deelnemer deelnemer = new Deelnemer(res.getString("voornaam"),
+                                                            res.getString("achternaam"),
+                                                            res.getInt("rating"));
+                        model.addRow(deelnemer.getInfo());
+                        
                     }
-        
+                    
+                    
             
-        }catch(SQLException ex)
+            
+        }catch(Exception ex)
         {
             System.out.println(ex);
         }
     
-        
+    
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
 
     /**
