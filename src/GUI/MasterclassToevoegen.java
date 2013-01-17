@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Configuration.SimpleDataSourceV2;
+import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,6 +89,11 @@ int M_Code;
         jLabel3.setText("Locatie");
 
         Button_Toevoegen.setText("Toevoegen");
+        Button_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ToevoegenActionPerformed(evt);
+            }
+        });
 
         ComboBox_Locatie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -185,6 +190,10 @@ int M_Code;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
+        
+    }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     /**
      * @param args the command line arguments
