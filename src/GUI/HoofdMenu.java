@@ -105,6 +105,8 @@ public class HoofdMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // open nieuw scherm
         new DeelnemerBeheer().setVisible(true);
+        //huidige scherm weghalen
+        this.dispose();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

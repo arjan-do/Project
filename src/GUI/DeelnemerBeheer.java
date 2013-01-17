@@ -161,7 +161,10 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
-        //go back to main menu
+        //Open Mainmenu
+        new HoofdMenu().setVisible(true);
+        //Close current Window
+        this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
