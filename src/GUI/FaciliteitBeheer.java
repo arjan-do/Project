@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Josua
@@ -26,21 +28,135 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TableFaciliteit = new javax.swing.JTable();
+        Button_Toevoegen = new javax.swing.JButton();
+        Button_Back = new javax.swing.JButton();
+        Button_Verwijderen = new javax.swing.JButton();
+        Button_Wijzigen = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        TextField_Zoekopnaam = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        TableFaciliteit.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Naam", "Adres", "Max aantal spelers"
+            }
+        ));
+        jScrollPane1.setViewportView(TableFaciliteit);
+
+        Button_Toevoegen.setText("Toevoegen");
+        Button_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ToevoegenActionPerformed(evt);
+            }
+        });
+
+        Button_Back.setText("Back");
+        Button_Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_BackActionPerformed(evt);
+            }
+        });
+
+        Button_Verwijderen.setText("Verwijderen");
+        Button_Verwijderen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_VerwijderenActionPerformed(evt);
+            }
+        });
+
+        Button_Wijzigen.setText("Wijzigen");
+        Button_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_WijzigenActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Zoeken:");
+
+        TextField_Zoekopnaam.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_ZoekopnaamKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Button_Toevoegen, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Button_Wijzigen, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Button_Verwijderen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Button_Back))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Zoekopnaam, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(TextField_Zoekopnaam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Button_Toevoegen)
+                    .addComponent(Button_Wijzigen)
+                    .addComponent(Button_Verwijderen)
+                    .addComponent(Button_Back)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
+        //new DeelnemerToevoegen().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_ToevoegenActionPerformed
+
+    private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
+        //Open Mainmenu
+        new HoofdMenu().setVisible(true);
+        //Close current Window
+        this.dispose();
+    }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
+        if (JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION) {
+            //remove a deelnemer from the list
+        }
+    }//GEN-LAST:event_Button_VerwijderenActionPerformed
+
+    private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+        //todo: deelnemer uit lijst halen en meegeven als parameter
+        //new DeelnemerWijzigen().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_WijzigenActionPerformed
+
+    private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
+        //renew querry and search on name enterd in TextField_Zoekenopnaam
+    }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
 
     /**
      * @param args the command line arguments
@@ -84,5 +200,13 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Button_Back;
+    private javax.swing.JButton Button_Toevoegen;
+    private javax.swing.JButton Button_Verwijderen;
+    private javax.swing.JButton Button_Wijzigen;
+    private javax.swing.JTable TableFaciliteit;
+    private javax.swing.JTextField TextField_Zoekopnaam;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

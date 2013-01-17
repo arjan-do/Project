@@ -26,10 +26,10 @@ public class HoofdMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        Button_DeelnemerBeheer = new javax.swing.JButton();
+        Button_ToernooiBeheer = new javax.swing.JButton();
+        Button_FaciliteitBeheer = new javax.swing.JButton();
+        Button_MasterclassBeheer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -37,23 +37,28 @@ public class HoofdMenu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("DeelnemerBeheer");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Button_DeelnemerBeheer.setText("DeelnemerBeheer");
+        Button_DeelnemerBeheer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                Button_DeelnemerBeheerActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Toernooi");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        Button_ToernooiBeheer.setText("Toernooi");
+        Button_ToernooiBeheer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                Button_ToernooiBeheerActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Faciliteit");
+        Button_FaciliteitBeheer.setText("Faciliteit");
+        Button_FaciliteitBeheer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_FaciliteitBeheerActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Masterclass");
+        Button_MasterclassBeheer.setText("Masterclass");
 
         jLabel1.setText("Hier kun je deelnemers toevoegen/wijzigen/verwijderen");
 
@@ -70,10 +75,10 @@ public class HoofdMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Button_DeelnemerBeheer)
+                    .addComponent(Button_ToernooiBeheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Button_FaciliteitBeheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Button_MasterclassBeheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -87,19 +92,19 @@ public class HoofdMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(Button_DeelnemerBeheer)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(Button_ToernooiBeheer)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
+                    .addComponent(Button_FaciliteitBeheer)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
+                    .addComponent(Button_MasterclassBeheer)
                     .addComponent(jLabel4))
                 .addContainerGap(143, Short.MAX_VALUE))
         );
@@ -107,20 +112,27 @@ public class HoofdMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void Button_DeelnemerBeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_DeelnemerBeheerActionPerformed
         // open nieuw scherm
         new DeelnemerBeheer().setVisible(true);
         //huidige scherm weghalen
         this.dispose();
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_Button_DeelnemerBeheerActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void Button_ToernooiBeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToernooiBeheerActionPerformed
         // open nieuw scherm
         new ToernooiBeheer().setVisible(true);
         //huidige scherm weghalen
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_Button_ToernooiBeheerActionPerformed
+
+    private void Button_FaciliteitBeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_FaciliteitBeheerActionPerformed
+       // open nieuw scherm
+        new FaciliteitBeheer().setVisible(true);
+        //huidige scherm weghalen
+        this.dispose();
+    }//GEN-LAST:event_Button_FaciliteitBeheerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,10 +176,10 @@ public class HoofdMenu extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton Button_DeelnemerBeheer;
+    private javax.swing.JButton Button_FaciliteitBeheer;
+    private javax.swing.JButton Button_MasterclassBeheer;
+    private javax.swing.JButton Button_ToernooiBeheer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
