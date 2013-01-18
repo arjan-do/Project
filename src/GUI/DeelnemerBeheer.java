@@ -22,6 +22,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
     private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
     int d_code;
+    Deelnemer deelnemer;
 
     /**
      * Creates new form DeelnemerBeheer
@@ -62,7 +63,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             while (res.next()) {
 
 
-                Deelnemer deelnemer = new Deelnemer(res.getInt("d_code"),
+                deelnemer = new Deelnemer(res.getInt("d_code"),
                         res.getString("Voornaam"),
                         res.getString("Achternaam"),
                         res.getString("Postcode"),
@@ -205,38 +206,48 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
 
-        int row = Table_Deelnemers.getSelectedRow();
-        Deelnemer deelnemer = deelnemers.get(row);
-        d_code = deelnemer.getD_code();
+        int[] selected = Table_Deelnemers.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+        } else {
+            int row = Table_Deelnemers.getSelectedRow();
+            deelnemer = deelnemers.get(row);
+            d_code = deelnemer.getD_code();
 
-        try {
-            String sql = "Select * from deelnemer where d_code = ?";
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1, d_code);
 
-            ResultSet res = stat.executeQuery();
-            while (res.next()) {
-                //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
-                deelnemer = new Deelnemer(res.getInt("d_code"),
-                        res.getString("Voornaam"),
-                        res.getString("Achternaam"),
-                        res.getString("Postcode"),
-                        res.getString("woonplaats"),
-                        res.getInt("tel_nr"),
-                        res.getInt("huisnummer"),
-                        res.getString("is_bekend"),
-                        res.getString("straat"),
-                        res.getString("e_mailadres"),
-                        res.getInt("rating"));
+
+            try {
+                String sql = "Select * from deelnemer where d_code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, d_code);
+
+                ResultSet res = stat.executeQuery();
+                while (res.next()) {
+                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                    deelnemer = new Deelnemer(res.getInt("d_code"),
+                            res.getString("Voornaam"),
+                            res.getString("Achternaam"),
+                            res.getString("Postcode"),
+                            res.getString("woonplaats"),
+                            res.getInt("tel_nr"),
+                            res.getInt("huisnummer"),
+                            res.getString("is_bekend"),
+                            res.getString("straat"),
+                            res.getString("e_mailadres"),
+                            res.getInt("rating"));
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex);
             }
+            new DeelnemerWijzigen(deelnemer).setVisible(true);
+            this.dispose();
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex);
         }
         //geeft deelnemer mee aan het Wijzigen-scherm.
-        new DeelnemerWijzigen(deelnemer).setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
@@ -251,7 +262,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
                 //Omgedraaide for-loop vanwege problemen met de normale constructie
                 for (int i = selected.length - 1; i > -1; i--) {
-                    Deelnemer deelnemer = deelnemers.get(selected[i]);
+                    deelnemer = deelnemers.get(selected[i]);
                     d_code = deelnemer.getD_code();
                     model.removeRow(selected[i]);
 
