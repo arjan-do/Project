@@ -86,6 +86,22 @@ public class Deelnemer {
         return Telefoon;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStraat() {
+        return straat;
+    }
+
+    public void setStraat(String straat) {
+        this.straat = straat;
+    }
+
     public void setTelefoon(int Telefoon) {
         this.Telefoon = Telefoon;
     }
