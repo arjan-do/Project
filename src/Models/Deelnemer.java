@@ -15,12 +15,14 @@ public class Deelnemer {
     private String Achternaam;
     private String Postcode;
     private String Woonplaats;
-    private String Telefoon;
-    private String Huisnummer;
+    private int Telefoon;
+    private int Huisnummer;
     private String isbekend;
+    private String straat;
+    private String email;
     private int rating;
 
-    public Deelnemer(int D_code, String Voornaam, String Achternaam, String Postcode, String Woonplaats, String Telefoon, String Huisnummer, String isbetaald, int rating) {
+    public Deelnemer(int D_code, String Voornaam, String Achternaam, String Postcode, String Woonplaats, int Telefoon, int Huisnummer, String isbekend, String straat, String email, int rating) {
         this.D_code = D_code;
         this.Voornaam = Voornaam;
         this.Achternaam = Achternaam;
@@ -28,9 +30,18 @@ public class Deelnemer {
         this.Woonplaats = Woonplaats;
         this.Telefoon = Telefoon;
         this.Huisnummer = Huisnummer;
-        this.isbekend = isbetaald;
+        this.isbekend = isbekend;
+        this.straat = straat;
+        this.email = email;
         this.rating = rating;
     }
+
+    public Deelnemer(int D_code) {
+        this.D_code = D_code;
+    }
+
+ 
+    
     
     public Deelnemer(String Voornaam, String Achternaam, int rating)
     {
@@ -55,11 +66,11 @@ public class Deelnemer {
         this.D_code = D_code;
     }
 
-    public String getHuisnummer() {
+    public int getHuisnummer() {
         return Huisnummer;
     }
 
-    public void setHuisnummer(String Huisnummer) {
+    public void setHuisnummer(int Huisnummer) {
         this.Huisnummer = Huisnummer;
     }
 
@@ -71,11 +82,11 @@ public class Deelnemer {
         this.Postcode = Postcode;
     }
 
-    public String getTelefoon() {
+    public int getTelefoon() {
         return Telefoon;
     }
 
-    public void setTelefoon(String Telefoon) {
+    public void setTelefoon(int Telefoon) {
         this.Telefoon = Telefoon;
     }
 

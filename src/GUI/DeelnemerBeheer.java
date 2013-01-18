@@ -19,9 +19,10 @@ import javax.swing.table.TableModel;
  * @author arjan
  */
 public class DeelnemerBeheer extends javax.swing.JFrame {
-    private int size;
+    
     DefaultTableModel model = new DefaultTableModel();
     private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
+    int d_code;
     /**
      * Creates new form DeelnemerBeheer
      */
@@ -38,6 +39,56 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }
     
 
+    
+    private void updateTable()
+    {
+                String input = TextField_Zoekopnaam.getText();
+        
+
+        try{
+            
+            //SQL Statement.
+        String sql = "Select * from deelnemer where voornaam like ? or achternaam like ?";    
+            
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            //input of the textfield + "%" for the SQL Statement.
+            stat.setString(1, input +'%' );
+            stat.setString(2, input + '%');
+            
+            ResultSet res = stat.executeQuery();
+            
+            
+            while(res.next())
+                    {
+                        
+                        
+                        Deelnemer deelnemer = new Deelnemer(res.getInt("d_code"),
+                                                            res.getString("Voornaam"),
+                                                            res.getString("Achternaam"),
+                                                            res.getString("Postcode"),
+                                                            res.getString("woonplaats"),
+                                                            res.getInt("tel_nr"),
+                                                            res.getInt("huisnummer"),
+                                                            res.getString("is_bekend"),
+                                                            res.getString("straat"),
+                                                            res.getString("e_mailadres"),
+                                                            res.getInt("rating"));
+                        deelnemers.add(deelnemer);                                    
+                        model.addRow(deelnemer.getInfo());
+                        
+                    }
+                    
+                    
+            
+            
+        }catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
+    }
     
     
     /**
@@ -171,21 +222,49 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-       
+        
         int[] selected = Table_Deelnemers.getSelectedRows();
-        if(selected.length!=0)
+        
+        if(selected.length==0)
         {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+        }
+        
+        else{
             if(JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION){
             //remove a deelnemer from the list
-            
-            
-            
+                
+        
+        for(int i = selected.length -1;i >= 0;i--)
+        {
 
             
-            }
-        }else{
-            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
-                }
+            int row = Table_Deelnemers.getSelectedRow();
+            Deelnemer deelnemer = deelnemers.get(row);
+            d_code = deelnemer.getD_code();
+            System.out.println(selected.length + "length");
+            System.out.println (row  +" row");
+            System.out.println(d_code + " d_code");
+            model.removeRow(i);
+            
+            //model.setRowCount(0);
+            //updateTable();
+            
+            //String sql = "delete from deelnemer where d_code = ?";
+            //try{
+             //   Connection conn = SimpleDataSourceV2.getConnection();
+            //    PreparedStatement stat = conn.prepareStatement(sql);
+            //    stat.setInt(1,d_code);
+            //    stat.execute();
+          // }catch(SQLException ex)
+          // {
+          //     JOptionPane.showMessageDialog(this, ex);
+          // }
+        }
+        }
+        }
+
+          
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
@@ -196,45 +275,11 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
-        //String 'input' made for easiness, not having to type "Textfield_Zoekopnaam.getText(); multiple times.
-        String input = TextField_Zoekopnaam.getText();
-        
         //setRowCount to refresh the model.
         model.setRowCount(0);
-        try{
-            
-            //SQL Statement.
-        String sql = "Select * from deelnemer where voornaam like ? or achternaam like ?";    
-            
-            Connection conn;
-            conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            //input of the textfield + "%" for the SQL Statement.
-            stat.setString(1, input +'%' );
-            stat.setString(2, input + '%');
-            
-            ResultSet res = stat.executeQuery();
-            
-            
-            while(res.next())
-                    {
-                        
-                        
-                        Deelnemer deelnemer = new Deelnemer(res.getString("voornaam"),
-                                                            res.getString("achternaam"),
-                                                            res.getInt("rating"));
-                        model.addRow(deelnemer.getInfo());
-                        
-                    }
-                    
-                    
-            
-            
-        }catch(Exception ex)
-        {
-            System.out.println(ex);
-        }
+        //clear ArrayList for refreshing purposes.
+        deelnemers.clear();
+        updateTable();
     
     
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
