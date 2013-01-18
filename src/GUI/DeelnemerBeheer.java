@@ -215,6 +215,10 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            //Als er meer dan 1 persoon geselecteerd is, verschijnt er een messagedialog.
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecteer maximaal 1 persoon.");
+            //Als bovenstaande condities niet waar zijn, wordt het wijzigscherm toegelaten.
         } else {
             int row = Table_Deelnemers.getSelectedRow();
             deelnemer = deelnemers.get(row);
@@ -247,11 +251,12 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex);
             }
+            //geeft deelnemer mee aan het Wijzigen-scherm.
             new DeelnemerWijzigen(deelnemer).setVisible(true);
             this.dispose();
 
         }
-        //geeft deelnemer mee aan het Wijzigen-scherm.
+
 
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
