@@ -129,7 +129,7 @@
                   <Component id="RadioButton_BekendJa" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="RadioButton_BekendNee" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="6" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Button_Toevoegen" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Button_Back" alignment="3" min="-2" max="-2" attributes="0"/>

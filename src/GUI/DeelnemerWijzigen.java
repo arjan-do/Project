@@ -5,7 +5,12 @@
 package GUI;
 
 import Models.Deelnemer;
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +23,7 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
      */
     
     Deelnemer deelnemer;
+    int d_code;
     
     public DeelnemerWijzigen() {
         initComponents();
@@ -27,12 +33,33 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         initComponents();
         this.deelnemer = deelnemer;
         FillComponents();
+        d_code = deelnemer.getD_code();
     }
     
     private void FillComponents(){
         ButtonGroup bekend = new ButtonGroup();
         bekend.add(RadioButton_BekendJa);
         bekend.add(RadioButton_BekendNee);
+        
+        String voornaam = deelnemer.getVoornaam();
+        String achternaam = deelnemer.getAchternaam();
+        String straat = deelnemer.getStraat();
+        int huisnummer = deelnemer.getHuisnummer();
+        String postcode = deelnemer.getPostcode();
+        String woonplaats = deelnemer.getWoonplaats();
+        int tel_nr = deelnemer.getTelefoon();
+        String email = deelnemer.getEmail();
+        String is_bekend = deelnemer.getIsbekend();
+        
+        TextField_Voornaam.setText(voornaam);
+        TextField_Achternaam.setText(achternaam);
+        TextField_Straat.setText(straat);
+        TextField_Huisnummer.setText(Integer.toString(huisnummer));
+        TextField_Postcode.setText(postcode);
+        TextField_Woonplaats.setText(woonplaats);
+        TextField_Telefoonnummer.setText(Integer.toString(tel_nr));
+        TextField_Email.setText(email);
+
     }
     
     /**
@@ -202,7 +229,78 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
-        // create querry to add new deelnemer to database
+
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            
+            //Preparing..
+            PreparedStatement stat = conn.prepareStatement("UPDATE `fullhouse`.`deelnemer` "
+                                                                                                        + "SET `voornaam`=?,"
+                                                                                                        + " `achternaam`= ?,"
+                                                                                                        + " `straat`=?, "
+                                                                                                        + "`huisnummer`=?, "
+                                                                                                        + "`postcode`=?, "
+                                                                                                        + "`woonplaats`=?,"
+                                                                                                        + "`tel_nr`=?, "
+                                                                                                        + "`e_mailadres`=?, "
+                                                                                                        + "`is_bekend`=?"
+                                                                          + " WHERE  `d_code`=?");
+            //SetInts overgeslagen om die in een try-catch block te zetten (numberformatexceptions).
+            stat.setString(1, TextField_Voornaam.getText());
+            stat.setString(2, TextField_Achternaam.getText());
+            stat.setString(3, TextField_Straat.getText());
+            stat.setString(5, TextField_Postcode.getText());
+            stat.setString(6, TextField_Woonplaats.getText());
+            stat.setString(8, TextField_Email.getText());
+            stat.setInt(10, d_code);
+            //setString(9, is_bekend) overgeslagen vanwege radiobuttons.
+            
+            //2 verschillende try-catch blocks met dezelfde exception om onderscheid te maken
+            // tussen huisnummer en telefoonnummer.
+            
+            try{
+                    stat.setInt(4, Integer.parseInt(TextField_Huisnummer.getText()));
+                    
+            }catch(NumberFormatException ex)
+            {
+
+                   JOptionPane.showMessageDialog(this, "Voer een geheel getal in voor het huisnummer.");
+            }
+            
+            try{
+                stat.setInt(7, Integer.parseInt(TextField_Telefoonnummer.getText()));
+                
+            }catch(NumberFormatException exc)
+            {
+                    JOptionPane.showMessageDialog(this, "Voer een geheel getal in voor het telefoonnummer.");
+            }
+            
+
+                if(RadioButton_BekendJa.isSelected())
+                {
+                     stat.setString(9, "j");
+                }
+            
+                else if(RadioButton_BekendNee.isSelected())
+                {
+                     stat.setString(9, "n");
+                }
+            
+                else
+                {
+                     JOptionPane.showMessageDialog(this, "Selecteer één van de twee bij 'is_bekend.");
+                }
+            
+            stat.execute();
+            new DeelnemerBeheer().setVisible(true);
+            this.dispose();
+        
+        }catch(SQLException e)
+        {
+            
+        }
+        
+        
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
