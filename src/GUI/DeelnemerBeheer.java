@@ -166,11 +166,21 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        if(JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION){
+       
+        int[] selected = Table_Deelnemers.getSelectedRows();
+        if(selected.length!=0)
+        {
+            if(JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION){
             //remove a deelnemer from the list
+            
+            
+            
 
             
-        }
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+                }
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
