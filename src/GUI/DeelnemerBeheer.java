@@ -4,7 +4,6 @@
  */
 package GUI;
 
-
 import configuration.SimpleDataSourceV2;
 import Models.Deelnemer;
 import java.sql.*;
@@ -19,10 +18,11 @@ import javax.swing.table.TableModel;
  * @author arjan
  */
 public class DeelnemerBeheer extends javax.swing.JFrame {
-    
+
     DefaultTableModel model = new DefaultTableModel();
     private ArrayList<Deelnemer> deelnemers = new ArrayList<>();
     int d_code;
+
     /**
      * Creates new form DeelnemerBeheer
      */
@@ -33,65 +33,59 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }
 
     // filling all components
-    private void FillComponents(){
+    private void FillComponents() {
         String[] kolommen = {"Voornaam", "Achternaam", "Rating"};
         model = new DefaultTableModel(kolommen, 0);
         Table_Deelnemers.setModel(model);
     }
-    
 
-    
-    private void updateTable()
-    {
-                String input = TextField_Zoekopnaam.getText();
-        
+    private void updateTable() {
+        String input = TextField_Zoekopnaam.getText();
 
-        try{
-            
+
+        try {
+
             //SQL Statement.
-        String sql = "Select * from deelnemer where voornaam like ? or achternaam like ?";    
-            
+            String sql = "Select * from deelnemer where voornaam like ? or achternaam like ?";
+
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
-            
+
             //input of the textfield + "%" for the SQL Statement.
-            stat.setString(1, input +'%' );
+            stat.setString(1, input + '%');
             stat.setString(2, input + '%');
-            
+
             ResultSet res = stat.executeQuery();
-            
-            
-            while(res.next())
-                    {
-                        
-                        
-                        Deelnemer deelnemer = new Deelnemer(res.getInt("d_code"),
-                                                            res.getString("Voornaam"),
-                                                            res.getString("Achternaam"),
-                                                            res.getString("Postcode"),
-                                                            res.getString("woonplaats"),
-                                                            res.getInt("tel_nr"),
-                                                            res.getInt("huisnummer"),
-                                                            res.getString("is_bekend"),
-                                                            res.getString("straat"),
-                                                            res.getString("e_mailadres"),
-                                                            res.getInt("rating"));
-                        deelnemers.add(deelnemer);                                    
-                        model.addRow(deelnemer.getInfo());
-                        
-                    }
-                    
-                    
-            
-            
-        }catch(Exception ex)
-        {
+
+
+            while (res.next()) {
+
+
+                Deelnemer deelnemer = new Deelnemer(res.getInt("d_code"),
+                        res.getString("Voornaam"),
+                        res.getString("Achternaam"),
+                        res.getString("Postcode"),
+                        res.getString("woonplaats"),
+                        res.getInt("tel_nr"),
+                        res.getInt("huisnummer"),
+                        res.getString("is_bekend"),
+                        res.getString("straat"),
+                        res.getString("e_mailadres"),
+                        res.getInt("rating"));
+                deelnemers.add(deelnemer);
+                model.addRow(deelnemer.getInfo());
+
+            }
+
+
+
+
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -204,8 +198,6 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         new DeelnemerToevoegen().setVisible(true);
         this.dispose();
@@ -213,76 +205,68 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
 
-            int row = Table_Deelnemers.getSelectedRow();
-            Deelnemer deelnemer = deelnemers.get(row);
-            d_code = deelnemer.getD_code();
-            
-            try{
-                String sql = "Select * from deelnemer where d_code = ?";
-                Connection conn = SimpleDataSourceV2.getConnection();
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, d_code);
-                        
-                ResultSet res = stat.executeQuery();
-                while(res.next())
-                {
-                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
-                                  deelnemer = new Deelnemer(res.getInt("d_code"),
-                                                            res.getString("Voornaam"),
-                                                            res.getString("Achternaam"),
-                                                            res.getString("Postcode"),
-                                                            res.getString("woonplaats"),
-                                                            res.getInt("tel_nr"),
-                                                            res.getInt("huisnummer"),
-                                                            res.getString("is_bekend"),
-                                                            res.getString("straat"),
-                                                            res.getString("e_mailadres"),
-                                                            res.getInt("rating"));
-                }
-                
-            }catch(Exception ex)
-            {
-                JOptionPane.showMessageDialog(this, ex);
+        int row = Table_Deelnemers.getSelectedRow();
+        Deelnemer deelnemer = deelnemers.get(row);
+        d_code = deelnemer.getD_code();
+
+        try {
+            String sql = "Select * from deelnemer where d_code = ?";
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, d_code);
+
+            ResultSet res = stat.executeQuery();
+            while (res.next()) {
+                //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                deelnemer = new Deelnemer(res.getInt("d_code"),
+                        res.getString("Voornaam"),
+                        res.getString("Achternaam"),
+                        res.getString("Postcode"),
+                        res.getString("woonplaats"),
+                        res.getInt("tel_nr"),
+                        res.getInt("huisnummer"),
+                        res.getString("is_bekend"),
+                        res.getString("straat"),
+                        res.getString("e_mailadres"),
+                        res.getInt("rating"));
             }
-            //geeft deelnemer mee aan het Wijzigen-scherm.
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+        //geeft deelnemer mee aan het Wijzigen-scherm.
         new DeelnemerWijzigen(deelnemer).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        
+
         int[] selected = Table_Deelnemers.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
-        if(selected.length==0)
-        {
+        if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
-        }
-        
-        else{
-            if(JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION){
-            
-                
-                        //Omgedraaide for-loop vanwege problemen met de normale constructie
-                for(int i = selected.length -1; i > -1; i--)
-                {
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
                     Deelnemer deelnemer = deelnemers.get(selected[i]);
                     d_code = deelnemer.getD_code();
-                    System.out.println("D_Code -->" + d_code);
                     model.removeRow(selected[i]);
-                    
+
                     String sql = "delete from deelnemer where d_code = ?";
 
-                    try{
-                            Connection conn = SimpleDataSourceV2.getConnection();
-                            PreparedStatement stat = conn.prepareStatement(sql);
-                            stat.setInt(1,d_code);
-                            stat.execute();
-                            
-                        }catch(SQLException ex)
-                        {
-                            JOptionPane.showMessageDialog(this, ex);
-                        }
-                        
+                    try {
+                        Connection conn = SimpleDataSourceV2.getConnection();
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setInt(1, d_code);
+                        stat.execute();
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, ex);
+                    }
+
                 }
             }
             //Update de modelRows, clear de arraylist Deelnemers.
@@ -290,9 +274,9 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             deelnemers.clear();
             updateTable();
         }
-        
 
-          
+
+
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
@@ -308,8 +292,8 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         //clear ArrayList for refreshing purposes.
         deelnemers.clear();
         updateTable();
-    
-    
+
+
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
 
     /**
