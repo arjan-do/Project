@@ -20,6 +20,11 @@ import utils.DateUtil;
  */
 public class MasterclassToevoegen extends javax.swing.JFrame {
 int M_Code;
+int Niveau;
+int Prijs;
+Date Datum;
+Object Docent;
+Object Locatie;
     /**
      * Creates new form MasterclassToevoegen
      */
@@ -219,23 +224,23 @@ int M_Code;
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
-        int Niveau = Integer.parseInt(TextField_Niveau.getText());
-        int Prijs = Integer.parseInt(TextField_Prijs.getText());
-        
-        Date Datum = null;
         try{
+        Niveau = Integer.parseInt(TextField_Niveau.getText());
+        Prijs = Integer.parseInt(TextField_Prijs.getText());
+        
+        Datum = null;
+        
             int dag = Integer.parseInt(TextField_Dag.getText());
             int maand = Integer.parseInt(TextField_Maand.getText());
             int jaar = Integer.parseInt(TextField_Jaar.getText());
             
             Datum = DateUtil.toSqlDate(jaar, maand, dag);
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "Voer de correcte datum in.");
+            JOptionPane.showMessageDialog(this, "Voer de velden correct in.");
         }
         
-        String Docent = ComboBox_Docent.getSelectedItem().toString();
-        String Locatie = ComboBox_Docent.getSelectedItem().toString();
-        System.out.println(Docent);
+        Docent = ComboBox_Docent.getSelectedItem();
+        Locatie = ComboBox_Docent.getSelectedItem();
         
         int Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
@@ -246,8 +251,8 @@ int M_Code;
                 stat.setInt(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
-                stat.setString(5, Docent);
-                stat.setString(6, Locatie);
+                stat.setObject(5, Docent);
+                stat.setObject(6, Locatie);
                 
                 stat.execute();
                 
@@ -256,6 +261,7 @@ int M_Code;
             }catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Databasefout" + ex.toString());
             }
+    
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void ComboBox_DocentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_DocentActionPerformed

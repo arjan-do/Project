@@ -4,16 +4,16 @@
  */
 package GUI;
 
-import com.sun.media.sound.ModelAbstractChannelMixer;
 import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import utils.DateUtil;
 
 /**
  *
@@ -265,7 +265,44 @@ int dag;
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        // TODO add your handling code here:
+        try{
+        Niveau = Integer.parseInt(TextField_Niveau.getText());
+        Prijs = Integer.parseInt(TextField_Prijs.getText());
+        
+        Datum = null;
+        
+            dag = Integer.parseInt(TextField_Dag.getText());
+            maand = Integer.parseInt(TextField_Maand.getText());
+            jaar = Integer.parseInt(TextField_Jaar.getText());
+            
+            Datum = DateUtil.toSqlDate(jaar, maand, dag);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Voer de velden correct in.");
+        }
+        
+        Docent = (int) ComboBox_Docent.getSelectedItem();
+        Locatie = (int) ComboBox_Docent.getSelectedItem();
+        
+        Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
+        try {
+                String sql = "update masterclass set Niveau = ?, Prijs = ?, Datum = ?, Minimale_rating = ?, Docent = ?, Vindt_plaats_in = ? where M_Code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, Niveau);
+                stat.setInt(2, Prijs);
+                stat.setDate(3, Datum);
+                stat.setInt(4, Minimale_rating);
+                stat.setObject(5, Docent);
+                stat.setObject(6, Locatie);
+                stat.setInt(7, M_Code);
+                
+                stat.execute();
+                
+                this.dispose();
+                new HoofdMenu().setVisible(true);
+            }catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Databasefout" + ex.toString());
+            }
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     /**
