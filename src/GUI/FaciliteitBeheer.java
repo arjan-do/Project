@@ -157,7 +157,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION) {
-            //remove a deelnemer from the list
+            //remove a faciliteit from the list
         }
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
