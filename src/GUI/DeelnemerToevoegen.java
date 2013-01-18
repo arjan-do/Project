@@ -4,7 +4,12 @@
  */
 package GUI;
 
+
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -193,7 +198,70 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
-        // create querry to add new deelnemer to database
+        //Strings om de inhoud van de textfields op te halen. 
+        try{
+        String voornaam = TextField_Voornaam.getText();
+        String achternaam = TextField_Achternaam.getText();
+        String straat = TextField_Straat.getText();
+        int huisnummer = Integer.parseInt(TextField_Huisnummer.getText());
+        String postcode = TextField_Postcode.getText();
+        String woonplaats = TextField_Woonplaats.getText();
+        int telnr = Integer.parseInt(TextField_Telefoonnummer.getText());
+        String email = TextField_Email.getText();
+        String bekend = null;
+
+        //checks which radiobutton is selected. if none, show messagedialog saying"select something".
+        
+        if(RadioButton_BekendJa.isSelected())
+        {
+            bekend = "j";
+        }
+        else if(RadioButton_BekendNee.isSelected())
+        {
+            bekend = "n";
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Selecteer de status van 'bekend'");
+        }
+        
+        
+        // SQL string
+        
+        String sql = "insert into Deelnemer(voornaam, achternaam, straat, huisnummer, postcode, woonplaats, tel_nr, e_mailadres, is_bekend) values(?,?,?,?,?,?,?,?,?)";
+        
+        
+        try{
+        Connection conn = SimpleDataSourceV2.getConnection();
+        PreparedStatement stat = conn.prepareStatement(sql);
+        
+        //Sets the variables in sql statement
+        
+        stat.setString(1, voornaam);
+        stat.setString(2,achternaam);
+        stat.setString(3, straat);
+        stat.setInt(4, huisnummer);
+        stat.setString(5,postcode);
+        stat.setString(6,woonplaats);
+        stat.setInt(7,telnr);
+        stat.setString(8,email);
+        stat.setString(9,bekend);
+        
+        stat.execute();
+        
+        new DeelnemerBeheer().setVisible(true);
+        this.dispose();
+        
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        
+                }catch(NumberFormatException ex)
+        {
+            JOptionPane.showMessageDialog(this,ex);
+        }
+        
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
