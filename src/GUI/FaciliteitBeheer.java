@@ -4,7 +4,15 @@
  */
 package GUI;
 
+import Models.Faciliteit;
 import javax.swing.JOptionPane;
+import configuration.SimpleDataSourceV2;
+import java.sql.*;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -17,7 +25,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
      */
     public FaciliteitBeheer() {
         initComponents();
-    }
+    }                                                       
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,6 +90,11 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
 
         jLabel1.setText("Zoeken:");
 
+        TextField_Zoekopnaam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_ZoekopnaamActionPerformed(evt);
+            }
+        });
         TextField_Zoekopnaam.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextField_ZoekopnaamKeyReleased(evt);
@@ -149,15 +162,20 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        //todo: deelnemer uit lijst halen en meegeven als parameter
-        //new DeelnemerWijzigen().setVisible(true);
+        new FaciliteitWijzigen().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
         //renew querry and search on name enterd in TextField_Zoekenopnaam
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
-
+     
+    private void TextField_ZoekopnaamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextField_ZoekopnaamActionPerformed
+    
+    
+  
     /**
      * @param args the command line arguments
      */

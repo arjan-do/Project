@@ -101,6 +101,11 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             }
         });
 
+        TextField_Zoekopnaam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_ZoekopnaamActionPerformed(evt);
+            }
+        });
         TextField_Zoekopnaam.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextField_ZoekopnaamKeyReleased(evt);
@@ -233,6 +238,10 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     
     
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
+
+    private void TextField_ZoekopnaamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextField_ZoekopnaamActionPerformed
 
     /**
      * @param args the command line arguments
