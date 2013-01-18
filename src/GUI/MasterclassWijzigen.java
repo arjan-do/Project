@@ -4,17 +4,46 @@
  */
 package GUI;
 
+import com.sun.media.sound.ModelAbstractChannelMixer;
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Otto
  */
 public class MasterclassWijzigen extends javax.swing.JFrame {
-
+int M_Code;
+int Niveau;
+Date Datum;
+int Prijs;
+int Minimale_rating;
+int Docent;
+int Locatie;
+int jaar;
+int maand;
+int dag;
+        
+        
     /**
      * Creates new form MasterclassWijzigen
      */
     public MasterclassWijzigen() {
         initComponents();
+        vulCode();
+        vulNiveau();
+        vulDatum();
+        vulPrijs();
+        vulMinRating();
+        vulDocent();
+        vulLocatie();
     }
 
     /**
@@ -36,20 +65,33 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         TextField_Niveau = new javax.swing.JTextField();
-        TextField_Datum = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         ComboBox_Docent = new javax.swing.JComboBox();
         ComboBox_Code = new javax.swing.JComboBox();
+        TextField_Jaar = new javax.swing.JTextField();
+        TextField_Dag = new javax.swing.JTextField();
+        TextField_Maand = new javax.swing.JTextField();
+        Button_Check = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel4.setText("Code");
 
         Button_Wijzigen.setText("Wijzigen");
+        Button_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_WijzigenActionPerformed(evt);
+            }
+        });
 
         Button_Back.setText("Back");
+        Button_Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_BackActionPerformed(evt);
+            }
+        });
 
         ComboBox_Locatie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -68,6 +110,13 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
         ComboBox_Docent.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         ComboBox_Code.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        Button_Check.setText("Check");
+        Button_Check.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_CheckActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,16 +141,27 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
                             .addComponent(TextField_Minimalerating)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Button_Back)
-                            .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ComboBox_Code, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                            .addComponent(TextField_Datum, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jLabel4)
+                            .addComponent(Button_Back)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(TextField_Jaar))
+                                    .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ComboBox_Code, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Button_Check)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -110,15 +170,18 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(ComboBox_Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ComboBox_Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Button_Check))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_Niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextField_Datum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,6 +207,66 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Button_CheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_CheckActionPerformed
+        Object selcode = ComboBox_Code.getSelectedItem();
+        System.out.println(selcode);
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select * from masterclass where M_Code = ?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setObject(1, selcode);
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Niveau = resultSet.getInt("Niveau");
+                Datum = resultSet.getDate("Datum");
+                Prijs = resultSet.getInt("Prijs");
+                Minimale_rating = resultSet.getInt("Vindt_plaats_in");
+                Docent = resultSet.getInt("Docent");
+                Locatie = resultSet.getInt("Vindt_plaats_in");
+                
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                cal.clear();
+                cal.setTime(Datum);
+                jaar = cal.get(Calendar.YEAR);
+                maand = cal.get(Calendar.MONTH);
+                dag = cal.get(Calendar.DAY_OF_MONTH);
+                maand++;
+            }
+            String niveau = Integer.toString(Niveau);
+            TextField_Niveau.setText(niveau);
+            
+            
+                
+                String JAAR = Integer.toString(jaar);
+                String MAAND = Integer.toString(maand);
+                String DAG = Integer.toString(dag);
+                
+                TextField_Jaar.setText(JAAR);
+                TextField_Maand.setText(MAAND);
+                TextField_Dag.setText(DAG);
+            
+            String prijs = Integer.toString(Prijs);
+            TextField_Prijs.setText(prijs);
+            String minimale_rating = Integer.toString(Minimale_rating);
+            TextField_Minimalerating.setText(minimale_rating);
+    
+            
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }//GEN-LAST:event_Button_CheckActionPerformed
+
+    private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
+        new HoofdMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,11 +311,14 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Back;
+    private javax.swing.JButton Button_Check;
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JComboBox ComboBox_Code;
     private javax.swing.JComboBox ComboBox_Docent;
     private javax.swing.JComboBox ComboBox_Locatie;
-    private javax.swing.JTextField TextField_Datum;
+    private javax.swing.JTextField TextField_Dag;
+    private javax.swing.JTextField TextField_Jaar;
+    private javax.swing.JTextField TextField_Maand;
     private javax.swing.JTextField TextField_Minimalerating;
     private javax.swing.JTextField TextField_Niveau;
     private javax.swing.JTextField TextField_Prijs;
@@ -204,4 +330,166 @@ public class MasterclassWijzigen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     // End of variables declaration//GEN-END:variables
+
+    private void vulCode()
+    {
+        DefaultComboBoxModel code = new DefaultComboBoxModel();
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select M_Code from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            
+            while(resultSet.next()){
+                M_Code = resultSet.getInt("M_Code");
+                code.addElement(Integer.toString(M_Code));
+            }
+            
+            ComboBox_Code.setModel(code);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    
+    }
+
+    private void vulNiveau() {
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Niveau from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Niveau = resultSet.getInt("Niveau");
+            }
+            String niveau = Integer.toString(Niveau);
+            TextField_Niveau.setText(niveau);
+            
+            
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulDatum() {
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Datum from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Datum = resultSet.getDate("Datum");
+                
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                cal.clear();
+                cal.setTime(Datum);
+                jaar = cal.get(Calendar.YEAR);
+                maand = cal.get(Calendar.MONTH);
+                dag = cal.get(Calendar.DAY_OF_MONTH);
+                maand++;
+                
+                String JAAR = Integer.toString(jaar);
+                String MAAND = Integer.toString(maand);
+                String DAG = Integer.toString(dag);
+                
+                TextField_Jaar.setText(JAAR);
+                TextField_Maand.setText(MAAND);
+                TextField_Dag.setText(DAG);
+            
+            }
+            
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulPrijs() {
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Prijs from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Prijs = resultSet.getInt("Prijs");
+            }
+            String prijs = Integer.toString(Prijs);
+            TextField_Prijs.setText(prijs);
+            
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulMinRating() {
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Minimale_rating from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Minimale_rating = resultSet.getInt("Minimale_rating");
+            }
+            String rating = Integer.toString(Minimale_rating);
+            TextField_Minimalerating.setText(rating);
+            
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulDocent() {
+        DefaultComboBoxModel docent = new DefaultComboBoxModel();
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Docent from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Docent = resultSet.getInt("Docent");
+                docent.addElement(Docent);
+            }
+            
+            ComboBox_Docent.setModel(docent);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulLocatie() {
+        DefaultComboBoxModel locatie = new DefaultComboBoxModel();
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Vindt_plaats_in from masterclass";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Locatie = resultSet.getInt("Vindt_plaats_in");
+                locatie.addElement(Locatie);
+            }
+            
+            ComboBox_Locatie.setModel(locatie);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
 }

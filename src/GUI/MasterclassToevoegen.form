@@ -36,11 +36,22 @@
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="123" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="Button_Toevoegen" alignment="1" pref="89" max="32767" attributes="0"/>
-                          <Component id="TextField_Datum" alignment="1" max="32767" attributes="0"/>
-                          <Component id="TextField_Niveau" alignment="1" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace pref="78" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="Button_Toevoegen" alignment="1" pref="89" max="32767" attributes="0"/>
+                                  <Component id="TextField_Niveau" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="TextField_Dag" min="-2" pref="33" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="TextField_Maand" min="-2" pref="31" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="TextField_Jaar" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -81,8 +92,10 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="TextField_Datum" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TextField_Dag" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TextField_Maand" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TextField_Jaar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -117,7 +130,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Datum"/>
+        <Property name="text" type="java.lang.String" value="Datum (DD-MM-JJJJ)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -127,7 +140,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_Niveau">
     </Component>
-    <Component class="javax.swing.JTextField" name="TextField_Datum">
+    <Component class="javax.swing.JTextField" name="TextField_Dag">
     </Component>
     <Component class="javax.swing.JButton" name="Button_Toevoegen">
       <Properties>
@@ -153,6 +166,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_BackActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -185,6 +201,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ComboBox_DocentActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -199,6 +218,10 @@
     <Component class="javax.swing.JTextField" name="TextField_Prijs">
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_Minimalerating">
+    </Component>
+    <Component class="javax.swing.JTextField" name="TextField_Maand">
+    </Component>
+    <Component class="javax.swing.JTextField" name="TextField_Jaar">
     </Component>
   </SubComponents>
 </Form>

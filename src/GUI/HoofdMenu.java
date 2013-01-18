@@ -59,6 +59,11 @@ public class HoofdMenu extends javax.swing.JFrame {
         });
 
         Button_MasterclassBeheer.setText("Masterclass");
+        Button_MasterclassBeheer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_MasterclassBeheerActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Hier kun je deelnemers toevoegen/wijzigen/verwijderen");
 
@@ -133,6 +138,11 @@ public class HoofdMenu extends javax.swing.JFrame {
         //huidige scherm weghalen
         this.dispose();
     }//GEN-LAST:event_Button_FaciliteitBeheerActionPerformed
+
+    private void Button_MasterclassBeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_MasterclassBeheerActionPerformed
+        new MasterclassToevoegen().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_MasterclassBeheerActionPerformed
 
     /**
      * @param args the command line arguments
