@@ -104,6 +104,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         Button_Back = new javax.swing.JButton();
         TextField_Zoekopnaam = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        Button_Bekijken = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,26 +162,36 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
         jLabel1.setText("Zoeken:");
 
+        Button_Bekijken.setText("Bekijken");
+        Button_Bekijken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_BekijkenActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(Button_Toevoegen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Wijzigen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Verwijderen)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Back))
                     .add(layout.createSequentialGroup()
                         .add(jLabel1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(TextField_Zoekopnaam)))
+                        .add(TextField_Zoekopnaam, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 20, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(Button_Bekijken)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(Button_Toevoegen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(Button_Wijzigen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(Button_Verwijderen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 89, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(Button_Back)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -197,7 +208,8 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                     .add(Button_Toevoegen)
                     .add(Button_Wijzigen)
                     .add(Button_Verwijderen)
-                    .add(Button_Back))
+                    .add(Button_Back)
+                    .add(Button_Bekijken))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -321,6 +333,54 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TextField_ZoekopnaamActionPerformed
 
+    private void Button_BekijkenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BekijkenActionPerformed
+
+        int[] selected = Table_Deelnemers.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            //Als er meer dan 1 persoon geselecteerd is, verschijnt er een messagedialog.
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecteer maximaal 1 persoon.");
+            //Als bovenstaande condities niet waar zijn, wordt het wijzigscherm toegelaten.
+        } else {
+            int row = Table_Deelnemers.getSelectedRow();
+            deelnemer = deelnemers.get(row);
+            d_code = deelnemer.getD_code();
+
+
+
+            try {
+                String sql = "Select * from deelnemer where d_code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, d_code);
+
+                ResultSet res = stat.executeQuery();
+                while (res.next()) {
+                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                    deelnemer = new Deelnemer(res.getInt("d_code"),
+                            res.getString("Voornaam"),
+                            res.getString("Achternaam"),
+                            res.getString("Postcode"),
+                            res.getString("woonplaats"),
+                            res.getInt("tel_nr"),
+                            res.getInt("huisnummer"),
+                            res.getString("is_bekend"),
+                            res.getString("straat"),
+                            res.getString("e_mailadres"),
+                            res.getInt("rating"));
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+            new DeelnemerBekijken(deelnemer).setVisible(true);
+        }
+
+
+    }//GEN-LAST:event_Button_BekijkenActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -364,6 +424,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Back;
+    private javax.swing.JButton Button_Bekijken;
     private javax.swing.JButton Button_Toevoegen;
     private javax.swing.JButton Button_Verwijderen;
     private javax.swing.JButton Button_Wijzigen;
