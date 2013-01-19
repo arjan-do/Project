@@ -4,7 +4,11 @@
  */
 package GUI;
 
+import Models.Toernooizoeken;
+import configuration.SimpleDataSourceV2;
+import java.sql.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,13 +16,73 @@ import javax.swing.JOptionPane;
  */
 public class ToernooiBeheer extends javax.swing.JFrame {
 
+    DefaultTableModel model = new DefaultTableModel();
+    
     /**
      * Creates new form ToernooiBeheer
      */
     public ToernooiBeheer() {
         initComponents();
+        initJtable();
     }
 
+    private void initJtable(){
+        //setup the jtable
+        String[] kolommen = {"Datum", "Begintijd", "Locatienaam", "Min aantal spelers", "Aantal spelers"};
+        model = new DefaultTableModel(kolommen, 0);
+        TableToernooi.setModel(model);
+        
+        //running the sql querry
+        sqlupdatetable("");
+        
+    }
+    
+    private void sqlupdatetable(String zoeken){
+        model.setRowCount(0);
+        
+        try {
+
+            //SQL Statement.
+            String sql = "select toernooi.t_code, toernooi.datum , toernooi.begintijd, faciliteit.naam as locatienaam, toernooi.Min_aantal_spelers, count(heeft_betaald.T_code) as aantal_deelneer from toernooi left outer join faciliteit on toernooi.vindt_plaats_in = faciliteit.F_code left outer join heeft_betaald on toernooi.t_code = heeft_betaald.t_code group by toernooi.t_code having toernooi.t_code like ? or toernooi.datum like ? or toernooi.begintijd like ? or faciliteit.naam like ? or toernooi.Min_aantal_spelers like ? or count(heeft_betaald.T_code) like ?";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            stat.setString(1, '%' + zoeken + '%');
+            stat.setString(2, '%' + zoeken + '%');
+            stat.setString(3, '%' + zoeken + '%');
+            stat.setString(4, '%' + zoeken + '%');
+            stat.setString(5, '%' + zoeken + '%');
+            stat.setString(6, '%' + zoeken + '%');
+            
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                 int t_code = res.getInt("t_code");
+                 Date datum = res.getDate("datum");
+                 Time begintijd = res.getTime("begintijd");
+                 String locatienaam = res.getString("locatienaam");
+                 int minspelers = res.getInt("Min_aantal_spelers");
+                 int spelers = res.getInt("aantal_deelneer");
+                
+                Toernooizoeken toernooizoek = new Toernooizoeken(t_code, datum, begintijd, locatienaam, minspelers, spelers);
+                model.addRow(toernooizoek.getrow());
+                
+            }
+
+            TableToernooi.setModel(model);
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        
+        System.out.println("finish");
+        
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,6 +99,8 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         Button_Verwijderen = new javax.swing.JButton();
         Button_Back = new javax.swing.JButton();
         Button_Start = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        TextField_Zoeken = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,6 +147,14 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
         Button_Start.setText("Start");
 
+        jLabel1.setText("Zoeken:");
+
+        TextField_Zoeken.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_ZoekenKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,19 +167,27 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Wijzigen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Start)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Back))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Zoeken, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(TextField_Zoeken, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Toevoegen)
@@ -142,6 +224,11 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         //Close current Window
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void TextField_ZoekenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekenKeyReleased
+        sqlupdatetable(TextField_Zoeken.getText());
+
+    }//GEN-LAST:event_TextField_ZoekenKeyReleased
 
     /**
      * @param args the command line arguments
@@ -191,6 +278,8 @@ public class ToernooiBeheer extends javax.swing.JFrame {
     private javax.swing.JButton Button_Verwijderen;
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JTable TableToernooi;
+    private javax.swing.JTextField TextField_Zoeken;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
