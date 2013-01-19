@@ -4,14 +4,15 @@
  */
 package GUI;
 
-import configuration.SimpleDataSourceV2;
 import Models.Deelnemer;
-import java.sql.*;
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
