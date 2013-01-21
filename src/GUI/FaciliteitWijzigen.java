@@ -4,6 +4,14 @@
  */
 package GUI;
 
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import utils.DateUtil;
+
 /**
  *
  * @author Josua
@@ -57,6 +65,11 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
         jLabel2.setText("Straatnaam en  Huisnr.");
 
         Button_Wijzigen.setText("Wijzigen");
+        Button_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_WijzigenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,6 +144,49 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
         // Close current Window
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+        try {
+            //Invoervelden uitlezen
+            //String F_code = this.TextField_Naam.getText();
+            String Naam = this.TextField_Naam.getText();
+            String Straat = this.TextField_Straatnaam.getText();
+            String Huisnummer = this.TextField_Huisnummer.getText();
+            String Postcode = this.TextField_Postcode.getText();
+            int Max_aantal = Integer.parseInt(TextField_MaxAantalSpelers.getText());
+            String Plaats = this.TextField_Plaats.getText();
+            
+     
+            //Connectie opvragen
+            Connection conn = SimpleDataSourceV2.getConnection();
+
+            //(Prepared)SQL statement opbouwen
+            PreparedStatement preparedStatement = conn.prepareStatement("update from Faciliteit (naam, Straatnaam, huisnummer, postcode, Max_aantal_spelers, plaats) values (?,?,?,?,?,?)");
+            
+            preparedStatement.setString(1, Naam);
+            preparedStatement.setString(2, Straat);
+            preparedStatement.setString(3, Huisnummer);
+            preparedStatement.setString(4, Postcode);
+            preparedStatement.setInt(5, Max_aantal);
+            preparedStatement.setString(6, Plaats);
+            
+            //SQL statement uitvoeren
+            preparedStatement.execute();
+
+            //huidige scherm sluiten
+            this.dispose();
+
+            //Hoofdscherm opnieuw openen
+            //new HoofdScherm().setVisible(true);
+
+
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "SQL fout:" + ex.toString());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     /**
      * @param args the command line arguments
