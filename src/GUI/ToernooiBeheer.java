@@ -167,7 +167,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Wijzigen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
+                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Start)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

@@ -26,9 +26,7 @@ public class HoofdMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Button_Deelnemer_Toevoegen = new javax.swing.JButton();
-        Button_Toernooi_Toevoegen = new javax.swing.JButton();
-        Button_Faciliteit_Toevoegen = new javax.swing.JButton();
+        Button_Faciliteit_Beheer = new javax.swing.JButton();
         Button_Masterclass_Toevoegen = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -39,32 +37,15 @@ public class HoofdMenu extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         Button_Masterclass_Wijzigen = new javax.swing.JButton();
-        Button_Faciliteit_Wijzigen = new javax.swing.JButton();
-        Button_Deelnemer_Wijzigen = new javax.swing.JButton();
-        Button_Toernooi_Wijzigen = new javax.swing.JButton();
         Button_Deelnemer_Beheer = new javax.swing.JButton();
         Button_Toernooi_Beheer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Button_Deelnemer_Toevoegen.setText("Toevoegen");
-        Button_Deelnemer_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
+        Button_Faciliteit_Beheer.setText("Beheren");
+        Button_Faciliteit_Beheer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Deelnemer_ToevoegenActionPerformed(evt);
-            }
-        });
-
-        Button_Toernooi_Toevoegen.setText("Toevoegen");
-        Button_Toernooi_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Toernooi_ToevoegenActionPerformed(evt);
-            }
-        });
-
-        Button_Faciliteit_Toevoegen.setText("Toevoegen");
-        Button_Faciliteit_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Faciliteit_ToevoegenActionPerformed(evt);
+                Button_Faciliteit_BeheerActionPerformed(evt);
             }
         });
 
@@ -98,27 +79,6 @@ public class HoofdMenu extends javax.swing.JFrame {
             }
         });
 
-        Button_Faciliteit_Wijzigen.setText("Wijzigen");
-        Button_Faciliteit_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Faciliteit_WijzigenActionPerformed(evt);
-            }
-        });
-
-        Button_Deelnemer_Wijzigen.setText("Wijzigen");
-        Button_Deelnemer_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Deelnemer_WijzigenActionPerformed(evt);
-            }
-        });
-
-        Button_Toernooi_Wijzigen.setText("Wijzigen");
-        Button_Toernooi_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Toernooi_WijzigenActionPerformed(evt);
-            }
-        });
-
         Button_Deelnemer_Beheer.setText("Beheren");
         Button_Deelnemer_Beheer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,32 +101,26 @@ public class HoofdMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Button_Deelnemer_Wijzigen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Button_Deelnemer_Toevoegen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(Button_Deelnemer_Beheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Button_Deelnemer_Beheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
                         .addGap(191, 191, 191))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(Button_Faciliteit_Wijzigen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Button_Masterclass_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Button_Faciliteit_Toevoegen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Button_Masterclass_Toevoegen, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                    .addComponent(Button_Toernooi_Wijzigen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Button_Toernooi_Toevoegen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel8)
+                                        .addComponent(Button_Masterclass_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Button_Faciliteit_Beheer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Button_Masterclass_Toevoegen, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                                    .addComponent(Button_Toernooi_Beheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(Button_Toernooi_Beheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel3)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -180,31 +134,21 @@ public class HoofdMenu extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Button_Deelnemer_Toevoegen)
-                    .addComponent(jLabel1))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Button_Deelnemer_Wijzigen)
+                    .addComponent(jLabel1)
                     .addComponent(Button_Deelnemer_Beheer))
-                .addGap(18, 18, 18)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(Button_Toernooi_Toevoegen))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Button_Toernooi_Wijzigen)
                     .addComponent(Button_Toernooi_Beheer))
-                .addGap(18, 18, 18)
+                .addGap(42, 42, 42)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(Button_Faciliteit_Toevoegen))
-                .addGap(5, 5, 5)
-                .addComponent(Button_Faciliteit_Wijzigen)
-                .addGap(18, 18, 18)
+                    .addComponent(Button_Faciliteit_Beheer))
+                .addGap(46, 46, 46)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -212,33 +156,18 @@ public class HoofdMenu extends javax.swing.JFrame {
                     .addComponent(Button_Masterclass_Toevoegen))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button_Masterclass_Wijzigen)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Button_Deelnemer_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Deelnemer_ToevoegenActionPerformed
-        // open nieuw scherm
-        new DeelnemerBeheer().setVisible(true);
-        //huidige scherm weghalen
-        this.dispose();
-        
-    }//GEN-LAST:event_Button_Deelnemer_ToevoegenActionPerformed
-
-    private void Button_Toernooi_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Toernooi_ToevoegenActionPerformed
-        // open nieuw scherm
-        new ToernooiBeheer().setVisible(true);
-        //huidige scherm weghalen
-        this.dispose();
-    }//GEN-LAST:event_Button_Toernooi_ToevoegenActionPerformed
-
-    private void Button_Faciliteit_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Faciliteit_ToevoegenActionPerformed
+    private void Button_Faciliteit_BeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Faciliteit_BeheerActionPerformed
        // open nieuw scherm
         new FaciliteitBeheer().setVisible(true);
         //huidige scherm weghalen
         this.dispose();
-    }//GEN-LAST:event_Button_Faciliteit_ToevoegenActionPerformed
+    }//GEN-LAST:event_Button_Faciliteit_BeheerActionPerformed
 
     private void Button_Masterclass_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Masterclass_ToevoegenActionPerformed
         new MasterclassToevoegen().setVisible(true);
@@ -249,21 +178,6 @@ public class HoofdMenu extends javax.swing.JFrame {
         new MasterclassWijzigen().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_Masterclass_WijzigenActionPerformed
-
-    private void Button_Faciliteit_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Faciliteit_WijzigenActionPerformed
-        new FaciliteitBeheer().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_Button_Faciliteit_WijzigenActionPerformed
-
-    private void Button_Toernooi_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Toernooi_WijzigenActionPerformed
-        new ToernooiWijzigen().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_Button_Toernooi_WijzigenActionPerformed
-
-    private void Button_Deelnemer_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Deelnemer_WijzigenActionPerformed
-        new DeelnemerWijzigen().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_Button_Deelnemer_WijzigenActionPerformed
 
     private void Button_Deelnemer_BeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Deelnemer_BeheerActionPerformed
         new DeelnemerBeheer().setVisible(true);
@@ -318,15 +232,10 @@ public class HoofdMenu extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Deelnemer_Beheer;
-    private javax.swing.JButton Button_Deelnemer_Toevoegen;
-    private javax.swing.JButton Button_Deelnemer_Wijzigen;
-    private javax.swing.JButton Button_Faciliteit_Toevoegen;
-    private javax.swing.JButton Button_Faciliteit_Wijzigen;
+    private javax.swing.JButton Button_Faciliteit_Beheer;
     private javax.swing.JButton Button_Masterclass_Toevoegen;
     private javax.swing.JButton Button_Masterclass_Wijzigen;
     private javax.swing.JButton Button_Toernooi_Beheer;
-    private javax.swing.JButton Button_Toernooi_Toevoegen;
-    private javax.swing.JButton Button_Toernooi_Wijzigen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
