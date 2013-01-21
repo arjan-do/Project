@@ -16,14 +16,16 @@ public class Faciliteit {
     private String Postcode;
     private String Huisnummer;
     private int Max_aantal;
+    private String Plaats;
 
-    public Faciliteit(int F_code, String Naam, String Straat, String Postcode, String Huisnummer, int Max_aantal) {
+    public Faciliteit(int F_code, String Naam, String Straat, String Postcode, String Huisnummer, int Max_aantal, String Plaats) {
         this.F_code = F_code;
         this.Naam = Naam;
         this.Straat = Straat;
         this.Postcode = Postcode;
         this.Huisnummer = Huisnummer;
         this.Max_aantal = Max_aantal;
+        this.Plaats = Plaats;
     }
 
     public int getF_code() {
@@ -72,6 +74,18 @@ public class Faciliteit {
 
     public void setMax_aantal(int Max_aantal) {
         this.Max_aantal = Max_aantal;
+    }
+    
+    public String Plaats() {
+        return Plaats;
+    }
+
+    public void setPlaats(String Plaats) {
+        this.Plaats = Plaats;
+    }
+    
+    public String[] getrow(){
+        return new String[]{this.Naam.toString(), this.Straat.toString(), this.Huisnummer.toString(), String.valueOf(this.Max_aantal)};
     }
         
 }

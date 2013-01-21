@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -19,13 +21,82 @@ import javax.swing.table.TableModel;
  * @author Josua
  */
 public class FaciliteitBeheer extends javax.swing.JFrame {
-
+    
+   DefaultTableModel model = new DefaultTableModel();
     /**
      * Creates new form FaciliteitBeheer
      */
     public FaciliteitBeheer() {
         initComponents();
-    }                                                       
+        SetTable();
+        VulTable();
+        
+    }              
+    
+    private void SetTable() {
+        String[] kolommen = {"naam", "straat","huisnummer", "Max_aantal_spelers" };
+        //DefaultTableModel aanmaken waarin je aan de constructor de header kolommen meegeeft en het aantal lege start rijen 
+        DefaultTableModel model = new DefaultTableModel(kolommen, 0);
+        //model setten
+        TableFaciliteit.setModel(model);
+                    
+        
+        
+    }
+        
+    private void VulTable() {
+        // Lees zoekveld
+        String input = TextField_Zoekopnaam.getText();
+        
+
+        try {
+
+            //SQL Statement.
+            String sql = "Select * from faciliteit where naam like ? or straatnaam like ? or huisnummer like? or max_aantal_spelers like ?";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            //input of the textfield + "%" for the SQL Statement.
+            stat.setString(1, input + '%');
+            stat.setString(2, input + '%');
+            stat.setString(3, input + '%');
+            stat.setString(4, input + '%');
+
+            ResultSet res = stat.executeQuery();
+
+
+            while (res.next()) {
+
+                 int f_code = res.getInt("f_code");
+                 String naam = res.getString("Naam");
+                 String straat = res.getString("straatnaam");
+                 String postcode = res.getString("postcode");
+                 String plaats = res.getString("plaats");
+                 int max_aantal = res.getInt("Max_aantal_spelers");
+                 int huisnummer = res.getInt("huisnummer");
+                
+                Faciliteit Zoek = new Faciliteit(f_code, naam, straat, postcode, postcode, max_aantal, plaats);
+                model.addRow(Zoek.getrow());   
+                
+
+            }
+
+
+
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+    
+            
+           
+        
+       
+        
+
 
     /**
      * This method is called from within the constructor to initialize the form.

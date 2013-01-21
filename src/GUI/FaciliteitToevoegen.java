@@ -143,7 +143,7 @@ public class FaciliteitToevoegen extends javax.swing.JFrame {
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
        try {
             //Invoervelden uitlezen
-            String F_code = this.TextField_Naam.getText();
+            //String F_code = this.TextField_Naam.getText();
             String Naam = this.TextField_Naam.getText();
             String Straat = this.TextField_Straatnaam.getText();
             String Huisnummer = this.TextField_Huisnummer.getText();
@@ -156,7 +156,7 @@ public class FaciliteitToevoegen extends javax.swing.JFrame {
             Connection conn = SimpleDataSourceV2.getConnection();
 
             //(Prepared)SQL statement opbouwen
-            PreparedStatement preparedStatement = conn.prepareStatement("insert into Faciliteit (naam, Straat, huisnummer, postcode, Max_aantal_spelers, woonplaats) values (?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = conn.prepareStatement("insert into Faciliteit (naam, Straatnaam, huisnummer, postcode, Max_aantal_spelers, plaats) values (?,?,?,?,?,?)");
             
             preparedStatement.setString(1, Naam);
             preparedStatement.setString(2, Straat);
