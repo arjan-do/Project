@@ -8,10 +8,13 @@ import Models.Deelnemer;
 import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import utils.DateUtil;
 
 /**
  *
@@ -21,12 +24,15 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     private Deelnemer deelnemer;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
-    int mc;
     int niveau;
     MasterclassZoeken masterclass;
-    int selectedItem;
-    String voornaam;
-    String achternaam;
+    private int m_code;
+    private String voornaam;
+    private String achternaam;
+    private String heeft_betaald;
+    private String sqlVoegToe;
+    private boolean voegToeCheck;
+    private Date datum;
 
     /**
      * Creates new form DeelnemerToevoegenMCs
@@ -38,14 +44,14 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     public DeelnemerToevoegenMCs(Deelnemer deelnemer) {
         initComponents();
-        
+
         this.deelnemer = deelnemer;
-        
+
         voornaam = deelnemer.getVoornaam();
         achternaam = deelnemer.getAchternaam();
-        
+
         initScreen();
-        
+
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
@@ -61,46 +67,49 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet res = stat.executeQuery();
             while (res.next()) {
-                int m_code = res.getInt("m_code");
+                m_code = res.getInt("m_code");
 
                 model.addElement(m_code);
 
 
             }
             cbMasterclass.setModel(model);
-            
-            
-            
+
+
+
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
     }
-    
-    private void radioButtonCheck()
-    {
-                if(rbNee.isSelected())
-        {
+
+    private void radioButtonCheck() {
+        if (rbNee.isSelected()) {
             tfDag.setVisible(false);
             tfMaand.setVisible(false);
             tfJaar.setVisible(false);
             jLabel3.setVisible(false);
-        }
-        
-        else if(rbJa.isSelected())
-        {
+        } else if (rbJa.isSelected()) {
             tfDag.setVisible(true);
             tfMaand.setVisible(true);
             tfJaar.setVisible(true);
             jLabel3.setVisible(true);
-        }
-        
-        else{
+        } else {
             tfDag.setVisible(false);
             tfMaand.setVisible(false);
             tfJaar.setVisible(false);
             jLabel3.setVisible(false);
         }
+    }
+
+    private int comboBoxSelectedValue() {
+        int selectedItem = 0;
+        Object selected = cbMasterclass.getSelectedItem();
+        if (selected != null) {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
     }
 
     /**
@@ -137,6 +146,11 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         });
 
         btVoegToe.setText("Voeg Toe");
+        btVoegToe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVoegToeActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Masterclass :");
 
@@ -259,18 +273,14 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_cbMasterclassMouseClicked
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
-        
-        Object selected = cbMasterclass.getSelectedItem();
-        if (selected != null) {
-            String selectedItemStr = selected.toString();
-            selectedItem = Integer.parseInt(selectedItemStr);
-        }
+
+        m_code = comboBoxSelectedValue();
 
         String sql = "select niveau from masterclass where m_code = ?";
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1, selectedItem);
+            stat.setInt(1, m_code);
             ResultSet res = stat.executeQuery();
 
             while (res.next()) {
@@ -300,6 +310,60 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
         radioButtonCheck();
     }//GEN-LAST:event_rbNeeActionPerformed
+
+    private void btVoegToeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoegToeActionPerformed
+        sqlVoegToe = "insert into volgt(d_code,m_code,datum_betaling,heeft_betaald) values(?,?,?,?)";
+        voegToeCheck = true;
+        datum = null;
+
+        m_code = comboBoxSelectedValue();
+
+        int d_code = deelnemer.getD_code();
+
+        if (rbJa.isSelected()) {
+            try {
+
+                int dag = Integer.parseInt(tfDag.getText());
+                int maand = Integer.parseInt(tfMaand.getText());
+                int jaar = Integer.parseInt(tfJaar.getText());
+
+                datum = DateUtil.toSqlDate(jaar, maand, dag);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Voer gehele getallen in bij datum_betaling.");
+                voegToeCheck = false;
+            }
+        }
+        if (rbJa.isSelected() && voegToeCheck != false) {
+            heeft_betaald = "j";
+            voegToeCheck = true;
+        } else if (rbNee.isSelected() && voegToeCheck != false) {
+            heeft_betaald = "n";
+            voegToeCheck = true;
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecteer een waarde bij 'heeft betaald'.");
+            voegToeCheck = false;
+        }
+
+        if (voegToeCheck != false) {
+            try {
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sqlVoegToe);
+                stat.setInt(1, d_code);
+                stat.setInt(2, m_code);
+                stat.setDate(3, datum);
+                stat.setString(4, heeft_betaald);
+
+                stat.execute();
+                new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+                this.dispose();
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
+
+    }//GEN-LAST:event_btVoegToeActionPerformed
 
     /**
      * @param args the command line arguments

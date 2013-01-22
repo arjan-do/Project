@@ -46,7 +46,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }
     
         private void fillComponents() {
-        String[] kolommen = {"Niveau", "Datum", "Rating","Heeft Betaald"};
+        String[] kolommen = {"Niveau", "Datum", "Minimale Rating","Heeft Betaald"};
         model = new DefaultTableModel(kolommen, 0);
         table_Masterclasses.setModel(model);
     }
@@ -63,10 +63,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
 
             //SQL Statement.
             String sql = "Select m.*, heeft_betaald from Masterclass m join volgt v on m.m_code = v.m_code"
-                                                                  + " where m.m_code in (Select m_code "
-                                                                  + "From volgt "
-                                                                  + "Where d_code = ? )"
-                                                                  + "group by m_code";
+                                                                  + " where d_code = ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
