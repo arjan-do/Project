@@ -10,6 +10,7 @@ import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
@@ -24,6 +25,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     DefaultComboBoxModel model = new DefaultComboBoxModel();
     int mc;
     int niveau;
+    MasterclassZoeken masterclass;
+    ArrayList<MasterclassZoeken> masterclasses = new ArrayList<>();
     /**
      * Creates new form DeelnemerToevoegenMCs
      */
@@ -46,7 +49,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     
     private void initCB()
     {
-        String sql = "Select m_code from masterclass";
+        String sql = "Select m_code,niveau from masterclass";
         
         try{
             Connection conn = SimpleDataSourceV2.getConnection();
@@ -54,8 +57,12 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             ResultSet res = stat.executeQuery();
             while(res.next())
             {
-                mc = res.getInt("m_code");
-                model.addElement(mc);
+                masterclass = new MasterclassZoeken( res.getInt("m_code"),
+                                                     res.getInt("niveau"));
+                
+                model.addElement(masterclass);
+                masterclasses.add(masterclass);
+                
             }
             cbMasterclass.setModel(model);
             
@@ -106,6 +113,11 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cbMasterclassMousePressed(evt);
+            }
+        });
+        cbMasterclass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMasterclassActionPerformed(evt);
             }
         });
 
@@ -197,35 +209,23 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
-
         
     }//GEN-LAST:event_cbMasterclassMousePressed
 
     private void cbMasterclassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMouseClicked
-       //TOSOLVE!
-        int m_codecheck = cbMasterclass.getSelectedIndex();
-       
-       String sql = "select * from masterclass where m_code = ?";  
-       
-       try{
-           Connection conn = SimpleDataSourceV2.getConnection();
-           PreparedStatement stat = conn.prepareStatement(sql);
-           stat.setInt(1,m_codecheck);
-           ResultSet res = stat.executeQuery();
-           
-           
-           while(res.next())
-           {
-               niveau = res.getInt("niveau");
-               
-           }
-           lbNiveau.setText("Niveau : " +Integer.toString(niveau));
-           
-       }catch(Exception e)
-       {
-           System.out.println(e);
-       }
+
     }//GEN-LAST:event_cbMasterclassMouseClicked
+
+    private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
+               //TOSOLVE!
+        int selected = cbMasterclass.getSelectedIndex() + 1;
+        masterclass = masterclasses.get(selected);
+        masterclass.getNiveau();
+        
+ 
+         lbNiveau.setText("Niveau : " +Integer.toString(niveau));
+
+    }//GEN-LAST:event_cbMasterclassActionPerformed
 
     /**
      * @param args the command line arguments
