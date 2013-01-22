@@ -99,4 +99,8 @@ public class MasterclassZoeken {
         return new String[]{m_code, niveau, prijs, this.Datum.toString(), rating, docent, locatie};
     }
     
+        public String[] getInfo(){
+        return new String[]{"" + this.m_code ,"" + this.Datum,"" + this.rating};
+    }
+    
 }

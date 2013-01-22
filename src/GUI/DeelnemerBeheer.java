@@ -106,6 +106,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         TextField_Zoekopnaam = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         Button_Bekijken = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +171,13 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Masterclass");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,20 +187,27 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(jLabel1)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(TextField_Zoekopnaam, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 20, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(Button_Bekijken)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Toevoegen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Wijzigen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Verwijderen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 89, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(Button_Back)))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(jLabel1)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(TextField_Zoekopnaam, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(layout.createSequentialGroup()
+                                .add(15, 15, 15)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(layout.createSequentialGroup()
+                                        .add(Button_Wijzigen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 95, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18)
+                                        .add(jButton1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .add(layout.createSequentialGroup()
+                                        .add(Button_Bekijken, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 95, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18)
+                                        .add(Button_Toevoegen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .add(18, 18, 18)
+                                .add(Button_Verwijderen)
+                                .add(18, 18, 18)
+                                .add(Button_Back)))
+                        .add(0, 18, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,14 +219,16 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                     .add(TextField_Zoekopnaam, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 209, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(Button_Toevoegen)
                     .add(Button_Wijzigen)
+                    .add(jButton1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 8, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(Button_Bekijken)
                     .add(Button_Verwijderen)
                     .add(Button_Back)
-                    .add(Button_Bekijken))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(Button_Toevoegen)))
         );
 
         pack();
@@ -382,6 +399,56 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
     }//GEN-LAST:event_Button_BekijkenActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+
+        int[] selected = Table_Deelnemers.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            //Als er meer dan 1 persoon geselecteerd is, verschijnt er een messagedialog.
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecteer maximaal 1 persoon.");
+            //Als bovenstaande condities niet waar zijn, wordt het wijzigscherm toegelaten.
+        } else {
+            int row = Table_Deelnemers.getSelectedRow();
+            deelnemer = deelnemers.get(row);
+            d_code = deelnemer.getD_code();
+
+
+
+            try {
+                String sql = "Select * from deelnemer where d_code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, d_code);
+
+                ResultSet res = stat.executeQuery();
+                while (res.next()) {
+                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                    deelnemer = new Deelnemer(res.getInt("d_code"),
+                            res.getString("Voornaam"),
+                            res.getString("Achternaam"),
+                            res.getString("Postcode"),
+                            res.getString("woonplaats"),
+                            res.getInt("tel_nr"),
+                            res.getInt("huisnummer"),
+                            res.getString("is_bekend"),
+                            res.getString("straat"),
+                            res.getString("e_mailadres"),
+                            res.getInt("rating"));
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+            new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+            this.dispose();
+        }
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -431,6 +498,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JTable Table_Deelnemers;
     private javax.swing.JTextField TextField_Zoekopnaam;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
