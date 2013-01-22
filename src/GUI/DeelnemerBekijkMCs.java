@@ -10,7 +10,9 @@ import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.DateUtil;
 /**
@@ -24,6 +26,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     private ArrayList<MasterclassZoeken> masterclassZoeken = new ArrayList<>();
     private int dcode;
     private MasterclassZoeken masterclass;
+    private int m_code;
     /**
      * Creates new form DeelnemerBekijkMCs
      */
@@ -152,8 +155,18 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
         });
 
         btToevoegen.setText("Deelname toevoegen");
+        btToevoegen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btToevoegenActionPerformed(evt);
+            }
+        });
 
         btVerwijderen.setText("Verwijderen");
+        btVerwijderen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVerwijderenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -213,6 +226,52 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btWijzigenActionPerformed
+
+    private void btVerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerwijderenActionPerformed
+        
+        
+        int[] selected = table_Masterclasses.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
+                    masterclass = masterclassZoeken.get(selected[i]);
+                    m_code = masterclass.getM_Code();
+                    model.removeRow(selected[i]);
+
+                    String sql = "delete from volgt where m_code = ? AND d_code = ? ";
+
+                    try {
+                        Connection conn = SimpleDataSourceV2.getConnection();
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setInt(1, m_code);
+                        stat.setInt(2,dcode);
+                        stat.execute();
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, ex);
+                    }
+
+                }
+            }
+            //Update de modelRows, clear de arraylist Deelnemers.
+            model.setRowCount(0);
+            masterclassZoeken.clear();
+            updateTable();
+        }
+
+
+
+    }//GEN-LAST:event_btVerwijderenActionPerformed
+
+    private void btToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToevoegenActionPerformed
+         
+    }//GEN-LAST:event_btToevoegenActionPerformed
 
     /**
      * @param args the command line arguments
