@@ -38,9 +38,9 @@ public class MasterclassZoeken {
         this.Locatie = Locatie;
         
     }
-    public MasterclassZoeken(int M_code, int Niveau){
+    public MasterclassZoeken(int M_code){
      this.M_Code = M_code;   
-     this.Niveau = Niveau;
+     
     }
 
     public int getM_Code() {

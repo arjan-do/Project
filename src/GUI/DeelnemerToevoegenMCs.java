@@ -20,13 +20,14 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
-    
     private Deelnemer deelnemer;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
     int mc;
     int niveau;
     MasterclassZoeken masterclass;
-    ArrayList<MasterclassZoeken> masterclasses = new ArrayList<>();
+    int selectedItem;
+    
+
     /**
      * Creates new form DeelnemerToevoegenMCs
      */
@@ -34,45 +35,38 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         initComponents();
         initCB();
     }
-    
-    public DeelnemerToevoegenMCs(Deelnemer deelnemer)
-    {
+
+    public DeelnemerToevoegenMCs(Deelnemer deelnemer) {
         initComponents();
         initCB();
         this.deelnemer = deelnemer;
-        
+
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
-        
+
     }
-    
-    private void initCB()
-    {
-        String sql = "Select m_code,niveau from masterclass";
-        
-        try{
+
+    private void initCB() {
+        String sql = "Select m_code from masterclass";
+
+        try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet res = stat.executeQuery();
-            while(res.next())
-            {
-                masterclass = new MasterclassZoeken( res.getInt("m_code"),
-                                                     res.getInt("niveau"));
-                
-                model.addElement(masterclass);
-                masterclasses.add(masterclass);
-                
+            while (res.next()) {
+                int m_code = res.getInt("m_code");
+
+                model.addElement(m_code);
+
+
             }
             cbMasterclass.setModel(model);
-            
-        }catch(Exception e)
-        {
+
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,21 +203,39 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
-        
     }//GEN-LAST:event_cbMasterclassMousePressed
 
     private void cbMasterclassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMouseClicked
-
     }//GEN-LAST:event_cbMasterclassMouseClicked
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
-               //TOSOLVE!
-        int selected = cbMasterclass.getSelectedIndex() + 1;
-        masterclass = masterclasses.get(selected);
-        masterclass.getNiveau();
-        
- 
-         lbNiveau.setText("Niveau : " +Integer.toString(niveau));
+        //TOSOLVE!
+        Object selected = cbMasterclass.getSelectedItem();
+        if (selected != null) {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+
+        String sql = "select niveau from masterclass where m_code = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1,selectedItem);
+            ResultSet res = stat.executeQuery();
+            
+            while(res.next())
+            {
+                niveau = res.getInt("niveau");
+            }
+            
+            lbNiveau.setText("Niveau : " + niveau);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        lbNiveau.setText("Niveau : " + Integer.toString(niveau));
 
     }//GEN-LAST:event_cbMasterclassActionPerformed
 
