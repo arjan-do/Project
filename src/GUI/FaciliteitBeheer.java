@@ -23,6 +23,9 @@ import javax.swing.table.TableModel;
 public class FaciliteitBeheer extends javax.swing.JFrame {
     
    DefaultTableModel model = new DefaultTableModel();
+    private ArrayList<Faciliteit> faciliteiten = new ArrayList<>();
+    int F_code;
+    Faciliteit faciliteit;
     /**
      * Creates new form FaciliteitBeheer
      */
@@ -36,23 +39,26 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     private void SetTable() {
         String[] kolommen = {"naam", "straat","huisnummer", "Max_aantal_spelers" };
         //DefaultTableModel aanmaken waarin je aan de constructor de header kolommen meegeeft en het aantal lege start rijen 
-        DefaultTableModel model = new DefaultTableModel(kolommen, 0);
+         model = new DefaultTableModel(kolommen, 0);
         //model setten
         TableFaciliteit.setModel(model);
+        //running the sql querry
+        
+       
                     
         
         
     }
         
     private void VulTable() {
-        // Lees zoekveld
+        
         String input = TextField_Zoekopnaam.getText();
         
 
         try {
 
             //SQL Statement.
-            String sql = "Select * from faciliteit where naam like ? or straatnaam like ? or huisnummer like? or max_aantal_spelers like ?";
+            String sql = "Select * from faciliteit where naam like ? or Straatnaam like ? or huisnummer like? or plaats like? or Max_aantal_spelers like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -63,32 +69,36 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
             stat.setString(2, input + '%');
             stat.setString(3, input + '%');
             stat.setString(4, input + '%');
+            stat.setString(5, input + '%');
 
             ResultSet res = stat.executeQuery();
 
 
             while (res.next()) {
 
-                 int f_code = res.getInt("f_code");
-                 String naam = res.getString("Naam");
-                 String straat = res.getString("straatnaam");
-                 String postcode = res.getString("postcode");
-                 String plaats = res.getString("plaats");
-                 int max_aantal = res.getInt("Max_aantal_spelers");
-                 int huisnummer = res.getInt("huisnummer");
-                
-                Faciliteit Zoek = new Faciliteit(f_code, naam, straat, postcode, postcode, max_aantal, plaats);
-                model.addRow(Zoek.getrow());   
+                 faciliteit = new Faciliteit(res.getInt("F_code"),
+                        res.getString("Naam"),
+                        res.getString("Straatnaam"),
+                        res.getString("plaats"),
+                        res.getString("huisnummer"),
+                        res.getInt("Max_aantal_spelers"), 
+                        res.getString("Postcode")           
+                        );
+                faciliteiten.add(faciliteit);
+                model.addRow(faciliteit.getrow());
+
+                  
                 
 
             }
 
 
 
-
         } catch (Exception ex) {
             System.out.println(ex);
         }
+                System.out.println("finish");
+
     }
     
             

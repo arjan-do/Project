@@ -85,7 +85,7 @@ public class Faciliteit {
     }
     
     public String[] getrow(){
-        return new String[]{this.Naam.toString(), this.Straat.toString(), this.Huisnummer.toString(), String.valueOf(this.Max_aantal)};
+        return new String[]{this.Naam, this.Straat, this.Huisnummer,"" + this.Max_aantal};
     }
         
 }
