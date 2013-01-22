@@ -362,7 +362,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             }
         }
 
-
     }//GEN-LAST:event_btVoegToeActionPerformed
 
     /**

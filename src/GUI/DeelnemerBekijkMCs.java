@@ -222,7 +222,24 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_btBackActionPerformed
 
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
-        // TODO add your handling code here:
+        int[] selected = table_Masterclasses.getSelectedRows();
+        if(selected.length == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Selecteer een masterclass.");
+        }
+        else if(selected.length > 1)
+        {
+            JOptionPane.showMessageDialog(this, "Maximaal 1 masterclass selecteren AUB.");
+        }
+        else{
+            int row = table_Masterclasses.getSelectedRow();
+            masterclass = masterclassZoeken.get(row);
+            
+            new DeelnemerWijzigenMCs(deelnemer,masterclass).setVisible(true);
+            this.dispose();
+        }
+        
+        
     }//GEN-LAST:event_btWijzigenActionPerformed
 
     private void btVerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerwijderenActionPerformed
