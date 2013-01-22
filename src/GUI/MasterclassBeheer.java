@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Otto
  */
 public class MasterclassBeheer extends javax.swing.JFrame {
-
+        
     DefaultTableModel tabel = new DefaultTableModel();
     /**
      * Creates new form MasterclassBeheer
@@ -40,19 +40,19 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         
         try{
             //SQL Statement.
-            String sql = "select masterclass.M_Code, masterclass.Niveau , masterclass.Prijs, masterclass.Datum, masterclass.Minimale_rating as Rating, masterclass.Docent, masterclass.Vindt_plaats_in as Locatie";
+            String sql = "select M_Code, Niveau , Prijs, Datum, Minimale_rating as Rating, Docent, Vindt_plaats_in as Locatie from masterclass having M_Code like ? or Niveau like ? or Prijs like ? or Datum like ? or Minimale_rating like ? or Docent like ? or Vindt_plaats_in like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
 
-            stat.setString(1, '%' + zoeken + '%');
-            stat.setString(2, '%' + zoeken + '%');
-            stat.setString(3, '%' + zoeken + '%');
-            stat.setString(4, '%' + zoeken + '%');
-            stat.setString(5, '%' + zoeken + '%');
-            stat.setString(6, '%' + zoeken + '%');
-            stat.setString(7, '%' + zoeken + '%');
+            stat.setString(1, zoeken + '%');
+            stat.setString(2, zoeken + '%');
+            stat.setString(3, zoeken + '%');
+            stat.setString(4, zoeken + '%');
+            stat.setString(5, zoeken + '%');
+            stat.setString(6, zoeken + '%');
+            stat.setString(7, zoeken + '%');
             
             ResultSet res = stat.executeQuery();
 

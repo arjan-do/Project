@@ -25,25 +25,19 @@ int Prijs;
 Date Datum;
 Object Docent;
 Object Locatie;
+String Achternaam;
+String LNaam;
+int DOCENT;
+int LOCATIE;
     /**
      * Creates new form MasterclassToevoegen
      */
     public MasterclassToevoegen() {
         initComponents();
         vulCode();
+        vulDocent();
+        vulLocatie();
 
-        
-        DefaultComboBoxModel Docent = new DefaultComboBoxModel();
-        Docent.addElement("1");
-        Docent.addElement("2");
-        Docent.addElement("3");
-        ComboBox_Docent.setModel(Docent);
-        
-        DefaultComboBoxModel Locatie = new DefaultComboBoxModel();
-        Locatie.addElement("1");
-        Locatie.addElement("2");
-        Locatie.addElement("3");
-        ComboBox_Locatie.setModel(Locatie);
     }
     
     private void vulCode()
@@ -242,6 +236,32 @@ Object Locatie;
         Docent = ComboBox_Docent.getSelectedItem();
         Locatie = ComboBox_Docent.getSelectedItem();
         
+        if(Docent == "Hoekstra")
+        {
+            DOCENT = 1 ;
+        }
+        if(Docent == "Van Leersum")
+        {
+            DOCENT = 2 ;
+        }
+        if(Docent == "Tromp")
+        {
+            DOCENT = 3 ;
+        }
+        
+        if(Locatie == "Theehuis")
+        {
+            LOCATIE = 1 ;
+        }
+        if(Locatie == "Buurthuis")
+        {
+            LOCATIE = 2 ;
+        }
+        if(Locatie == "Cafe")
+        {
+            LOCATIE = 3 ;
+        }
+        
         int Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
                 String sql = "insert into masterclass (Niveau, Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in) values (?,?,?,?,?,?)";
@@ -251,13 +271,13 @@ Object Locatie;
                 stat.setInt(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
-                stat.setObject(5, Docent);
-                stat.setObject(6, Locatie);
+                stat.setObject(5, DOCENT);
+                stat.setObject(6, LOCATIE);
                 
                 stat.execute();
                 
                 this.dispose();
-                new HoofdMenu().setVisible(true);
+                new MasterclassBeheer().setVisible(true);
             }catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Databasefout" + ex.toString());
             }
@@ -335,4 +355,46 @@ Object Locatie;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     // End of variables declaration//GEN-END:variables
+
+    private void vulDocent() {
+        DefaultComboBoxModel docent = new DefaultComboBoxModel();
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Achternaam from deelnemer";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Achternaam = resultSet.getString("Achternaam");
+                docent.addElement(Achternaam);
+            }
+            
+            ComboBox_Docent.setModel(docent);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
+
+    private void vulLocatie() {
+        DefaultComboBoxModel locatie = new DefaultComboBoxModel();
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Naam from faciliteit";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                LNaam = resultSet.getString("Naam");
+                locatie.addElement(LNaam);
+            }
+            
+            ComboBox_Locatie.setModel(locatie);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }
 }

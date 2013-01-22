@@ -38,7 +38,6 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="Button_Masterclass_Wijzigen" alignment="1" max="32767" attributes="0"/>
                                       <Component id="Button_Faciliteit_Beheer" alignment="1" max="32767" attributes="0"/>
                                       <Component id="Button_Masterclass_Toevoegen" alignment="0" pref="117" max="32767" attributes="0"/>
                                   </Group>
@@ -95,9 +94,7 @@
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Button_Masterclass_Toevoegen" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="Button_Masterclass_Wijzigen" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="16" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -113,7 +110,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="Button_Masterclass_Toevoegen">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Toevoegen"/>
+        <Property name="text" type="java.lang.String" value="Beheren"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_Masterclass_ToevoegenActionPerformed"/>
@@ -158,14 +155,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Masterclassbeheer"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="Button_Masterclass_Wijzigen">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Wijzigen"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_Masterclass_WijzigenActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Button_Deelnemer_Beheer">
       <Properties>

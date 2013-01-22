@@ -16,7 +16,7 @@ public class Opstelling_Generator {
     }
     
     private int[] calculatetavels(int ammount_of_players){
-        double aantal = ammount_of_players;
+        double aantal = 124;
        
         //              1,2,3,4,5,6,7,8
         int[] tavels = {0,0,0,0,0,0,0,0};

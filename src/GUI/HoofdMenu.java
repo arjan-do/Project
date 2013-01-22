@@ -36,7 +36,6 @@ public class HoofdMenu extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        Button_Masterclass_Wijzigen = new javax.swing.JButton();
         Button_Deelnemer_Beheer = new javax.swing.JButton();
         Button_Toernooi_Beheer = new javax.swing.JButton();
 
@@ -49,7 +48,7 @@ public class HoofdMenu extends javax.swing.JFrame {
             }
         });
 
-        Button_Masterclass_Toevoegen.setText("Toevoegen");
+        Button_Masterclass_Toevoegen.setText("Beheren");
         Button_Masterclass_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_Masterclass_ToevoegenActionPerformed(evt);
@@ -71,13 +70,6 @@ public class HoofdMenu extends javax.swing.JFrame {
         jLabel7.setText("Faciliteitbeheer");
 
         jLabel8.setText("Masterclassbeheer");
-
-        Button_Masterclass_Wijzigen.setText("Wijzigen");
-        Button_Masterclass_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Masterclass_WijzigenActionPerformed(evt);
-            }
-        });
 
         Button_Deelnemer_Beheer.setText("Beheren");
         Button_Deelnemer_Beheer.addActionListener(new java.awt.event.ActionListener() {
@@ -112,7 +104,6 @@ public class HoofdMenu extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jLabel7)
                                         .addComponent(jLabel8)
-                                        .addComponent(Button_Masterclass_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(Button_Faciliteit_Beheer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(Button_Masterclass_Toevoegen, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                                     .addComponent(Button_Toernooi_Beheer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -154,9 +145,7 @@ public class HoofdMenu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(Button_Masterclass_Toevoegen))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Button_Masterclass_Wijzigen)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -170,14 +159,9 @@ public class HoofdMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_Faciliteit_BeheerActionPerformed
 
     private void Button_Masterclass_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Masterclass_ToevoegenActionPerformed
-        new MasterclassToevoegen().setVisible(true);
+        new MasterclassBeheer().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_Masterclass_ToevoegenActionPerformed
-
-    private void Button_Masterclass_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Masterclass_WijzigenActionPerformed
-        new MasterclassWijzigen().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_Button_Masterclass_WijzigenActionPerformed
 
     private void Button_Deelnemer_BeheerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Deelnemer_BeheerActionPerformed
         new DeelnemerBeheer().setVisible(true);
@@ -234,7 +218,6 @@ public class HoofdMenu extends javax.swing.JFrame {
     private javax.swing.JButton Button_Deelnemer_Beheer;
     private javax.swing.JButton Button_Faciliteit_Beheer;
     private javax.swing.JButton Button_Masterclass_Toevoegen;
-    private javax.swing.JButton Button_Masterclass_Wijzigen;
     private javax.swing.JButton Button_Toernooi_Beheer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

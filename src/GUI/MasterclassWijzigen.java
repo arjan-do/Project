@@ -30,6 +30,10 @@ int Locatie;
 int jaar;
 int maand;
 int dag;
+String Achternaam;
+String LNaam;
+int DOCENT;
+int LOCATIE;
         
         
     /**
@@ -210,7 +214,6 @@ int dag;
 
     private void Button_CheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_CheckActionPerformed
         Object selcode = ComboBox_Code.getSelectedItem();
-        System.out.println(selcode);
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
             String sql = "select * from masterclass where M_Code = ?";
@@ -218,11 +221,30 @@ int dag;
             stat.setObject(1, selcode);
             ResultSet resultSet = stat.executeQuery();
             
+            String sql2 = "select Achternaam from deelnemer  join masterclass on deelnemer.d_code = masterclass.Docent where M_Code = ?";
+            PreparedStatement stat2 = conn.prepareStatement(sql2);
+            stat2.setObject(1, selcode);
+            ResultSet resultSet2 = stat2.executeQuery();
+            
+            String sql3 = "select Naam from faciliteit  join masterclass on faciliteit.F_Code = masterclass.Vindt_plaats_in where M_Code = ?";
+            PreparedStatement stat3 = conn.prepareStatement(sql3);
+            stat3.setObject(1, selcode);
+            ResultSet resultSet3 = stat3.executeQuery();
+            
+            while(resultSet3.next()){
+                LNaam = resultSet3.getString("Naam");
+            }
+            
+            while(resultSet2.next()){
+                Achternaam = resultSet2.getString("Achternaam");
+            }
+            
+            
             while(resultSet.next()){
                 Niveau = resultSet.getInt("Niveau");
                 Datum = resultSet.getDate("Datum");
                 Prijs = resultSet.getInt("Prijs");
-                Minimale_rating = resultSet.getInt("Vindt_plaats_in");
+                Minimale_rating = resultSet.getInt("Minimale_rating");
                 Docent = resultSet.getInt("Docent");
                 Locatie = resultSet.getInt("Vindt_plaats_in");
                 
@@ -233,6 +255,11 @@ int dag;
                 maand = cal.get(Calendar.MONTH);
                 dag = cal.get(Calendar.DAY_OF_MONTH);
                 maand++;
+                
+                ComboBox_Docent.setSelectedItem(Achternaam);
+                ComboBox_Locatie.setSelectedItem(LNaam);
+                
+                
             }
             String niveau = Integer.toString(Niveau);
             TextField_Niveau.setText(niveau);
@@ -283,6 +310,32 @@ int dag;
         Docent = (int) ComboBox_Docent.getSelectedItem();
         Locatie = (int) ComboBox_Docent.getSelectedItem();
         
+        if("Hoekstra".equals(Achternaam))
+        {
+            DOCENT = 1 ;
+        }
+        if("Van Leersum".equals(Achternaam))
+        {
+            DOCENT = 2 ;
+        }
+        if("Tromp".equals(Achternaam))
+        {
+            DOCENT = 3 ;
+        }
+        
+        if("Theehuis".equals(LNaam))
+        {
+            LOCATIE = 1 ;
+        }
+        if("Buurthuis".equals(LNaam))
+        {
+            LOCATIE = 2 ;
+        }
+        if("Cafe".equals(LNaam))
+        {
+            LOCATIE = 3 ;
+        }
+        
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
                 String sql = "update masterclass set Niveau = ?, Prijs = ?, Datum = ?, Minimale_rating = ?, Docent = ?, Vindt_plaats_in = ? where M_Code = ?";
@@ -292,14 +345,14 @@ int dag;
                 stat.setInt(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
-                stat.setObject(5, Docent);
-                stat.setObject(6, Locatie);
+                stat.setInt(5, DOCENT);
+                stat.setInt(6, LOCATIE);
                 stat.setInt(7, M_Code);
                 
                 stat.execute();
                 
                 this.dispose();
-                new HoofdMenu().setVisible(true);
+                new MasterclassBeheer().setVisible(true);
             }catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Databasefout" + ex.toString());
             }
@@ -492,14 +545,14 @@ int dag;
         DefaultComboBoxModel docent = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Docent from masterclass";
+            String sql = "select Achternaam from deelnemer";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                Docent = resultSet.getInt("Docent");
-                docent.addElement(Docent);
+                Achternaam = resultSet.getString("Achternaam");
+                docent.addElement(Achternaam);
             }
             
             ComboBox_Docent.setModel(docent);
@@ -513,14 +566,14 @@ int dag;
         DefaultComboBoxModel locatie = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Vindt_plaats_in from masterclass";
+            String sql = "select Naam from faciliteit";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                Locatie = resultSet.getInt("Vindt_plaats_in");
-                locatie.addElement(Locatie);
+                LNaam = resultSet.getString("Naam");
+                locatie.addElement(LNaam);
             }
             
             ComboBox_Locatie.setModel(locatie);
