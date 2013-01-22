@@ -10,6 +10,8 @@ import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -19,23 +21,32 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     
     private Deelnemer deelnemer;
-
+    DefaultComboBoxModel model = new DefaultComboBoxModel();
+    int mc;
+    int niveau;
     /**
      * Creates new form DeelnemerToevoegenMCs
      */
     public DeelnemerToevoegenMCs() {
         initComponents();
+        initCB();
     }
     
     public DeelnemerToevoegenMCs(Deelnemer deelnemer)
     {
         initComponents();
+        initCB();
         this.deelnemer = deelnemer;
+        
+        ButtonGroup betaald = new ButtonGroup();
+        betaald.add(rbJa);
+        betaald.add(rbNee);
+        
     }
     
     private void initCB()
     {
-        String sql = "Select * from masterclass";
+        String sql = "Select m_code from masterclass";
         
         try{
             Connection conn = SimpleDataSourceV2.getConnection();
@@ -43,15 +54,18 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             ResultSet res = stat.executeQuery();
             while(res.next())
             {
-                String mc = Integer.toString(res.getInt("m_code"));
-                System.out.println(mc);
+                mc = res.getInt("m_code");
+                model.addElement(mc);
             }
+            cbMasterclass.setModel(model);
             
         }catch(Exception e)
         {
             System.out.println(e);
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,12 +82,12 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         cbMasterclass = new javax.swing.JComboBox();
         lbNiveau = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbJa = new javax.swing.JRadioButton();
+        rbNee = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        tfDag = new javax.swing.JTextField();
+        tfMaand = new javax.swing.JTextField();
+        tfJaar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         lbDeelnemer = new javax.swing.JLabel();
 
@@ -86,14 +100,20 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         jLabel1.setText("Masterclass :");
 
         cbMasterclass.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lbNiveau.setText("(Niveau : )");
+        cbMasterclass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbMasterclassMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cbMasterclassMousePressed(evt);
+            }
+        });
 
         jLabel2.setText("Betaald : ");
 
-        jRadioButton1.setText("Ja");
+        rbJa.setText("Ja");
 
-        jRadioButton2.setText("Nee");
+        rbNee.setText("Nee");
 
         jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
 
@@ -125,16 +145,16 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(99, 99, 99)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jRadioButton1)
-                                            .addComponent(jRadioButton2)))))
+                                            .addComponent(rbJa)
+                                            .addComponent(rbNee)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
@@ -157,15 +177,15 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jRadioButton1))
+                    .addComponent(rbJa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton2)
+                .addComponent(rbNee)
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(97, 97, 97)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -175,6 +195,37 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
+
+        
+    }//GEN-LAST:event_cbMasterclassMousePressed
+
+    private void cbMasterclassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMouseClicked
+       //TOSOLVE!
+        int m_codecheck = cbMasterclass.getSelectedIndex();
+       
+       String sql = "select * from masterclass where m_code = ?";  
+       
+       try{
+           Connection conn = SimpleDataSourceV2.getConnection();
+           PreparedStatement stat = conn.prepareStatement(sql);
+           stat.setInt(1,m_codecheck);
+           ResultSet res = stat.executeQuery();
+           
+           
+           while(res.next())
+           {
+               niveau = res.getInt("niveau");
+               
+           }
+           lbNiveau.setText("Niveau : " +Integer.toString(niveau));
+           
+       }catch(Exception e)
+       {
+           System.out.println(e);
+       }
+    }//GEN-LAST:event_cbMasterclassMouseClicked
 
     /**
      * @param args the command line arguments
@@ -225,12 +276,12 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lbDeelnemer;
     private javax.swing.JLabel lbNiveau;
+    private javax.swing.JRadioButton rbJa;
+    private javax.swing.JRadioButton rbNee;
+    private javax.swing.JTextField tfDag;
+    private javax.swing.JTextField tfJaar;
+    private javax.swing.JTextField tfMaand;
     // End of variables declaration//GEN-END:variables
 }

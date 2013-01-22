@@ -27,6 +27,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     private int dcode;
     private MasterclassZoeken masterclass;
     private int m_code;
+    
     /**
      * Creates new form DeelnemerBekijkMCs
      */
@@ -270,7 +271,8 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_btVerwijderenActionPerformed
 
     private void btToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToevoegenActionPerformed
-         
+            new DeelnemerToevoegenMCs(deelnemer).setVisible(true);
+            this.dispose();
     }//GEN-LAST:event_btToevoegenActionPerformed
 
     /**
