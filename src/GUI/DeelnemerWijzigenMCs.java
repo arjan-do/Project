@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import utils.DateUtil;
 
 /**
  *
@@ -23,53 +25,50 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
     /**
      * Creates new form DeelnemerWijzigenMCs
      */
-    
     Deelnemer deelnemer;
     MasterclassZoeken masterclass;
     private int d_code;
     private int m_code;
     private String betaald;
     private Date datum;
-    
+
     public DeelnemerWijzigenMCs() {
         initComponents();
     }
-    
-    public DeelnemerWijzigenMCs(Deelnemer deelnemer, MasterclassZoeken masterclass)
-    {
+
+    public DeelnemerWijzigenMCs(Deelnemer deelnemer, MasterclassZoeken masterclass) {
         initComponents();
         ButtonGroup button = new ButtonGroup();
         button.add(rbJa);
         button.add(rbNee);
-        
+
         this.deelnemer = deelnemer;
         this.masterclass = masterclass;
         initValues();
-        
+
         radioButtonCheck();
-        if(tfDag.isVisible())
-        {
-            
-                java.util.Calendar cal = java.util.Calendar.getInstance();
-                cal.clear();
-                cal.setTime(datum);
-                int jaar = cal.get(Calendar.YEAR);
-                int maand = cal.get(Calendar.MONTH);
-                int dag = cal.get(Calendar.DAY_OF_MONTH);
-                maand++;
-                
-                String JAAR = Integer.toString(jaar);
-                String MAAND = Integer.toString(maand);
-                String DAG = Integer.toString(dag);
-                
-                tfJaar.setText(JAAR);
-                tfMaand.setText(MAAND);
-                tfDag.setText(DAG);
+        if (tfDag.isVisible()) {
+
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.clear();
+            cal.setTime(datum);
+            int jaar = cal.get(Calendar.YEAR);
+            int maand = cal.get(Calendar.MONTH);
+            int dag = cal.get(Calendar.DAY_OF_MONTH);
+            maand++;
+
+            String JAAR = Integer.toString(jaar);
+            String MAAND = Integer.toString(maand);
+            String DAG = Integer.toString(dag);
+
+            tfJaar.setText(JAAR);
+            tfMaand.setText(MAAND);
+            tfDag.setText(DAG);
         }
-        
+
     }
-    
-        private void radioButtonCheck() {
+
+    private void radioButtonCheck() {
         if (rbNee.isSelected()) {
             tfDag.setVisible(false);
             tfMaand.setVisible(false);
@@ -79,7 +78,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
             tfDag.setVisible(true);
             tfMaand.setVisible(true);
             tfJaar.setVisible(true);
-            jLabel4.setVisible(true);            
+            jLabel4.setVisible(true);
         } else {
             tfDag.setVisible(false);
             tfMaand.setVisible(false);
@@ -87,49 +86,43 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
             jLabel4.setVisible(false);
         }
     }
-        
-        private void initValues()
-        {
-        String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();  
+
+    private void initValues() {
+        String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
         m_code = masterclass.getM_Code();
         d_code = deelnemer.getD_code();
-        
+
         int niveau = masterclass.getNiveau();
-        
+
         lbDeelnemer.setText(naam);
         lbMasterclass.setText(Integer.toString(m_code));
         lbNiveau.setText(Integer.toString(niveau));
-        
+
         String sql = "Select * from volgt where m_code = ? and d_code = ?";
-        
-        try{
-            
+
+        try {
+
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1,m_code);
-            stat.setInt(2,d_code);
+            stat.setInt(1, m_code);
+            stat.setInt(2, d_code);
             ResultSet res = stat.executeQuery();
-            while(res.next())
-            {
+            while (res.next()) {
                 betaald = res.getString("Heeft_betaald");
                 datum = res.getDate("datum_betaling");
             }
-            
-        }catch(Exception e)
-        {
+
+        } catch (Exception e) {
             System.out.println(e);
         }
-        
-        if("j".equals(betaald))
-        {
+
+        if ("j".equals(betaald)) {
             rbJa.setSelected(true);
-        }
-        else if("n".equals(betaald))
-        {
+        } else if ("n".equals(betaald)) {
             rbNee.setSelected(true);
         }
         System.out.println(" d_code --> " + d_code + " m_code --> " + m_code);
-        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -165,6 +158,11 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
         jLabel3.setText("Niveau : ");
 
         btSave.setText("Sla Op");
+        btSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSaveActionPerformed(evt);
+            }
+        });
 
         btBack.setText("Back");
         btBack.addActionListener(new java.awt.event.ActionListener() {
@@ -280,6 +278,45 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
     private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
         radioButtonCheck();
     }//GEN-LAST:event_rbNeeActionPerformed
+
+    private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
+        if (tfDag.isVisible()) {
+            try {
+                int dag = Integer.parseInt(tfDag.getText());
+                int maand = Integer.parseInt(tfMaand.getText());
+                int jaar = Integer.parseInt(tfJaar.getText());
+
+                datum = DateUtil.toSqlDate(jaar, maand, dag);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Voer gehele getallen in bij datum.");
+            }
+            betaald = "j";
+        } else {
+            datum = null;
+            betaald = "n";
+        }
+
+
+        String sql = "Update volgt set datum_betaling=?, heeft_betaald=? where d_code = ? and m_code = ?";
+
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setDate(1,datum);
+            stat.setString(2,betaald);
+            stat.setInt(3,d_code);
+            stat.setInt(4,m_code);
+            stat.execute();
+            
+            new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+            this.dispose();
+            
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        
+    }//GEN-LAST:event_btSaveActionPerformed
 
     /**
      * @param args the command line arguments
