@@ -10,7 +10,6 @@ import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
@@ -26,30 +25,37 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     int niveau;
     MasterclassZoeken masterclass;
     int selectedItem;
-    
+    String voornaam;
+    String achternaam;
 
     /**
      * Creates new form DeelnemerToevoegenMCs
      */
     public DeelnemerToevoegenMCs() {
         initComponents();
-        initCB();
+        initScreen();
     }
 
     public DeelnemerToevoegenMCs(Deelnemer deelnemer) {
         initComponents();
-        initCB();
+        
         this.deelnemer = deelnemer;
-
+        
+        voornaam = deelnemer.getVoornaam();
+        achternaam = deelnemer.getAchternaam();
+        
+        initScreen();
+        
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
 
     }
 
-    private void initCB() {
+    private void initScreen() {
         String sql = "Select m_code from masterclass";
-
+        lbDeelnemer.setText(voornaam + " " + achternaam);
+        radioButtonCheck();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
@@ -62,9 +68,38 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
             }
             cbMasterclass.setModel(model);
-
+            
+            
+            
         } catch (Exception e) {
             System.out.println(e);
+        }
+        
+    }
+    
+    private void radioButtonCheck()
+    {
+                if(rbNee.isSelected())
+        {
+            tfDag.setVisible(false);
+            tfMaand.setVisible(false);
+            tfJaar.setVisible(false);
+            jLabel3.setVisible(false);
+        }
+        
+        else if(rbJa.isSelected())
+        {
+            tfDag.setVisible(true);
+            tfMaand.setVisible(true);
+            tfJaar.setVisible(true);
+            jLabel3.setVisible(true);
+        }
+        
+        else{
+            tfDag.setVisible(false);
+            tfMaand.setVisible(false);
+            tfJaar.setVisible(false);
+            jLabel3.setVisible(false);
         }
     }
 
@@ -77,8 +112,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btBack = new javax.swing.JButton();
+        btVoegToe = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cbMasterclass = new javax.swing.JComboBox();
         lbNiveau = new javax.swing.JLabel();
@@ -94,9 +129,14 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Back");
+        btBack.setText("Back");
+        btBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBackActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Voeg Toe");
+        btVoegToe.setText("Voeg Toe");
 
         jLabel1.setText("Masterclass :");
 
@@ -118,8 +158,18 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         jLabel2.setText("Betaald : ");
 
         rbJa.setText("Ja");
+        rbJa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbJaActionPerformed(evt);
+            }
+        });
 
         rbNee.setText("Nee");
+        rbNee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNeeActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
 
@@ -133,9 +183,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btVoegToe)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(btBack))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -194,8 +244,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                     .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(97, 97, 97)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btBack)
+                    .addComponent(btVoegToe))
                 .addContainerGap())
         );
 
@@ -209,7 +259,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_cbMasterclassMouseClicked
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
-        //TOSOLVE!
+        
         Object selected = cbMasterclass.getSelectedItem();
         if (selected != null) {
             String selectedItemStr = selected.toString();
@@ -220,16 +270,15 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1,selectedItem);
+            stat.setInt(1, selectedItem);
             ResultSet res = stat.executeQuery();
-            
-            while(res.next())
-            {
+
+            while (res.next()) {
                 niveau = res.getInt("niveau");
             }
-            
+
             lbNiveau.setText("Niveau : " + niveau);
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -238,6 +287,19 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         lbNiveau.setText("Niveau : " + Integer.toString(niveau));
 
     }//GEN-LAST:event_cbMasterclassActionPerformed
+
+    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
+        new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btBackActionPerformed
+
+    private void rbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbJaActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbJaActionPerformed
+
+    private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbNeeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,9 +343,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btBack;
+    private javax.swing.JButton btVoegToe;
     private javax.swing.JComboBox cbMasterclass;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -234,7 +234,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
         int[] selected = table_Masterclasses.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
-            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            JOptionPane.showMessageDialog(this, "Selecteer een Masterclass.");
         } else {
             if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
 

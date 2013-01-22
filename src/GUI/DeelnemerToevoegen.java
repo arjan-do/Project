@@ -27,8 +27,8 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
     public DeelnemerToevoegen() {
         initComponents();
         FillComponents();
-        checkEmail(null);
-        checkPostcode(null);
+        checkEmail = false;
+        checkPostcode = false;
     }
 
     private void FillComponents() {
@@ -328,7 +328,7 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
 
     private void TextField_PostcodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PostcodeKeyReleased
         String postCode = this.TextField_Postcode.getText();
-
+        checkPostcode(postCode);
     }//GEN-LAST:event_TextField_PostcodeKeyReleased
 
     private void TextField_EmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_EmailKeyReleased
