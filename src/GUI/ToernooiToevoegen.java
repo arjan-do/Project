@@ -4,6 +4,13 @@
  */
 package GUI;
 
+import Models.FaciliteitSimple;
+import Models.Toernooizoeken;
+import configuration.SimpleDataSourceV2;
+import java.sql.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Josua
@@ -15,8 +22,39 @@ public class ToernooiToevoegen extends javax.swing.JFrame {
      */
     public ToernooiToevoegen() {
         initComponents();
+        initcombobox();
     }
 
+    private void initcombobox(){
+        
+        try {
+            
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            model.addElement(new FaciliteitSimple(0,"None"));
+            //SQL Statement.
+            String sql = "SELECT F_Code, Naam FROM fullhouse.faciliteit;";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                
+                   model.addElement(new FaciliteitSimple(res.getInt("F_Code"), res.getString("Naam")));
+            }
+
+            ComboBox_Faciliteit.setModel(model);
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+        }
+        
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,6 +129,11 @@ public class ToernooiToevoegen extends javax.swing.JFrame {
         jLabel6.setText("Faciliteit");
 
         Button_Toevoegen.setText("Toevoegen");
+        Button_Toevoegen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ToevoegenActionPerformed(evt);
+            }
+        });
 
         Button_Back.setText("Back");
         Button_Back.addActionListener(new java.awt.event.ActionListener() {
@@ -199,6 +242,44 @@ public class ToernooiToevoegen extends javax.swing.JFrame {
         // Close current Window
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
+         
+         
+         try {
+            
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            
+            //SQL Statement.
+            String sql = "insert into toernooi(Bedrag, Min_aantal_spelers, Datum, Begintijd, vindt_plaats_in) values (?,?,?,?,?)";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            stat.setInt(1, Integer.parseInt(TextField_Bedrag.getText()));
+            stat.setInt(2, Integer.parseInt(TextField_MinAantalSpelers.getText()));
+            stat.setString(3, TextField_Jaar.getText() + "-" + TextField_Maand.getText() + "-" + TextField_Dag.getText());
+            stat.setString(4, TextField_TijdUren.getText() + ":" + TextField_TijdMinuten.getText());
+            FaciliteitSimple fac = (FaciliteitSimple)ComboBox_Faciliteit.getSelectedItem();
+            
+            if (fac.getNaam().equals("None")){
+                stat.setNull(5, 1);
+            } else {
+                stat.setInt(5, fac.getF_code());
+            }
+            
+            stat.execute();
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+        }
+         
+        new ToernooiBeheer().setVisible(true);
+        this.dispose();
+         
+    }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     /**
      * @param args the command line arguments

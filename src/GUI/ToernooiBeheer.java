@@ -75,9 +75,8 @@ public class ToernooiBeheer extends javax.swing.JFrame {
             
         } catch (Exception ex) {
             System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
         }
-        
-        System.out.println("finish");
         
     }
     
