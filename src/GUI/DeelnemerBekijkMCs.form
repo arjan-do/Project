@@ -130,11 +130,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Deelname toevoegen"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btToevoegenActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btVerwijderen">
       <Properties>
         <Property name="text" type="java.lang.String" value="Verwijderen"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btVerwijderenActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
