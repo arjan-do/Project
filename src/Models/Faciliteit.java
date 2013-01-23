@@ -76,7 +76,7 @@ public class Faciliteit {
         this.Max_aantal = Max_aantal;
     }
     
-    public String Plaats() {
+    public String getPlaats() {
         return Plaats;
     }
 

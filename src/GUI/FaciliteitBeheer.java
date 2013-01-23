@@ -79,10 +79,11 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
                  faciliteit = new Faciliteit(res.getInt("F_code"),
                         res.getString("Naam"),
                         res.getString("Straatnaam"),
-                        res.getString("plaats"),
+                        res.getString("Postcode") ,
                         res.getString("huisnummer"),
                         res.getInt("Max_aantal_spelers"), 
-                        res.getString("Postcode")           
+                        res.getString("plaats")
+                                  
                         );
                 faciliteiten.add(faciliteit);
                 model.addRow(faciliteit.getrow());
@@ -227,6 +228,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         new FaciliteitToevoegen().setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
@@ -237,18 +239,54 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION) {
-            //remove a faciliteit from the list
+       int[] selected = TableFaciliteit.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
+                    faciliteit = faciliteiten.get(selected[i]);
+                    F_code = faciliteit.getF_code();
+                    model.removeRow(selected[i]);
+
+                    String sql = "delete from faciliteit where f_code = ?";
+
+                    try {
+                        Connection conn = SimpleDataSourceV2.getConnection();
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setInt(1, F_code);
+                        stat.execute();
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "U kan deze deelnemer niet verwijderen: Deze persoon doet mee aan een Toernooi of Masterclass.");
+                    }
+
+                }
+            }
+            //Update de modelRows, clear de arraylist Deelnemers.
+            model.setRowCount(0);
+            faciliteiten.clear();
+            VulTable();
         }
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        new FaciliteitWijzigen().setVisible(true);
+        Faciliteit selected = faciliteiten.get(TableFaciliteit.getSelectedRow());
+        new FaciliteitWijzigen(selected).setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
-        //renew querry and search on name enterd in TextField_Zoekenopnaam
+         //setRowCount to refresh the model.
+        model.setRowCount(0);
+        //clear ArrayList for refreshing purposes.
+        faciliteiten.clear();
+        VulTable();
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
      
     private void TextField_ZoekopnaamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamActionPerformed
