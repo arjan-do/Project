@@ -7,11 +7,11 @@ package GUI;
 import Models.Deelnemer;
 import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import utils.DateUtil;
 
 /**
  *
@@ -19,53 +19,97 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
-    
     private Deelnemer deelnemer;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
-    int mc;
     int niveau;
+    MasterclassZoeken masterclass;
+    private int m_code;
+    private String voornaam;
+    private String achternaam;
+    private String heeft_betaald;
+    private String sqlVoegToe;
+    private boolean voegToeCheck;
+    private Date datum;
+
     /**
      * Creates new form DeelnemerToevoegenMCs
      */
     public DeelnemerToevoegenMCs() {
         initComponents();
-        initCB();
+        initScreen();
     }
-    
-    public DeelnemerToevoegenMCs(Deelnemer deelnemer)
-    {
+
+    public DeelnemerToevoegenMCs(Deelnemer deelnemer) {
         initComponents();
-        initCB();
+
         this.deelnemer = deelnemer;
-        
+
+        voornaam = deelnemer.getVoornaam();
+        achternaam = deelnemer.getAchternaam();
+
+        initScreen();
+
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
-        
+
     }
     
-    private void initCB()
-    {
+    //initScreen used to find m_code.
+    private void initScreen() {
         String sql = "Select m_code from masterclass";
-        
-        try{
+        lbDeelnemer.setText(voornaam + " " + achternaam);
+        radioButtonCheck();
+        try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet res = stat.executeQuery();
-            while(res.next())
-            {
-                mc = res.getInt("m_code");
-                model.addElement(mc);
+            while (res.next()) {
+                m_code = res.getInt("m_code");
+
+                model.addElement(m_code);
+
+
             }
             cbMasterclass.setModel(model);
-            
-        }catch(Exception e)
-        {
+
+
+
+        } catch (Exception e) {
             System.out.println(e);
         }
+
     }
-    
-    
+
+    //radioButtonCheck used to determine whether or not the date can be entered.
+    private void radioButtonCheck() {
+        if (rbNee.isSelected()) {
+            tfDag.setVisible(false);
+            tfMaand.setVisible(false);
+            tfJaar.setVisible(false);
+            jLabel3.setVisible(false);
+        } else if (rbJa.isSelected()) {
+            tfDag.setVisible(true);
+            tfMaand.setVisible(true);
+            tfJaar.setVisible(true);
+            jLabel3.setVisible(true);
+        } else {
+            tfDag.setVisible(false);
+            tfMaand.setVisible(false);
+            tfJaar.setVisible(false);
+            jLabel3.setVisible(false);
+        }
+    }
+    //Finds selectedItem of the combobox.
+    private int comboBoxSelectedValue() {
+        int selectedItem = 0;
+        Object selected = cbMasterclass.getSelectedItem();
+        if (selected != null) {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,8 +120,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btBack = new javax.swing.JButton();
+        btVoegToe = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cbMasterclass = new javax.swing.JComboBox();
         lbNiveau = new javax.swing.JLabel();
@@ -93,9 +137,19 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Back");
+        btBack.setText("Back");
+        btBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBackActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Voeg Toe");
+        btVoegToe.setText("Voeg Toe");
+        btVoegToe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVoegToeActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Masterclass :");
 
@@ -108,12 +162,27 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 cbMasterclassMousePressed(evt);
             }
         });
+        cbMasterclass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMasterclassActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Betaald : ");
 
         rbJa.setText("Ja");
+        rbJa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbJaActionPerformed(evt);
+            }
+        });
 
         rbNee.setText("Nee");
+        rbNee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNeeActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
 
@@ -127,9 +196,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btVoegToe)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(btBack))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -188,8 +257,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                     .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(97, 97, 97)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btBack)
+                    .addComponent(btVoegToe))
                 .addContainerGap())
         );
 
@@ -197,35 +266,104 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
-
-        
     }//GEN-LAST:event_cbMasterclassMousePressed
 
     private void cbMasterclassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMouseClicked
-       //TOSOLVE!
-        int m_codecheck = cbMasterclass.getSelectedIndex();
-       
-       String sql = "select * from masterclass where m_code = ?";  
-       
-       try{
-           Connection conn = SimpleDataSourceV2.getConnection();
-           PreparedStatement stat = conn.prepareStatement(sql);
-           stat.setInt(1,m_codecheck);
-           ResultSet res = stat.executeQuery();
-           
-           
-           while(res.next())
-           {
-               niveau = res.getInt("niveau");
-               
-           }
-           lbNiveau.setText("Niveau : " +Integer.toString(niveau));
-           
-       }catch(Exception e)
-       {
-           System.out.println(e);
-       }
     }//GEN-LAST:event_cbMasterclassMouseClicked
+
+    private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
+
+        //If a masterclass has been selected, show the related niveau.
+        
+        m_code = comboBoxSelectedValue();
+
+        String sql = "select niveau from masterclass where m_code = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, m_code);
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                niveau = res.getInt("niveau");
+            }
+
+            lbNiveau.setText("Niveau : " + niveau);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        lbNiveau.setText("Niveau : " + Integer.toString(niveau));
+
+    }//GEN-LAST:event_cbMasterclassActionPerformed
+
+    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
+        new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btBackActionPerformed
+
+    private void rbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbJaActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbJaActionPerformed
+
+    private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbNeeActionPerformed
+
+    private void btVoegToeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoegToeActionPerformed
+        sqlVoegToe = "insert into volgt(d_code,m_code,datum_betaling,heeft_betaald) values(?,?,?,?)";
+        voegToeCheck = true;
+        datum = null;
+
+        m_code = comboBoxSelectedValue();
+
+        int d_code = deelnemer.getD_code();
+
+        if (rbJa.isSelected()) {
+            try {
+
+                int dag = Integer.parseInt(tfDag.getText());
+                int maand = Integer.parseInt(tfMaand.getText());
+                int jaar = Integer.parseInt(tfJaar.getText());
+
+                datum = DateUtil.toSqlDate(jaar, maand, dag);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Voer gehele getallen in bij datum_betaling.");
+                voegToeCheck = false;
+            }
+        }
+        if (rbJa.isSelected() && voegToeCheck != false) {
+            heeft_betaald = "j";
+            voegToeCheck = true;
+        } else if (rbNee.isSelected() && voegToeCheck != false) {
+            heeft_betaald = "n";
+            voegToeCheck = true;
+        } else if (!rbNee.isSelected() && !rbJa.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Selecteer een waarde bij 'heeft betaald'.");
+            voegToeCheck = false;
+        }
+
+        if (voegToeCheck != false) {
+            try {
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sqlVoegToe);
+                stat.setInt(1, d_code);
+                stat.setInt(2, m_code);
+                stat.setDate(3, datum);
+                stat.setString(4, heeft_betaald);
+
+                stat.execute();
+                new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+                this.dispose();
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Deze deelnemer staat al ingeschreven bij deze masterclass.");
+            }
+        }
+
+    }//GEN-LAST:event_btVoegToeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,9 +407,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btBack;
+    private javax.swing.JButton btVoegToe;
     private javax.swing.JComboBox cbMasterclass;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
