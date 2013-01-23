@@ -8,8 +8,10 @@ import Models.MasterclassZoeken;
 import Models.Toernooizoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import utils.DateUtil;
 /**
  *
  * @author Otto
@@ -17,6 +19,9 @@ import javax.swing.table.DefaultTableModel;
 public class MasterclassBeheer extends javax.swing.JFrame {
         
     DefaultTableModel tabel = new DefaultTableModel();
+    private ArrayList<MasterclassZoeken> masterclasses = new ArrayList<>();
+    int M_Code;
+    MasterclassZoeken masterclass;
     /**
      * Creates new form MasterclassBeheer
      */
@@ -40,7 +45,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         
         try{
             //SQL Statement.
-            String sql = "select M_Code, Niveau , Prijs, Datum, Minimale_rating as Rating, Docent, Vindt_plaats_in as Locatie from masterclass having M_Code like ? or Niveau like ? or Prijs like ? or Datum like ? or Minimale_rating like ? or Docent like ? or Vindt_plaats_in like ?";
+            String sql = "select M_Code, Niveau , Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in from masterclass having M_Code like ? or Niveau like ? or Prijs like ? or Datum like ? or Minimale_rating like ? or Docent like ? or Vindt_plaats_in like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -64,9 +69,12 @@ public class MasterclassBeheer extends javax.swing.JFrame {
                  int Rating = res.getInt("Minimale_rating");
                  int Docent = res.getInt("Docent");
                  int Locatie = res.getInt("Vindt_plaats_in");
-                
-                MasterclassZoeken mczoek = new MasterclassZoeken(M_Code, Niveau, Prijs, Datum, Rating, Docent, Locatie);
-                tabel.addRow(mczoek.getrow());
+                 masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getInt("Niveau"), res.getInt("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
+                 masterclasses.add(masterclass);
+                 String DateFormat = DateUtil.fromSqlDateToString(Datum);
+                 String[] mczoek = new String[]{"" + M_Code, "" + Niveau, "" + Prijs, "" + Datum, "" + Rating, "" + Docent, "" + Locatie};
+
+                tabel.addRow(mczoek);
                 
             }
 
@@ -185,7 +193,21 @@ public class MasterclassBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        // TODO add your handling code here:
+        int[] selected = Table_Masterclass.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een Masterclass.");
+            //Als er meer dan 1 persoon geselecteerd is, verschijnt er een messagedialog.
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecteer maximaal 1 Masterclass.");
+            //Als bovenstaande condities niet waar zijn, wordt het wijzigscherm toegelaten.
+        } else {
+            int row = Table_Masterclass.getSelectedRow();
+            masterclass = masterclasses.get(row);
+            M_Code = masterclass.getM_Code();
+        }
+        new MasterclassWijzigen(masterclass).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed

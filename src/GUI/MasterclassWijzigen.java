@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,7 @@ import utils.DateUtil;
  * @author Otto
  */
 public class MasterclassWijzigen extends javax.swing.JFrame {
+MasterclassZoeken masterclass;
 int M_Code;
 int Niveau;
 Date Datum;
@@ -41,13 +43,22 @@ int LOCATIE;
      */
     public MasterclassWijzigen() {
         initComponents();
-        vulCode();
         vulNiveau();
         vulDatum();
         vulPrijs();
         vulMinRating();
         vulDocent();
         vulLocatie();
+    }
+    public MasterclassWijzigen(MasterclassZoeken masterclass){
+        initComponents();
+        vulNiveau();
+        vulDatum();
+        vulPrijs();
+        vulMinRating();
+        vulDocent();
+        vulLocatie();
+        this.masterclass = masterclass;
     }
 
     /**
@@ -59,7 +70,6 @@ int LOCATIE;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel4 = new javax.swing.JLabel();
         TextField_Minimalerating = new javax.swing.JTextField();
         TextField_Prijs = new javax.swing.JTextField();
         Button_Wijzigen = new javax.swing.JButton();
@@ -73,15 +83,11 @@ int LOCATIE;
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         ComboBox_Docent = new javax.swing.JComboBox();
-        ComboBox_Code = new javax.swing.JComboBox();
         TextField_Jaar = new javax.swing.JTextField();
         TextField_Dag = new javax.swing.JTextField();
         TextField_Maand = new javax.swing.JTextField();
-        Button_Check = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel4.setText("Code");
 
         Button_Wijzigen.setText("Wijzigen");
         Button_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
@@ -113,15 +119,6 @@ int LOCATIE;
 
         ComboBox_Docent.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        ComboBox_Code.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        Button_Check.setText("Check");
-        Button_Check.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_CheckActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,37 +143,25 @@ int LOCATIE;
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4)
                             .addComponent(Button_Back)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(TextField_Jaar))
-                                    .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ComboBox_Code, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Button_Check)))))
+                                .addGap(10, 10, 10)
+                                .addComponent(TextField_Jaar))
+                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                            .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(ComboBox_Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Button_Check))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_Niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -212,80 +197,6 @@ int LOCATIE;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Button_CheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_CheckActionPerformed
-        Object selcode = ComboBox_Code.getSelectedItem();
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select * from masterclass where M_Code = ?";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setObject(1, selcode);
-            ResultSet resultSet = stat.executeQuery();
-            
-            String sql2 = "select Achternaam from deelnemer  join masterclass on deelnemer.d_code = masterclass.Docent where M_Code = ?";
-            PreparedStatement stat2 = conn.prepareStatement(sql2);
-            stat2.setObject(1, selcode);
-            ResultSet resultSet2 = stat2.executeQuery();
-            
-            String sql3 = "select Naam from faciliteit  join masterclass on faciliteit.F_Code = masterclass.Vindt_plaats_in where M_Code = ?";
-            PreparedStatement stat3 = conn.prepareStatement(sql3);
-            stat3.setObject(1, selcode);
-            ResultSet resultSet3 = stat3.executeQuery();
-            
-            while(resultSet3.next()){
-                LNaam = resultSet3.getString("Naam");
-            }
-            
-            while(resultSet2.next()){
-                Achternaam = resultSet2.getString("Achternaam");
-            }
-            
-            
-            while(resultSet.next()){
-                Niveau = resultSet.getInt("Niveau");
-                Datum = resultSet.getDate("Datum");
-                Prijs = resultSet.getInt("Prijs");
-                Minimale_rating = resultSet.getInt("Minimale_rating");
-                Docent = resultSet.getInt("Docent");
-                Locatie = resultSet.getInt("Vindt_plaats_in");
-                
-                java.util.Calendar cal = java.util.Calendar.getInstance();
-                cal.clear();
-                cal.setTime(Datum);
-                jaar = cal.get(Calendar.YEAR);
-                maand = cal.get(Calendar.MONTH);
-                dag = cal.get(Calendar.DAY_OF_MONTH);
-                maand++;
-                
-                ComboBox_Docent.setSelectedItem(Achternaam);
-                ComboBox_Locatie.setSelectedItem(LNaam);
-                
-                
-            }
-            String niveau = Integer.toString(Niveau);
-            TextField_Niveau.setText(niveau);
-            
-            
-                
-                String JAAR = Integer.toString(jaar);
-                String MAAND = Integer.toString(maand);
-                String DAG = Integer.toString(dag);
-                
-                TextField_Jaar.setText(JAAR);
-                TextField_Maand.setText(MAAND);
-                TextField_Dag.setText(DAG);
-            
-            String prijs = Integer.toString(Prijs);
-            TextField_Prijs.setText(prijs);
-            String minimale_rating = Integer.toString(Minimale_rating);
-            TextField_Minimalerating.setText(minimale_rating);
-    
-            
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    }//GEN-LAST:event_Button_CheckActionPerformed
-
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
         new HoofdMenu().setVisible(true);
         this.dispose();
@@ -295,6 +206,7 @@ int LOCATIE;
         try{
         Niveau = Integer.parseInt(TextField_Niveau.getText());
         Prijs = Integer.parseInt(TextField_Prijs.getText());
+        Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         
         Datum = null;
         
@@ -307,8 +219,8 @@ int LOCATIE;
             JOptionPane.showMessageDialog(this, "Voer de velden correct in.");
         }
         
-        Docent = (int) ComboBox_Docent.getSelectedItem();
-        Locatie = (int) ComboBox_Docent.getSelectedItem();
+        Docent = ComboBox_Docent.getWidth();
+        Locatie = ComboBox_Docent.getWidth();
         
         if("Hoekstra".equals(Achternaam))
         {
@@ -401,9 +313,7 @@ int LOCATIE;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Back;
-    private javax.swing.JButton Button_Check;
     private javax.swing.JButton Button_Wijzigen;
-    private javax.swing.JComboBox ComboBox_Code;
     private javax.swing.JComboBox ComboBox_Docent;
     private javax.swing.JComboBox ComboBox_Locatie;
     private javax.swing.JTextField TextField_Dag;
@@ -415,35 +325,11 @@ int LOCATIE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     // End of variables declaration//GEN-END:variables
 
-    private void vulCode()
-    {
-        DefaultComboBoxModel code = new DefaultComboBoxModel();
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select M_Code from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            
-            while(resultSet.next()){
-                M_Code = resultSet.getInt("M_Code");
-                code.addElement(Integer.toString(M_Code));
-            }
-            
-            ComboBox_Code.setModel(code);
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    
-    }
 
     private void vulNiveau() {
         try {
