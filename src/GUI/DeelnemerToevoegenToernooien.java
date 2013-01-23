@@ -5,7 +5,7 @@
 package GUI;
 
 import Models.Deelnemer;
-import Models.MasterclassZoeken;
+import Models.Toernooi;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
 import javax.swing.ButtonGroup;
@@ -17,47 +17,39 @@ import utils.DateUtil;
  *
  * @author Nick
  */
-public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
+public class DeelnemerToevoegenToernooien extends javax.swing.JFrame {
 
     private Deelnemer deelnemer;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
-    int niveau;
-    MasterclassZoeken masterclass;
-    private int m_code;
+    Toernooi toernooi;
     private String voornaam;
     private String achternaam;
-    private String heeft_betaald;
-    private String sqlVoegToe;
+    private int t_code;
     private boolean voegToeCheck;
-    private Date datum;
-
+    Date datum;
+    String heeft_betaald;
     /**
-     * Creates new form DeelnemerToevoegenMCs
+     * Creates new form DeelnemerToevoegenToernooien
      */
-    public DeelnemerToevoegenMCs() {
+    public DeelnemerToevoegenToernooien() {
         initComponents();
-        initScreen();
     }
 
-    public DeelnemerToevoegenMCs(Deelnemer deelnemer) {
+    public DeelnemerToevoegenToernooien(Deelnemer deelnemer) {
         initComponents();
-
         this.deelnemer = deelnemer;
 
         voornaam = deelnemer.getVoornaam();
         achternaam = deelnemer.getAchternaam();
 
         initScreen();
-
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
-
     }
-    
-    //initScreen used to find m_code.
+
     private void initScreen() {
-        String sql = "Select m_code from masterclass";
+        String sql = "Select t_code from toernooi";
         lbDeelnemer.setText(voornaam + " " + achternaam);
         radioButtonCheck();
         try {
@@ -65,9 +57,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet res = stat.executeQuery();
             while (res.next()) {
-                m_code = res.getInt("m_code");
+                t_code = res.getInt("t_code");
 
-                model.addElement(m_code);
+                model.addElement(t_code);
 
 
             }
@@ -81,7 +73,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     }
 
-    //radioButtonCheck used to determine whether or not the date can be entered.
     private void radioButtonCheck() {
         if (rbNee.isSelected()) {
             tfDag.setVisible(false);
@@ -100,8 +91,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             jLabel3.setVisible(false);
         }
     }
-    //Finds selectedItem of the combobox.
-    private int comboBoxSelectedValue() {
+    
+        private int comboBoxSelectedValue() {
         int selectedItem = 0;
         Object selected = cbMasterclass.getSelectedItem();
         if (selected != null) {
@@ -120,38 +111,21 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        cbMasterclass = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         btBack = new javax.swing.JButton();
         btVoegToe = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        cbMasterclass = new javax.swing.JComboBox();
-        lbNiveau = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        rbJa = new javax.swing.JRadioButton();
-        rbNee = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
+        lbDeelnemer = new javax.swing.JLabel();
         tfDag = new javax.swing.JTextField();
         tfMaand = new javax.swing.JTextField();
         tfJaar = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        lbDeelnemer = new javax.swing.JLabel();
+        rbJa = new javax.swing.JRadioButton();
+        rbNee = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btBack.setText("Back");
-        btBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBackActionPerformed(evt);
-            }
-        });
-
-        btVoegToe.setText("Voeg Toe");
-        btVoegToe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btVoegToeActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Masterclass :");
 
         cbMasterclass.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbMasterclass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -168,7 +142,27 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Deelnemer:");
+
         jLabel2.setText("Betaald : ");
+
+        btBack.setText("Back");
+        btBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBackActionPerformed(evt);
+            }
+        });
+
+        btVoegToe.setText("Voeg Toe");
+        btVoegToe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVoegToeActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Toernooi : ");
+
+        jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
 
         rbJa.setText("Ja");
         rbJa.addActionListener(new java.awt.event.ActionListener() {
@@ -184,78 +178,81 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
-
-        jLabel4.setText("Deelnemer:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(btVoegToe)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
                         .addComponent(btBack))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(123, 123, 123)
+                                .addComponent(lbDeelnemer))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lbNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(99, 99, 99)
+                                        .addComponent(jLabel2)
+                                        .addGap(50, 50, 50)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(rbJa)
-                                            .addComponent(rbNee)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                            .addComponent(rbNee)
+                                            .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(rbJa)))
+                                    .addComponent(jLabel1))
                                 .addGap(18, 18, 18)
-                                .addComponent(lbDeelnemer)))
-                        .addGap(0, 82, Short.MAX_VALUE)))
+                                .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(lbDeelnemer))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbNiveau)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(rbJa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rbNee)
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(97, 97, 97)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfDag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfMaand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                                    .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbDeelnemer)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(rbJa)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rbNee))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)))
+                        .addGap(51, 51, 51)))
+                .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btBack)
                     .addComponent(btVoegToe))
@@ -265,58 +262,27 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
-    }//GEN-LAST:event_cbMasterclassMousePressed
-
     private void cbMasterclassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMouseClicked
-    }//GEN-LAST:event_cbMasterclassMouseClicked
+   }//GEN-LAST:event_cbMasterclassMouseClicked
+
+    private void cbMasterclassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbMasterclassMousePressed
+   }//GEN-LAST:event_cbMasterclassMousePressed
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
-
-        //If a masterclass has been selected, show the related niveau.
-        
-        m_code = comboBoxSelectedValue();
-        String sql = "select niveau from masterclass where m_code = ?";
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1, m_code);
-            ResultSet res = stat.executeQuery();
-
-            while (res.next()) {
-                niveau = res.getInt("niveau");
-            }
-
-            lbNiveau.setText("Niveau : " + niveau);
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-
-        lbNiveau.setText("Niveau : " + Integer.toString(niveau));
 
     }//GEN-LAST:event_cbMasterclassActionPerformed
 
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
-        new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+        new DeelnemerBekijkToernooien(deelnemer).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btBackActionPerformed
 
-    private void rbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbJaActionPerformed
-        radioButtonCheck();
-    }//GEN-LAST:event_rbJaActionPerformed
-
-    private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
-        radioButtonCheck();
-    }//GEN-LAST:event_rbNeeActionPerformed
-
     private void btVoegToeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoegToeActionPerformed
-        sqlVoegToe = "insert into volgt(d_code,m_code,datum_betaling,heeft_betaald) values(?,?,?,?)";
+        String sqlVoegToe = "insert into heeft_betaald(d_code,t_code,inleggeld_betaald,datum_betaling) values(?,?,?,?)";
         voegToeCheck = true;
         datum = null;
 
-        m_code = comboBoxSelectedValue();
+        t_code = comboBoxSelectedValue();
 
         int d_code = deelnemer.getD_code();
 
@@ -349,20 +315,27 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sqlVoegToe);
                 stat.setInt(1, d_code);
-                stat.setInt(2, m_code);
-                stat.setDate(3, datum);
-                stat.setString(4, heeft_betaald);
+                stat.setInt(2, t_code);
+                stat.setString(3, heeft_betaald);
+                stat.setDate(4, datum);
 
                 stat.execute();
-                new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+                new DeelnemerBekijkToernooien(deelnemer).setVisible(true);
                 this.dispose();
 
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Deze deelnemer staat al ingeschreven bij deze masterclass.");
+                JOptionPane.showMessageDialog(this, e);
             }
         }
-
     }//GEN-LAST:event_btVoegToeActionPerformed
+
+    private void rbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbJaActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbJaActionPerformed
+
+    private void rbNeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNeeActionPerformed
+        radioButtonCheck();
+    }//GEN-LAST:event_rbNeeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,13 +358,13 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegenMCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerToevoegenToernooien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegenMCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerToevoegenToernooien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegenMCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerToevoegenToernooien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeelnemerToevoegenMCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeelnemerToevoegenToernooien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -401,7 +374,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new DeelnemerToevoegenMCs().setVisible(true);
+                new DeelnemerToevoegenToernooien().setVisible(true);
             }
         });
     }
@@ -414,7 +387,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lbDeelnemer;
-    private javax.swing.JLabel lbNiveau;
     private javax.swing.JRadioButton rbJa;
     private javax.swing.JRadioButton rbNee;
     private javax.swing.JTextField tfDag;

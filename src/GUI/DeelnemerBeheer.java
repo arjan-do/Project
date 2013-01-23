@@ -107,6 +107,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         Button_Bekijken = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btToernooi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -178,6 +179,13 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             }
         });
 
+        btToernooi.setText("Toernooi");
+        btToernooi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btToernooiActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,7 +212,9 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                                         .add(18, 18, 18)
                                         .add(Button_Toevoegen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .add(18, 18, 18)
-                                .add(Button_Verwijderen)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(Button_Verwijderen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(btToernooi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .add(18, 18, 18)
                                 .add(Button_Back)))
                         .add(0, 18, Short.MAX_VALUE)))
@@ -222,7 +232,8 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(Button_Wijzigen)
-                    .add(jButton1))
+                    .add(jButton1)
+                    .add(btToernooi))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 8, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(Button_Bekijken)
@@ -449,6 +460,54 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btToernooiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToernooiActionPerformed
+        
+                int[] selected = Table_Deelnemers.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            //Als er meer dan 1 persoon geselecteerd is, verschijnt er een messagedialog.
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecteer maximaal 1 persoon.");
+            //Als bovenstaande condities niet waar zijn, wordt het wijzigscherm toegelaten.
+        } else {
+            int row = Table_Deelnemers.getSelectedRow();
+            deelnemer = deelnemers.get(row);
+            d_code = deelnemer.getD_code();
+
+
+
+            try {
+                String sql = "Select * from deelnemer where d_code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, d_code);
+
+                ResultSet res = stat.executeQuery();
+                while (res.next()) {
+                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                    deelnemer = new Deelnemer(res.getInt("d_code"),
+                            res.getString("Voornaam"),
+                            res.getString("Achternaam"),
+                            res.getString("Postcode"),
+                            res.getString("woonplaats"),
+                            res.getInt("tel_nr"),
+                            res.getInt("huisnummer"),
+                            res.getString("is_bekend"),
+                            res.getString("straat"),
+                            res.getString("e_mailadres"),
+                            res.getInt("rating"));
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+            new DeelnemerBekijkToernooien(deelnemer).setVisible(true);
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_btToernooiActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -498,6 +557,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JTable Table_Deelnemers;
     private javax.swing.JTextField TextField_Zoekopnaam;
+    private javax.swing.JButton btToernooi;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
