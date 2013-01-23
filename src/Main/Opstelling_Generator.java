@@ -15,19 +15,21 @@ public class Opstelling_Generator {
         
     }
     
-    private int[] calculatetavels(int ammount_of_players){
-        double aantal = 124;
-       
+    private void calculatetavels(int ammount_of_players){
+        
+        int aantal = 1;
+            
         //              1,2,3,4,5,6,7,8
         int[] tavels = {0,0,0,0,0,0,0,0};
-        
-        tavels[7] = (int)(aantal / 8);
-        int ex = (int)(aantal - (tavels[7] * 8));
+
+        tavels[7] = aantal / 8;
+        int ex = aantal % 8;
+
         int max_table = 8;
-        
+
         if ((ex != 0) && (aantal > 8)){
             tavels[ex - 1] = 1;
-            
+
             do{
                 if (tavels[7] != 0){
                     max_table = 8;
@@ -46,33 +48,32 @@ public class Opstelling_Generator {
                 } else if (tavels[0] != 0) {
                     max_table = 1;
                 }
-                
+
                 tavels[max_table - 1] --;
                 tavels[max_table - 2] ++;
                 tavels[ex - 1] --;
                 tavels[ex] ++;
                 ex ++;
-                        
-            }   while((tavels[ex - 1] != 0) && (ex < max_table));
+
+            }   while(((ex + 1) < max_table) && (ex < 8));
+
+            } else if (aantal < 8){
+                tavels[ex - 1] = 1;
+            }
+            System.out.println(aantal);
             
-        } else {
-            tavels[ex - 1] = 1;
-        }
+            // log only do not include in finale version
+            System.out.println(tavels[0]);
+            System.out.println(tavels[1]);
+            System.out.println(tavels[2]);
+            System.out.println(tavels[3]);
+            System.out.println(tavels[4]);
+            System.out.println(tavels[5]);
+            System.out.println(tavels[6]);
+            System.out.println(tavels[7]);
+            // end of log only
+
         
-        
-   
-        
-        // log only do not include in finale version
-        System.out.println(tavels[0]);
-        System.out.println(tavels[1]);
-        System.out.println(tavels[2]);
-        System.out.println(tavels[3]);
-        System.out.println(tavels[4]);
-        System.out.println(tavels[5]);
-        System.out.println(tavels[6]);
-        System.out.println(tavels[7]);
-        // end of log only
-        return tavels;
     }
     
 }
