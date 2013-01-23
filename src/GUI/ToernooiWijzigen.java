@@ -4,6 +4,14 @@
  */
 package GUI;
 
+import Models.FaciliteitSimple;
+import Models.Toernooi;
+import configuration.SimpleDataSourceV2;
+import java.sql.*;
+import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Josua
@@ -11,12 +19,68 @@ package GUI;
 public class ToernooiWijzigen extends javax.swing.JFrame {
 
     /**
-     * Creates new form ToernooiWijzigen
+     * Creates new form ToernooiToevoegen
      */
+    
+    Toernooi toernooi;
+    
     public ToernooiWijzigen() {
         initComponents();
+        initcombobox();
+        initinfo();
     }
+    
+    public ToernooiWijzigen(Toernooi toernooi) {
+        this.toernooi = toernooi;
+        initComponents();
+        initcombobox();
+        initinfo();
+    }
+    
+    private void initinfo(){
+        TextField_Bedrag.setText(Integer.toString(toernooi.getBedrag()));
+        TextField_MinAantalSpelers.setText(Integer.toString(toernooi.getMin_aantal_spelers()));
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toernooi.getDatum());
+        TextField_Jaar.setText(Integer.toString(cal.get(Calendar.YEAR)));
+        TextField_Maand.setText(Integer.toString(cal.get(Calendar.MONTH) + 1));
+        TextField_Dag.setText(Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+        
+        TextField_TijdUren.setText(Integer.toString(toernooi.getBegintijd().getHours()));
+        TextField_TijdMinuten.setText(Integer.toString(toernooi.getBegintijd().getMinutes()));
+    }
+    
+    
+    
+    private void initcombobox(){
+        
+        try {
+            
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            model.addElement(new FaciliteitSimple(0,"None"));
+            //SQL Statement.
+            String sql = "SELECT F_Code, Naam FROM fullhouse.faciliteit;";
 
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            ResultSet res = stat.executeQuery();
+            while (res.next()) {
+                   model.addElement(new FaciliteitSimple(res.getInt("F_Code"), res.getString("Naam")));
+            }
+
+            ComboBox_Faciliteit.setModel(model);
+            ComboBox_Faciliteit.setSelectedIndex(toernooi.getVind_plaats_in());
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+        }
+        
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,68 +90,69 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField3 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        TextField_Bedrag = new javax.swing.JTextField();
+        TextField_MinAantalSpelers = new javax.swing.JTextField();
+        TextField_Dag = new javax.swing.JTextField();
+        TextField_TijdUren = new javax.swing.JTextField();
+        TextField_Maand = new javax.swing.JTextField();
+        TextField_Jaar = new javax.swing.JTextField();
+        ComboBox_Faciliteit = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         Button_Wijzigen = new javax.swing.JButton();
-        Button_Back = new javax.swing.JToggleButton();
+        Button_Back = new javax.swing.JButton();
+        TextField_TijdMinuten = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        TextField_Bedrag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                TextField_BedragActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        TextField_MinAantalSpelers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                TextField_MinAantalSpelersActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Faciliteit");
+        TextField_Dag.setText("DD");
+        TextField_Dag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_DagActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("Tijd");
+        TextField_TijdUren.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_TijdUrenActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setText("Datum");
+        TextField_Maand.setText("MM");
+        TextField_Maand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_MaandActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Min. aantal spelers");
+        TextField_Jaar.setText("YYYY");
+
+        ComboBox_Faciliteit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Bedrag");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel3.setText("Min. aantal spelers");
 
-        jTextField7.setText("YYYY");
+        jLabel4.setText("Datum");
 
-        jTextField4.setText("DD");
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
+        jLabel5.setText("Tijd");
 
-        jTextField6.setText("MM");
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
+        jLabel6.setText("Faciliteit");
 
         Button_Wijzigen.setText("Wijzigen");
         Button_Wijzigen.addActionListener(new java.awt.event.ActionListener() {
@@ -120,16 +185,20 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                                .addComponent(TextField_Dag, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(74, 74, 74))
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(ComboBox_Faciliteit, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextField_Bedrag)
+                            .addComponent(TextField_MinAantalSpelers, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TextField_TijdUren, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextField_TijdMinuten, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(Button_Back)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,26 +211,28 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_Bedrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_MinAantalSpelers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(TextField_TijdUren, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TextField_TijdMinuten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ComboBox_Faciliteit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Wijzigen)
                     .addComponent(Button_Back))
@@ -171,25 +242,25 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void TextField_BedragActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_BedragActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_TextField_BedragActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void TextField_MinAantalSpelersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_MinAantalSpelersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_TextField_MinAantalSpelersActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void TextField_DagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_DagActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_TextField_DagActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void TextField_TijdUrenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_TijdUrenActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_TextField_TijdUrenActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void TextField_MaandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_MaandActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_TextField_MaandActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
         // Open ToernooiBeheer
@@ -199,7 +270,43 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        // TODO add your handling code here:
+         
+         
+         try {
+            
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            
+            //SQL Statement.
+            String sql = "update toernooi set Bedrag = ?, Min_aantal_spelers = ?,Datum = ?,Begintijd = ?,vindt_plaats_in = ? where T_Code = ?";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            stat.setInt(1, Integer.parseInt(TextField_Bedrag.getText()));
+            stat.setInt(2, Integer.parseInt(TextField_MinAantalSpelers.getText()));
+            stat.setString(3, TextField_Jaar.getText() + "-" + TextField_Maand.getText() + "-" + TextField_Dag.getText());
+            stat.setString(4, TextField_TijdUren.getText() + ":" + TextField_TijdMinuten.getText());
+            
+            FaciliteitSimple fac = (FaciliteitSimple)ComboBox_Faciliteit.getSelectedItem();
+            
+            if (fac.getNaam().equals("None")){
+                stat.setNull(5, 1);
+            } else {
+                stat.setInt(5, fac.getF_code());
+            }
+            stat.setInt(6, toernooi.getT_Code());
+            
+            stat.execute();
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+        }
+         
+        new ToernooiBeheer().setVisible(true);
+        this.dispose();
+         
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     /**
@@ -244,19 +351,20 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton Button_Back;
+    private javax.swing.JButton Button_Back;
     private javax.swing.JButton Button_Wijzigen;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox ComboBox_Faciliteit;
+    private javax.swing.JTextField TextField_Bedrag;
+    private javax.swing.JTextField TextField_Dag;
+    private javax.swing.JTextField TextField_Jaar;
+    private javax.swing.JTextField TextField_Maand;
+    private javax.swing.JTextField TextField_MinAantalSpelers;
+    private javax.swing.JTextField TextField_TijdMinuten;
+    private javax.swing.JTextField TextField_TijdUren;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

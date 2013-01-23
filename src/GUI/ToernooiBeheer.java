@@ -4,9 +4,12 @@
  */
 package GUI;
 
+import Models.Toernooi;
 import Models.Toernooizoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class ToernooiBeheer extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
+    List<Toernooi> toernooi = new ArrayList<Toernooi>();
     
     /**
      * Creates new form ToernooiBeheer
@@ -38,12 +42,13 @@ public class ToernooiBeheer extends javax.swing.JFrame {
     }
     
     private void sqlupdatetable(String zoeken){
+        toernooi.clear();
         model.setRowCount(0);
         
         try {
 
             //SQL Statement.
-            String sql = "select toernooi.t_code, toernooi.datum , toernooi.begintijd, faciliteit.naam as locatienaam, toernooi.Min_aantal_spelers, count(heeft_betaald.T_code) as aantal_deelneer from toernooi left outer join faciliteit on toernooi.vindt_plaats_in = faciliteit.F_code left outer join heeft_betaald on toernooi.t_code = heeft_betaald.t_code group by toernooi.t_code having toernooi.t_code like ? or toernooi.datum like ? or toernooi.begintijd like ? or faciliteit.naam like ? or toernooi.Min_aantal_spelers like ? or count(heeft_betaald.T_code) like ?";
+            String sql = "select toernooi.vindt_plaats_in, toernooi.bedrag, toernooi.t_code, toernooi.datum , toernooi.begintijd, faciliteit.naam as locatienaam, toernooi.Min_aantal_spelers, count(heeft_betaald.T_code) as aantal_deelneer from toernooi left outer join faciliteit on toernooi.vindt_plaats_in = faciliteit.F_code left outer join heeft_betaald on toernooi.t_code = heeft_betaald.t_code group by toernooi.t_code having toernooi.t_code like ? or toernooi.datum like ? or toernooi.begintijd like ? or faciliteit.naam like ? or toernooi.Min_aantal_spelers like ? or count(heeft_betaald.T_code) like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -59,6 +64,12 @@ public class ToernooiBeheer extends javax.swing.JFrame {
             ResultSet res = stat.executeQuery();
 
             while (res.next()) {
+                
+                
+                 int vindtplaatsin = res.getInt("vindt_plaats_in");
+                 
+                 
+                 int bedrag = res.getInt("bedrag");
                  int t_code = res.getInt("t_code");
                  Date datum = res.getDate("datum");
                  Time begintijd = res.getTime("begintijd");
@@ -68,7 +79,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                 
                 Toernooizoeken toernooizoek = new Toernooizoeken(t_code, datum, begintijd, locatienaam, minspelers, spelers);
                 model.addRow(toernooizoek.getrow());
-                
+                toernooi.add(new Toernooi(t_code, bedrag, minspelers, datum, begintijd, vindtplaatsin));
             }
 
             TableToernooi.setModel(model);
@@ -207,7 +218,9 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
         //todo: datum, locatie en aantal deelnemers uit lijst halen en meegeven als parameter
-        new ToernooiWijzigen().setVisible(true);
+        
+        Toernooi selected = toernooi.get(TableToernooi.getSelectedRow());
+        new ToernooiWijzigen(selected).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
