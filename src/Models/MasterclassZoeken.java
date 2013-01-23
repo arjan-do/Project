@@ -20,13 +20,7 @@ public class MasterclassZoeken {
     private int Docent;
     private int Locatie;
     
-    String m_code = Integer.toString(M_Code);
-    String niveau = Integer.toString(Niveau);
-    String prijs = Integer.toString(Prijs);
 
-    String rating = Integer.toString(Rating);
-    String docent = Integer.toString(Docent);
-    String locatie = Integer.toString(Locatie);
 
     public MasterclassZoeken(int M_Code, int Niveau, int Prijs, Date Datum, int Rating, int Docent, int Locatie) {
         this.M_Code = M_Code;
@@ -96,11 +90,11 @@ public class MasterclassZoeken {
     }
             
     public String[] getrow(){
-        return new String[]{m_code, niveau, prijs, this.Datum.toString(), rating, docent, locatie};
+        return new String[]{Integer.toString(M_Code), Integer.toString(Niveau), Integer.toString(Prijs), this.Datum.toString(), Integer.toString(Rating), Integer.toString(Docent), Integer.toString(Locatie)};
     }
     
-        public String[] getInfo(){
-        return new String[]{"" + this.m_code ,"" + this.Datum,"" + this.rating};
+    public String[] getInfo(){
+        return new String[]{"" + Integer.toString(M_Code) ,"" + this.Datum,"" + Integer.toString(Rating)};
     }
     
 }

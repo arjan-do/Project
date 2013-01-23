@@ -204,7 +204,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         } else {
             int row = Table_Masterclass.getSelectedRow();
             masterclass = masterclasses.get(row);
-            M_Code = masterclass.getM_Code();
+            
         }
         new MasterclassWijzigen(masterclass).setVisible(true);
         this.dispose();

@@ -34,29 +34,9 @@ int LOCATIE;
      */
     public MasterclassToevoegen() {
         initComponents();
-        vulCode();
         vulDocent();
         vulLocatie();
 
-    }
-    
-    private void vulCode()
-    {
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select M_Code from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            while(resultSet.next()){
-                M_Code = resultSet.getInt("M_Code");
-            }
-            TextField_Code.setText(Integer.toString(M_Code));
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
     }
 
 
@@ -76,9 +56,7 @@ int LOCATIE;
         Button_Toevoegen = new javax.swing.JButton();
         ComboBox_Locatie = new javax.swing.JComboBox();
         Button_Back = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        TextField_Code = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         ComboBox_Docent = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
@@ -110,11 +88,7 @@ int LOCATIE;
             }
         });
 
-        jLabel4.setText("Code");
-
         jLabel1.setText("Niveau");
-
-        TextField_Code.setEditable(false);
 
         jLabel5.setText("Docent");
 
@@ -136,10 +110,6 @@ int LOCATIE;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(TextField_Code, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Button_Back)
@@ -176,12 +146,8 @@ int LOCATIE;
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(TextField_Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_Niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -340,7 +306,6 @@ int LOCATIE;
     private javax.swing.JButton Button_Toevoegen;
     private javax.swing.JComboBox ComboBox_Docent;
     private javax.swing.JComboBox ComboBox_Locatie;
-    private javax.swing.JTextField TextField_Code;
     private javax.swing.JTextField TextField_Dag;
     private javax.swing.JTextField TextField_Jaar;
     private javax.swing.JTextField TextField_Maand;
@@ -350,7 +315,6 @@ int LOCATIE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
