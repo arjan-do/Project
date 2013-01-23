@@ -315,7 +315,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                         stat.execute();
 
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, ex);
+                        JOptionPane.showMessageDialog(this, "U kan deze deelnemer niet verwijderen: Deze persoon doet mee aan een Toernooi of Masterclass.");
                     }
 
                 }

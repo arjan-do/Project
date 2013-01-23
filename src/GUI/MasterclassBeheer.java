@@ -66,7 +66,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
                  int Niveau = res.getInt("Niveau");
                  int Prijs = res.getInt("Prijs");
                  Date Datum = res.getDate("Datum");
-                 int Rating = res.getInt("Minimale_rating");
+                 int Rating = res.getInt("Rating");
                  int Docent = res.getInt("Docent");
                  int Locatie = res.getInt("Vindt_plaats_in");
                  masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getInt("Niveau"), res.getInt("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
@@ -74,7 +74,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
                  String DateFormat = DateUtil.fromSqlDateToString(Datum);
                  String[] mczoek = new String[]{"" + M_Code, "" + Niveau, "" + Prijs, "" + Datum, "" + Rating, "" + Docent, "" + Locatie};
 
-                tabel.addRow(mczoek);
+                 tabel.addRow(mczoek);
                 
             }
 

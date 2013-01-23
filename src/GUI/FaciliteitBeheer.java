@@ -23,6 +23,9 @@ import javax.swing.table.TableModel;
 public class FaciliteitBeheer extends javax.swing.JFrame {
     
    DefaultTableModel model = new DefaultTableModel();
+    private ArrayList<Faciliteit> faciliteiten = new ArrayList<>();
+    int F_code;
+    Faciliteit faciliteit;
     /**
      * Creates new form FaciliteitBeheer
      */
@@ -36,23 +39,26 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     private void SetTable() {
         String[] kolommen = {"naam", "straat","huisnummer", "Max_aantal_spelers" };
         //DefaultTableModel aanmaken waarin je aan de constructor de header kolommen meegeeft en het aantal lege start rijen 
-        DefaultTableModel model = new DefaultTableModel(kolommen, 0);
+         model = new DefaultTableModel(kolommen, 0);
         //model setten
         TableFaciliteit.setModel(model);
+        //running the sql querry
+        
+       
                     
         
         
     }
         
     private void VulTable() {
-        // Lees zoekveld
+        
         String input = TextField_Zoekopnaam.getText();
         
 
         try {
 
             //SQL Statement.
-            String sql = "Select * from faciliteit where naam like ? or straatnaam like ? or huisnummer like? or max_aantal_spelers like ?";
+            String sql = "Select * from faciliteit where naam like ? or Straatnaam like ? or huisnummer like? or plaats like? or Max_aantal_spelers like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -63,32 +69,37 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
             stat.setString(2, input + '%');
             stat.setString(3, input + '%');
             stat.setString(4, input + '%');
+            stat.setString(5, input + '%');
 
             ResultSet res = stat.executeQuery();
 
 
             while (res.next()) {
 
-                 int f_code = res.getInt("f_code");
-                 String naam = res.getString("Naam");
-                 String straat = res.getString("straatnaam");
-                 String postcode = res.getString("postcode");
-                 String plaats = res.getString("plaats");
-                 int max_aantal = res.getInt("Max_aantal_spelers");
-                 int huisnummer = res.getInt("huisnummer");
-                
-                Faciliteit Zoek = new Faciliteit(f_code, naam, straat, postcode, postcode, max_aantal, plaats);
-                model.addRow(Zoek.getrow());   
+                 faciliteit = new Faciliteit(res.getInt("F_code"),
+                        res.getString("Naam"),
+                        res.getString("Straatnaam"),
+                        res.getString("Postcode") ,
+                        res.getString("huisnummer"),
+                        res.getInt("Max_aantal_spelers"), 
+                        res.getString("plaats")
+                                  
+                        );
+                faciliteiten.add(faciliteit);
+                model.addRow(faciliteit.getrow());
+
+                  
                 
 
             }
 
 
 
-
         } catch (Exception ex) {
             System.out.println(ex);
         }
+                System.out.println("finish");
+
     }
     
             
@@ -217,6 +228,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         new FaciliteitToevoegen().setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
@@ -227,18 +239,54 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION) {
-            //remove a faciliteit from the list
+       int[] selected = TableFaciliteit.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
+                    faciliteit = faciliteiten.get(selected[i]);
+                    F_code = faciliteit.getF_code();
+                    model.removeRow(selected[i]);
+
+                    String sql = "delete from faciliteit where f_code = ?";
+
+                    try {
+                        Connection conn = SimpleDataSourceV2.getConnection();
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setInt(1, F_code);
+                        stat.execute();
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "U kan deze deelnemer niet verwijderen: Deze persoon doet mee aan een Toernooi of Masterclass.");
+                    }
+
+                }
+            }
+            //Update de modelRows, clear de arraylist Deelnemers.
+            model.setRowCount(0);
+            faciliteiten.clear();
+            VulTable();
         }
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
-        new FaciliteitWijzigen().setVisible(true);
+        Faciliteit selected = faciliteiten.get(TableFaciliteit.getSelectedRow());
+        new FaciliteitWijzigen(selected).setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
-        //renew querry and search on name enterd in TextField_Zoekenopnaam
+         //setRowCount to refresh the model.
+        model.setRowCount(0);
+        //clear ArrayList for refreshing purposes.
+        faciliteiten.clear();
+        VulTable();
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased
      
     private void TextField_ZoekopnaamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamActionPerformed

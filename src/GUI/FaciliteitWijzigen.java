@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import utils.DateUtil;
+import Models.Faciliteit;
 
 /**
  *
@@ -21,8 +22,29 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     /**
      * Creates new form FaciliteitWijzigen
      */
+    
+    Faciliteit faciliteit;
+    
     public FaciliteitWijzigen() {
         initComponents();
+        initModels();
+    }
+    
+    public FaciliteitWijzigen(Faciliteit faciliteit) {
+        this.faciliteit=faciliteit;
+        initComponents();
+        initModels();
+    }
+    
+    public void initModels() {
+        
+     TextField_Naam.setText(faciliteit.getNaam());
+     TextField_Straatnaam.setText(faciliteit.getStraat());
+     TextField_Huisnummer.setText(faciliteit.getHuisnummer());
+     TextField_Postcode.setText(faciliteit.getPostcode());
+     TextField_Plaats.setText(faciliteit.getPlaats());
+     TextField_MaxAantalSpelers.setText("" + faciliteit.getMax_aantal());
+    
     }
 
     /**
@@ -147,29 +169,22 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
         try {
-            //Invoervelden uitlezen
-            //String F_code = this.TextField_Naam.getText();
-            String Naam = this.TextField_Naam.getText();
-            String Straat = this.TextField_Straatnaam.getText();
-            String Huisnummer = this.TextField_Huisnummer.getText();
-            String Postcode = this.TextField_Postcode.getText();
-            int Max_aantal = Integer.parseInt(TextField_MaxAantalSpelers.getText());
-            String Plaats = this.TextField_Plaats.getText();
+           
             
      
             //Connectie opvragen
             Connection conn = SimpleDataSourceV2.getConnection();
 
             //(Prepared)SQL statement opbouwen
-            PreparedStatement preparedStatement = conn.prepareStatement("update from Faciliteit (naam, Straatnaam, huisnummer, postcode, Max_aantal_spelers, plaats) values (?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = conn.prepareStatement("update Faciliteit set naam=?, Straatnaam=?, huisnummer=?, postcode=?, Max_aantal_spelers=?, plaats=? where f_code=? ");
             
-            preparedStatement.setString(1, Naam);
-            preparedStatement.setString(2, Straat);
-            preparedStatement.setString(3, Huisnummer);
-            preparedStatement.setString(4, Postcode);
-            preparedStatement.setInt(5, Max_aantal);
-            preparedStatement.setString(6, Plaats);
-            
+            preparedStatement.setString(1, TextField_Naam.getText());
+            preparedStatement.setString(2, TextField_Straatnaam.getText());
+            preparedStatement.setString(3, TextField_Huisnummer.getText());
+            preparedStatement.setString(4, TextField_Postcode.getText());
+            preparedStatement.setInt(5, Integer.parseInt(TextField_MaxAantalSpelers.getText()));
+            preparedStatement.setString(6, TextField_Plaats.getText());
+            preparedStatement.setInt(7, faciliteit.getF_code());
             //SQL statement uitvoeren
             preparedStatement.execute();
 
@@ -177,7 +192,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
             this.dispose();
 
             //Hoofdscherm opnieuw openen
-            //new HoofdScherm().setVisible(true);
+            new FaciliteitBeheer().setVisible(true);
 
 
 

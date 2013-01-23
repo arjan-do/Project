@@ -4,9 +4,12 @@
  */
 package GUI;
 
+import Models.Toernooi;
 import Models.Toernooizoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,7 +20,9 @@ import javax.swing.table.DefaultTableModel;
 public class ToernooiBeheer extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
-    
+    List<Toernooi> toernoois = new ArrayList<Toernooi>();
+    Toernooi toernooi;
+
     /**
      * Creates new form ToernooiBeheer
      */
@@ -26,24 +31,46 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         initJtable();
     }
 
-    private void initJtable(){
+    private void initJtable() {
         //setup the jtable
         String[] kolommen = {"Datum", "Begintijd", "Locatienaam", "Min aantal spelers", "Aantal spelers"};
         model = new DefaultTableModel(kolommen, 0);
         TableToernooi.setModel(model);
-        
+
         //running the sql querry
         sqlupdatetable("");
-        
+
     }
-    
-    private void sqlupdatetable(String zoeken){
+
+    private boolean getBetalend(int t_code) {
+
+        String sql = "select * from heeft_betaald where t_code = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, t_code);
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                String betaalCheck = res.getString("inleggeld_betaald");
+                if ("j".equals(betaalCheck)) {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return true;
+    }
+
+    private void sqlupdatetable(String zoeken) {
+        toernoois.clear();
         model.setRowCount(0);
-        
+
         try {
 
             //SQL Statement.
-            String sql = "select toernooi.t_code, toernooi.datum , toernooi.begintijd, faciliteit.naam as locatienaam, toernooi.Min_aantal_spelers, count(heeft_betaald.T_code) as aantal_deelneer from toernooi left outer join faciliteit on toernooi.vindt_plaats_in = faciliteit.F_code left outer join heeft_betaald on toernooi.t_code = heeft_betaald.t_code group by toernooi.t_code having toernooi.t_code like ? or toernooi.datum like ? or toernooi.begintijd like ? or faciliteit.naam like ? or toernooi.Min_aantal_spelers like ? or count(heeft_betaald.T_code) like ?";
+            String sql = "select toernooi.vindt_plaats_in, toernooi.bedrag, toernooi.t_code, toernooi.datum , toernooi.begintijd, faciliteit.naam as locatienaam, toernooi.Min_aantal_spelers, count(heeft_betaald.T_code) as aantal_deelneer from toernooi left outer join faciliteit on toernooi.vindt_plaats_in = faciliteit.F_code left outer join heeft_betaald on toernooi.t_code = heeft_betaald.t_code group by toernooi.t_code having toernooi.t_code like ? or toernooi.datum like ? or toernooi.begintijd like ? or faciliteit.naam like ? or toernooi.Min_aantal_spelers like ? or count(heeft_betaald.T_code) like ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -55,34 +82,37 @@ public class ToernooiBeheer extends javax.swing.JFrame {
             stat.setString(4, '%' + zoeken + '%');
             stat.setString(5, '%' + zoeken + '%');
             stat.setString(6, '%' + zoeken + '%');
-            
+
             ResultSet res = stat.executeQuery();
 
             while (res.next()) {
-                 int t_code = res.getInt("t_code");
-                 Date datum = res.getDate("datum");
-                 Time begintijd = res.getTime("begintijd");
-                 String locatienaam = res.getString("locatienaam");
-                 int minspelers = res.getInt("Min_aantal_spelers");
-                 int spelers = res.getInt("aantal_deelneer");
-                
+
+
+                int vindtplaatsin = res.getInt("vindt_plaats_in");
+
+
+                int bedrag = res.getInt("bedrag");
+                int t_code = res.getInt("t_code");
+                Date datum = res.getDate("datum");
+                Time begintijd = res.getTime("begintijd");
+                String locatienaam = res.getString("locatienaam");
+                int minspelers = res.getInt("Min_aantal_spelers");
+                int spelers = res.getInt("aantal_deelneer");
+
                 Toernooizoeken toernooizoek = new Toernooizoeken(t_code, datum, begintijd, locatienaam, minspelers, spelers);
                 model.addRow(toernooizoek.getrow());
-                
+                toernoois.add(new Toernooi(t_code, bedrag, minspelers, datum, begintijd, vindtplaatsin));
             }
 
             TableToernooi.setModel(model);
-            
+
         } catch (Exception ex) {
             System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
         }
-        
-        System.out.println("finish");
-        
+
     }
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,14 +238,66 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
         //todo: datum, locatie en aantal deelnemers uit lijst halen en meegeven als parameter
-        new ToernooiWijzigen().setVisible(true);
+
+        Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
+        new ToernooiWijzigen(selected).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
-        if(JOptionPane.showConfirmDialog(this, "Weet u het zeker") == JOptionPane.YES_OPTION){
-            //remove a toernooi from the list
+
+        int t_code = 0;
+
+        int[] selected = TableToernooi.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een toernooi.");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
+                    toernooi = toernoois.get(selected[i]);
+                    t_code = toernooi.getT_Code();
+
+                    if (getBetalend(toernooi.getT_Code()) != true) {
+                        JOptionPane.showMessageDialog(this, "Kan het toernooi niet verwijderen; Er zijn nog deelnemers die betaald hebben.");
+                    } else {
+
+
+                        String sql = "delete from heeft_betaald where t_code = ?";
+                        String sql2 = "delete from toernooi where t_code = ?";
+
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql);
+                            stat.setInt(1, t_code);
+                            stat.execute();
+
+                        } catch (SQLException ex) {
+                            System.out.println(ex);
+                        }
+
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql2);
+                            stat.setInt(1, t_code);
+                            stat.execute();
+                        } catch (SQLException exc) {
+                            JOptionPane.showMessageDialog(this, exc);
+                        }
+                        model.removeRow(selected[i]);
+                    }
+                }
+            }
+
+            model.setRowCount(0);
+            toernoois.clear();
+            sqlupdatetable(TextField_Zoeken.getText());
         }
+
+
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
