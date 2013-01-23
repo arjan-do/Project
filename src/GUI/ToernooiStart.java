@@ -4,6 +4,13 @@
  */
 package GUI;
 
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author arjandoets
@@ -14,6 +21,9 @@ public class ToernooiStart extends javax.swing.JFrame {
      * Creates new form ToernooiStart
      */
     private int T_Code;
+    private int R_Code = 0;
+    private int spelers = 64;
+    
     
     public ToernooiStart() {
         initComponents();
@@ -22,6 +32,56 @@ public class ToernooiStart extends javax.swing.JFrame {
     public ToernooiStart(int T_Code) {
         initComponents();
         this.T_Code = T_Code;
+        initRonde();
+    }
+    
+    private void initRonde() {
+        //running the sql querry
+         String sql = "select max(Ronde) from opstelling where Toernooi = ?";
+           
+            try{
+                Connection conn;
+                conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql); 
+                
+                stat.setInt(1, T_Code);
+                
+                ResultSet res = stat.executeQuery();
+                
+                while(res.next()){
+                    R_Code = res.getInt("max(Ronde)");
+                }
+                
+            } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            }
+            
+            sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ? and plaats is null;";
+           
+            try{
+                Connection conn;
+                conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql); 
+                
+                stat.setInt(1, T_Code);
+                stat.setInt(2, R_Code);
+                
+                ResultSet res = stat.executeQuery();
+                
+                while(res.next()){
+                    spelers = res.getInt("count(*)");
+                }
+                
+            } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            }
+            
+            Label_Ronde.setText("Huidige Ronde: " + R_Code);
+            Label_Spelers.setText("Spelers Resterend " + spelers);
+            
+            
     }
     
     /**
@@ -34,10 +94,10 @@ public class ToernooiStart extends javax.swing.JFrame {
     private void initComponents() {
 
         Button_MaakOpstelling = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Button_Rating = new javax.swing.JButton();
         Button_Back = new javax.swing.JButton();
+        Label_Ronde = new javax.swing.JLabel();
+        Label_Spelers = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,20 +108,12 @@ public class ToernooiStart extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Rating");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        Button_Rating.setText("Rating");
+        Button_Rating.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_RatingActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
 
         Button_Back.setText("Back");
         Button_Back.addActionListener(new java.awt.event.ActionListener() {
@@ -70,6 +122,10 @@ public class ToernooiStart extends javax.swing.JFrame {
             }
         });
 
+        Label_Ronde.setText("Huidige Ronde:");
+
+        Label_Spelers.setText("Speler Resterend:");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,12 +133,18 @@ public class ToernooiStart extends javax.swing.JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(Button_MaakOpstelling, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jButton2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .add(Button_Back))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .add(Button_MaakOpstelling, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(Button_Back)
+                            .add(layout.createSequentialGroup()
+                                .add(6, 6, 6)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(Label_Spelers)
+                                    .add(Label_Ronde))))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(Button_Rating, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -90,10 +152,12 @@ public class ToernooiStart extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(Button_MaakOpstelling)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(Button_Rating)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(Label_Ronde)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(Label_Spelers)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 91, Short.MAX_VALUE)
                 .add(Button_Back)
                 .addContainerGap())
         );
@@ -107,9 +171,18 @@ public class ToernooiStart extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_MaakOpstellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_MaakOpstellingActionPerformed
-        new OpstelingToevoegen(T_Code, 1).setVisible(true);
-        this.dispose();
+        if (spelers == 0){
+            new OpstelingToevoegen(T_Code, R_Code).setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
+        }
     }//GEN-LAST:event_Button_MaakOpstellingActionPerformed
+
+    private void Button_RatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_RatingActionPerformed
+        new Rating().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_RatingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,8 +228,8 @@ public class ToernooiStart extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Back;
     private javax.swing.JButton Button_MaakOpstelling;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton Button_Rating;
+    private javax.swing.JLabel Label_Ronde;
+    private javax.swing.JLabel Label_Spelers;
     // End of variables declaration//GEN-END:variables
 }

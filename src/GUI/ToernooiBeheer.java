@@ -21,6 +21,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
     List<Toernooi> toernoois = new ArrayList<Toernooi>();
+    List<Toernooizoeken> toernooiszoeken = new ArrayList<Toernooizoeken>();
     Toernooi toernooi;
 
     /**
@@ -102,6 +103,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                 Toernooizoeken toernooizoek = new Toernooizoeken(t_code, datum, begintijd, locatienaam, minspelers, spelers);
                 model.addRow(toernooizoek.getrow());
                 toernoois.add(new Toernooi(t_code, bedrag, minspelers, datum, begintijd, vindtplaatsin));
+                toernooiszoeken.add(toernooizoek);
             }
 
             TableToernooi.setModel(model);
@@ -319,8 +321,14 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
     private void Button_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_StartActionPerformed
         Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
-        new ToernooiStart(selected.getT_Code()).setVisible(true);
-        this.dispose();
+        Toernooizoeken zoek = toernooiszoeken.get(TableToernooi.getSelectedRow());
+        if (selected.getMin_aantal_spelers() <= zoek.getSpelers()){
+            new ToernooiStart(selected.getT_Code()).setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Niet genoeg spelers");
+        }
+        
     }//GEN-LAST:event_Button_StartActionPerformed
 
     /**
