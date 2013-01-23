@@ -358,7 +358,7 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
                 this.dispose();
 
             } catch (SQLException e) {
-                System.out.println(e);
+                
 
             }
         } else {

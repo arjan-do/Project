@@ -121,7 +121,6 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
         } else if ("n".equals(betaald)) {
             rbNee.setSelected(true);
         }
-        System.out.println(" d_code --> " + d_code + " m_code --> " + m_code);
     }
 
     /**
@@ -299,23 +298,22 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
 
         String sql = "Update volgt set datum_betaling=?, heeft_betaald=? where d_code = ? and m_code = ?";
 
-        try{
+        try {
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setDate(1,datum);
-            stat.setString(2,betaald);
-            stat.setInt(3,d_code);
-            stat.setInt(4,m_code);
+            stat.setDate(1, datum);
+            stat.setString(2, betaald);
+            stat.setInt(3, d_code);
+            stat.setInt(4, m_code);
             stat.execute();
-            
+
             new DeelnemerBekijkMCs(deelnemer).setVisible(true);
             this.dispose();
-            
-        }catch(Exception e)
-        {
+
+        } catch (Exception e) {
             System.out.println(e);
         }
-        
+
     }//GEN-LAST:event_btSaveActionPerformed
 
     /**

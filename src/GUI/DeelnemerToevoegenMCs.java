@@ -7,10 +7,7 @@ package GUI;
 import Models.Deelnemer;
 import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -339,7 +336,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         } else if (rbNee.isSelected() && voegToeCheck != false) {
             heeft_betaald = "n";
             voegToeCheck = true;
-        } else {
+        } else if (!rbNee.isSelected() && !rbJa.isSelected()) {
             JOptionPane.showMessageDialog(this, "Selecteer een waarde bij 'heeft betaald'.");
             voegToeCheck = false;
         }
@@ -357,8 +354,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 new DeelnemerBekijkMCs(deelnemer).setVisible(true);
                 this.dispose();
 
-            } catch (Exception e) {
-                System.out.println(e);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Deze deelnemer staat al ingeschreven bij deze masterclass.");
             }
         }
 
