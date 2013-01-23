@@ -11,14 +11,14 @@ package Main;
 public class Opstelling_Generator {
     
     public static void main(String[] args) {
-        new Opstelling_Generator().calculatetavels(11);
+        
         
     }
     
-    private void calculatetavels(int ammount_of_players){
-        
-        int aantal = 1;
+    public static int[] calculatetavels(int aantal){
             
+        
+        
         //              1,2,3,4,5,6,7,8
         int[] tavels = {0,0,0,0,0,0,0,0};
 
@@ -60,20 +60,8 @@ public class Opstelling_Generator {
             } else if (aantal < 8){
                 tavels[ex - 1] = 1;
             }
-            System.out.println(aantal);
-            
-            // log only do not include in finale version
-            System.out.println(tavels[0]);
-            System.out.println(tavels[1]);
-            System.out.println(tavels[2]);
-            System.out.println(tavels[3]);
-            System.out.println(tavels[4]);
-            System.out.println(tavels[5]);
-            System.out.println(tavels[6]);
-            System.out.println(tavels[7]);
-            // end of log only
-
         
+            return tavels;
     }
     
 }

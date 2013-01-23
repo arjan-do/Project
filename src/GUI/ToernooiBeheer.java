@@ -176,6 +176,11 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         });
 
         Button_Start.setText("Start");
+        Button_Start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_StartActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Zoeken:");
 
@@ -197,7 +202,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Wijzigen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                        .addComponent(Button_Verwijderen, javax.swing.GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Button_Start)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,6 +316,12 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         sqlupdatetable(TextField_Zoeken.getText());
 
     }//GEN-LAST:event_TextField_ZoekenKeyReleased
+
+    private void Button_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_StartActionPerformed
+        Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
+        new ToernooiStart(selected.getT_Code()).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Button_StartActionPerformed
 
     /**
      * @param args the command line arguments
