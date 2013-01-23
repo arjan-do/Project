@@ -171,8 +171,8 @@ public class FaciliteitToevoegen extends javax.swing.JFrame {
             //huidige scherm sluiten
             this.dispose();
 
-            //Hoofdscherm opnieuw openen
-            //new HoofdScherm().setVisible(true);
+            //FaciliteitBeheer opnieuw openen
+            new FaciliteitBeheer().setVisible(true);
 
 
 
