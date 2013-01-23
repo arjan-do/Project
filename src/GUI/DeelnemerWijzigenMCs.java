@@ -31,6 +31,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
     private int m_code;
     private String betaald;
     private Date datum;
+    private boolean checkInvoer;
 
     public DeelnemerWijzigenMCs() {
         initComponents();
@@ -44,8 +45,10 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
 
         this.deelnemer = deelnemer;
         this.masterclass = masterclass;
+        //gets and sets every value. 
         initValues();
 
+        //checks which radiobutton is selected, sets 'datum' to visible or not.
         radioButtonCheck();
         if (tfDag.isVisible()) {
 
@@ -279,6 +282,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_rbNeeActionPerformed
 
     private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
+        checkInvoer = true;
         if (tfDag.isVisible()) {
             try {
                 int dag = Integer.parseInt(tfDag.getText());
@@ -288,6 +292,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
                 datum = DateUtil.toSqlDate(jaar, maand, dag);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Voer gehele getallen in bij datum.");
+                checkInvoer = false;
             }
             betaald = "j";
         } else {
@@ -298,22 +303,24 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
 
         String sql = "Update volgt set datum_betaling=?, heeft_betaald=? where d_code = ? and m_code = ?";
 
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setDate(1, datum);
-            stat.setString(2, betaald);
-            stat.setInt(3, d_code);
-            stat.setInt(4, m_code);
-            stat.execute();
+        if (checkInvoer != false) {
 
-            new DeelnemerBekijkMCs(deelnemer).setVisible(true);
-            this.dispose();
+            try {
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setDate(1, datum);
+                stat.setString(2, betaald);
+                stat.setInt(3, d_code);
+                stat.setInt(4, m_code);
+                stat.execute();
 
-        } catch (Exception e) {
-            System.out.println(e);
+                new DeelnemerBekijkMCs(deelnemer).setVisible(true);
+                this.dispose();
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
-
     }//GEN-LAST:event_btSaveActionPerformed
 
     /**

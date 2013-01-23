@@ -32,6 +32,7 @@ public class DeelnemerBekijken extends javax.swing.JFrame {
     
     private void fillTextArea()
     {
+        //Gets all the data needed to fill TextArea.
         String voornaam = deelnemer.getVoornaam();
         String achternaam = deelnemer.getAchternaam();
         String straat = deelnemer.getStraat();
@@ -43,6 +44,7 @@ public class DeelnemerBekijken extends javax.swing.JFrame {
         String is_bekend = deelnemer.getIsbekend();
         String rating = Integer.toString(deelnemer.getRating());
         
+        //if is_bekend = j or n, set String accordingly.
         if("j".equals(is_bekend))
         {
            is_bekend_uitvoer = "Ja";
@@ -57,6 +59,8 @@ public class DeelnemerBekijken extends javax.swing.JFrame {
             is_bekend_uitvoer = "";
         }
         
+        
+        //Setting TextArea.
         TextArea_Gegevens.setText("Voornaam :\t" + voornaam + "\n" +
                                   "Achternaam :\t" + achternaam + "\n" +
                                   "Straat :\t" + straat + "\n" +

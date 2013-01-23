@@ -54,7 +54,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         betaald.add(rbNee);
 
     }
-
+    
+    //initScreen used to find m_code.
     private void initScreen() {
         String sql = "Select m_code from masterclass";
         lbDeelnemer.setText(voornaam + " " + achternaam);
@@ -80,6 +81,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     }
 
+    //radioButtonCheck used to determine whether or not the date can be entered.
     private void radioButtonCheck() {
         if (rbNee.isSelected()) {
             tfDag.setVisible(false);
@@ -98,7 +100,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             jLabel3.setVisible(false);
         }
     }
-
+    //Finds selectedItem of the combobox.
     private int comboBoxSelectedValue() {
         int selectedItem = 0;
         Object selected = cbMasterclass.getSelectedItem();
@@ -271,6 +273,8 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
 
+        //If a masterclass has been selected, show the related niveau.
+        
         m_code = comboBoxSelectedValue();
 
         String sql = "select niveau from masterclass where m_code = ?";

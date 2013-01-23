@@ -48,6 +48,8 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         bekend.add(RadioButton_BekendJa);
         bekend.add(RadioButton_BekendNee);
 
+        //Retrieve all data for setting in textfields.
+        
         String voornaam = deelnemer.getVoornaam();
         String achternaam = deelnemer.getAchternaam();
         String straat = deelnemer.getStraat();
@@ -66,9 +68,18 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         TextField_Woonplaats.setText(woonplaats);
         TextField_Telefoonnummer.setText(Integer.toString(tel_nr));
         TextField_Email.setText(email);
+        
+        if("j".equals(is_bekend))
+        {
+            RadioButton_BekendJa.setSelected(true);
+        }
+        else if("n".equals(is_bekend))
+        {
+            RadioButton_BekendNee.setSelected(true);
+        }
 
     }
-
+    //->> Same function as checkEmail in DeelnemerToevoegen.
     private void checkEmail(String email) {
 
         if (EmailAddressValidator.isValidEmailAddress(email) == true) {
@@ -82,6 +93,7 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         }
     }
 
+    //->> Same function as checkPostcode in DeelnemerToevoegen.
     private void checkPostcode(String postcode) {
 
 
@@ -294,10 +306,6 @@ public class DeelnemerWijzigen extends javax.swing.JFrame {
         //onderstaande code van Email en Postcode zijn
         // Voor de gemakkelijkheid van de gebruiker, die nu niet eerst een toets
         //in hoeft te drukken voor hij/zij gegevens wil aanpassen. 
-
-
-
-
 
         if (checkEmail == true && checkPostcode == true) {
 

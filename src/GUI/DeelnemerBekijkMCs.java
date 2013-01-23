@@ -53,8 +53,11 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }
 
     private void updateTable() {
+        //Voornaam & Achternaam in 1 String.
         String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
+        //Setting that string in a label.
         lbDeelnemer.setText(naam);
+        //getD_Code to find Masterclasses in Volgt.
         dcode = deelnemer.getD_code();
 
 
@@ -85,9 +88,11 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
                         res.getInt("minimale_rating"),
                         res.getInt("Docent"),
                         res.getInt("vindt_plaats_in"));
-                String heeft_betaald = res.getString("Heeft_betaald");
+                heeft_betaald = res.getString("Heeft_betaald");
                 masterclassZoeken.add(masterclass);
+                //Date Formatting: From SQLDate to String.
                 String dateFormat = DateUtil.fromSqlDateToString(masterclass.getDatum());
+                //String[] for setting values in the model.
                 String[] MC = new String[]{"" + masterclass.getNiveau(), "" + dateFormat, "" + masterclass.getRating(), heeft_betaald};
                 model.addRow(MC);
             }
@@ -220,15 +225,19 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_btBackActionPerformed
 
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
+        
+        //Counts selected rows
         int[] selected = table_Masterclasses.getSelectedRows();
+        //If 0 selected or more than 1: error messages.
         if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een masterclass.");
         } else if (selected.length > 1) {
             JOptionPane.showMessageDialog(this, "Maximaal 1 masterclass selecteren AUB.");
         } else {
+            //Else: Selected row = Masterclass in the array.
             int row = table_Masterclasses.getSelectedRow();
             masterclass = masterclassZoeken.get(row);
-
+            //DeelnemerWijzigenMCs, with both deelnemer and Masterclass as parameters.
             new DeelnemerWijzigenMCs(deelnemer, masterclass).setVisible(true);
             this.dispose();
         }

@@ -37,6 +37,10 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
         bekend.add(RadioButton_BekendNee);
     }
 
+    //Checking email through Configuration.EmailAddressValidator.
+    //isValidEmailAddress(String email) returns boolean true or false.
+    //CheckEmail also sets checkEmail to true or false accordingly, used to check
+    //whether or not the sql code in "ButtonToevoegenActionPerformed" should be executed.
     private void checkEmail(String email) {
         if (EmailAddressValidator.isValidEmailAddress(email) == true) {
             this.lbMeldingEmail.setForeground(Color.green);
@@ -48,7 +52,10 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
             checkEmail = false;
         }
     }
-
+    
+    //Checking Postcode through pattern.
+    //CheckPostcode also sets checkPostcode to true or false accordingly, used to check
+    //whether or not the sql code in "ButtonToevoegenActionPerformed" should be executed.
     private void checkPostcode(String postcode) {
 
 
@@ -253,7 +260,7 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
 
-
+        //CheckEmail & checkPostcode defined in the voids checkEmail & CheckPostcode.
 
         if (checkEmail == true && checkPostcode == true) {
 
@@ -327,11 +334,13 @@ public class DeelnemerToevoegen extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void TextField_PostcodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PostcodeKeyReleased
+        //checkPostcode is checked whenever a character is added to the textfield.
         String postCode = this.TextField_Postcode.getText();
         checkPostcode(postCode);
     }//GEN-LAST:event_TextField_PostcodeKeyReleased
 
     private void TextField_EmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_EmailKeyReleased
+        //checkEmail is checked whenever a character is added to the textfield.
         String email = this.TextField_Email.getText();
         checkEmail(email);
 
