@@ -168,6 +168,11 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         });
 
         btWijzigen.setText("Deelname Wijzigen");
+        btWijzigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btWijzigenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -286,6 +291,26 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         new DeelnemerToevoegenToernooien(deelnemer).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btToevoegenActionPerformed
+
+    private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
+                //Counts selected rows
+        int[] selected = table_Toernooien.getSelectedRows();
+        //If 0 selected or more than 1: error messages.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een Toernooi.");
+        } else if (selected.length > 1) {
+            JOptionPane.showMessageDialog(this, "Maximaal 1 toernooi selecteren AUB.");
+        } else {
+            //Else: Selected row = Masterclass in the array.
+            int row = table_Toernooien.getSelectedRow();
+            toernooi = toernoois.get(row);
+            //DeelnemerWijzigenMCs, with both deelnemer and Masterclass as parameters.
+            new DeelnemerWijzigenToernooien(deelnemer, toernooi).setVisible(true);
+            this.dispose();
+        }
+
+        
+    }//GEN-LAST:event_btWijzigenActionPerformed
 
     /**
      * @param args the command line arguments
