@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.DateUtil;
+
 /**
  *
  * @author Nick
@@ -27,50 +28,49 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     private int dcode;
     private MasterclassZoeken masterclass;
     private int m_code;
-    
+    private String heeft_betaald;
+
     /**
      * Creates new form DeelnemerBekijkMCs
      */
     public DeelnemerBekijkMCs() {
         initComponents();
     }
-    
-    public DeelnemerBekijkMCs(Deelnemer deelnemer)
-    {
+
+    public DeelnemerBekijkMCs(Deelnemer deelnemer) {
         initComponents();
         this.deelnemer = deelnemer;
         fillComponents();
         model.setRowCount(0);
-        masterclassZoeken.clear();    
+        masterclassZoeken.clear();
         updateTable();
     }
-    
-        private void fillComponents() {
-        String[] kolommen = {"Niveau", "Datum", "Minimale Rating","Heeft Betaald"};
+
+    private void fillComponents() {
+        String[] kolommen = {"Niveau", "Datum", "Minimale Rating", "Heeft Betaald"};
         model = new DefaultTableModel(kolommen, 0);
         table_Masterclasses.setModel(model);
     }
-    
-    
-        private void updateTable() {
-        String naam = deelnemer.getVoornaam()+" " + deelnemer.getAchternaam();
+
+    private void updateTable() {
+        String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
         lbDeelnemer.setText(naam);
         dcode = deelnemer.getD_code();
-        
+
 
 
         try {
 
             //SQL Statement.
             String sql = "Select m.*, heeft_betaald from Masterclass m join volgt v on m.m_code = v.m_code"
-                                                                  + " where d_code = ?";
+                    + " where d_code = ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
 
             //input of the textfield + "%" for the SQL Statement.
-            stat.setInt(1,dcode);
+            stat.setInt(1, dcode);
 
             ResultSet res = stat.executeQuery();
 
@@ -88,7 +88,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
                 String heeft_betaald = res.getString("Heeft_betaald");
                 masterclassZoeken.add(masterclass);
                 String dateFormat = DateUtil.fromSqlDateToString(masterclass.getDatum());
-                String[] MC = new String[]{"" + masterclass.getNiveau() ,"" + dateFormat,"" + masterclass.getRating(),heeft_betaald };
+                String[] MC = new String[]{"" + masterclass.getNiveau(), "" + dateFormat, "" + masterclass.getRating(), heeft_betaald};
                 model.addRow(MC);
             }
 
@@ -97,8 +97,6 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -223,28 +221,24 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
 
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
         int[] selected = table_Masterclasses.getSelectedRows();
-        if(selected.length == 0)
-        {
+        if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een masterclass.");
-        }
-        else if(selected.length > 1)
-        {
+        } else if (selected.length > 1) {
             JOptionPane.showMessageDialog(this, "Maximaal 1 masterclass selecteren AUB.");
-        }
-        else{
+        } else {
             int row = table_Masterclasses.getSelectedRow();
             masterclass = masterclassZoeken.get(row);
-            
-            new DeelnemerWijzigenMCs(deelnemer,masterclass).setVisible(true);
+
+            new DeelnemerWijzigenMCs(deelnemer, masterclass).setVisible(true);
             this.dispose();
         }
-        
-        
+
+
     }//GEN-LAST:event_btWijzigenActionPerformed
 
     private void btVerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerwijderenActionPerformed
-        
-        
+
+
         int[] selected = table_Masterclasses.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
@@ -257,21 +251,42 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
                 for (int i = selected.length - 1; i > -1; i--) {
                     masterclass = masterclassZoeken.get(selected[i]);
                     m_code = masterclass.getM_Code();
-                    model.removeRow(selected[i]);
 
                     String sql = "delete from volgt where m_code = ? AND d_code = ? ";
-
+                    String sqlBetaald = "Select * from volgt where m_code = ? AND d_code = ?";
                     try {
                         Connection conn = SimpleDataSourceV2.getConnection();
-                        PreparedStatement stat = conn.prepareStatement(sql);
+                        PreparedStatement stat = conn.prepareStatement(sqlBetaald);
                         stat.setInt(1, m_code);
-                        stat.setInt(2,dcode);
-                        stat.execute();
+                        stat.setInt(2, dcode);
+                        ResultSet res = stat.executeQuery();
 
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, ex);
+                        while (res.next()) {
+                            heeft_betaald = res.getString("heeft_betaald");
+                        }
+
+
+                    } catch (SQLException e) {
+                        System.out.println(e);
                     }
 
+                    if ("j".equals(heeft_betaald)) {
+                        JOptionPane.showMessageDialog(this, "Kan geen deelname verwijderen waarvoor de deelnemer al betaald heeft. Wijzig eerst de betalingsstatus.");
+                    } else {
+
+                        model.removeRow(selected[i]);
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql);
+                            stat.setInt(1, m_code);
+                            stat.setInt(2, dcode);
+                            stat.execute();
+
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(this, ex);
+                        }
+
+                    }
                 }
             }
             //Update de modelRows, clear de arraylist Deelnemers.
@@ -285,8 +300,8 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_btVerwijderenActionPerformed
 
     private void btToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToevoegenActionPerformed
-            new DeelnemerToevoegenMCs(deelnemer).setVisible(true);
-            this.dispose();
+        new DeelnemerToevoegenMCs(deelnemer).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btToevoegenActionPerformed
 
     /**
