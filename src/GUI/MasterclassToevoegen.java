@@ -21,7 +21,7 @@ import utils.DateUtil;
 public class MasterclassToevoegen extends javax.swing.JFrame {
 int M_Code;
 int Niveau;
-int Prijs;
+double Prijs;
 Date Datum;
 int Docent;
 int Locatie;
@@ -201,7 +201,7 @@ String LNaam;
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         try{
         Niveau = Integer.parseInt(TextField_Niveau.getText());
-        Prijs = Integer.parseInt(TextField_Prijs.getText());
+        Prijs = Double.parseDouble(TextField_Prijs.getText());
         
         Datum = null;
         
@@ -223,7 +223,7 @@ String LNaam;
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setInt(1, Niveau);
-                stat.setInt(2, Prijs);
+                stat.setDouble(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
                 stat.setInt(5, Docent);

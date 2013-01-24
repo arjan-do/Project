@@ -25,7 +25,7 @@ MasterclassZoeken masterclass;
 int M_Code;
 int Niveau;
 Date Datum;
-int Prijs;
+double Prijs;
 int Minimale_rating;
 int Docent;
 int Locatie;
@@ -34,8 +34,6 @@ int maand;
 int dag;
 String Achternaam;
 String LNaam;
-int DOCENT;
-int LOCATIE;
         
         
     /**
@@ -58,7 +56,7 @@ int LOCATIE;
         String niveau = Integer.toString(masterclass.getNiveau());
         TextField_Niveau.setText(niveau);
         
-        String prijs = Integer.toString(masterclass.getPrijs());
+        String prijs = Double.toString(masterclass.getPrijs());
         TextField_Prijs.setText(prijs);
         
         Datum = masterclass.getDatum();
@@ -255,7 +253,7 @@ int LOCATIE;
         
         try{
         Niveau = Integer.parseInt(TextField_Niveau.getText());
-        Prijs = Integer.parseInt(TextField_Prijs.getText());
+        Prijs = Double.parseDouble(TextField_Prijs.getText());
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         
         Datum = null;
@@ -278,7 +276,7 @@ int LOCATIE;
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setInt(1, Niveau);
-                stat.setInt(2, Prijs);
+                stat.setDouble(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
                 stat.setInt(5, Docent);

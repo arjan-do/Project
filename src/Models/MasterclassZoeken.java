@@ -14,7 +14,7 @@ import java.sql.Date;
 public class MasterclassZoeken {
     private int M_Code;
     private int Niveau;
-    private int Prijs;
+    private double Prijs;
     private Date Datum;
     private int Rating;
     private int Docent;
@@ -22,7 +22,7 @@ public class MasterclassZoeken {
     
 
 
-    public MasterclassZoeken(int M_Code, int Niveau, int Prijs, Date Datum, int Rating, int Docent, int Locatie) {
+    public MasterclassZoeken(int M_Code, int Niveau, double Prijs, Date Datum, int Rating, int Docent, int Locatie) {
         this.M_Code = M_Code;
         this.Niveau = Niveau;
         this.Prijs = Prijs;
@@ -49,11 +49,11 @@ public class MasterclassZoeken {
         this.Niveau = Niveau;
     }
 
-    public int getPrijs() {
+    public double getPrijs() {
         return Prijs;
     }
 
-    public void setPrijs(int Prijs) {
+    public void setPrijs(double Prijs) {
         this.Prijs = Prijs;
     }
 
@@ -90,7 +90,7 @@ public class MasterclassZoeken {
     }
             
     public String[] getrow(){
-        return new String[]{Integer.toString(M_Code), Integer.toString(Niveau), Integer.toString(Prijs), this.Datum.toString(), Integer.toString(Rating), Integer.toString(Docent), Integer.toString(Locatie)};
+        return new String[]{Integer.toString(M_Code), Integer.toString(Niveau), Double.toString(Prijs), this.Datum.toString(), Integer.toString(Rating), Integer.toString(Docent), Integer.toString(Locatie)};
     }
     
     public String[] getInfo(){
