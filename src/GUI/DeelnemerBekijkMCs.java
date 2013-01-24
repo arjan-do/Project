@@ -26,7 +26,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     private MasterclassZoeken masterclass;
     private int m_code;
     private String heeft_betaald;
-
+    private String dateFormat;
     /**
      * Creates new form DeelnemerBekijkMCs
      */
@@ -44,7 +44,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }
 
     private void fillComponents() {
-        String[] kolommen = {"Niveau", "Minimale Rating", "Heeft Betaald", "Datum_betaald"};
+        String[] kolommen = {"Minimale Rating", "Heeft Betaald", "Datum_betaald"};
         model = new DefaultTableModel(kolommen, 0);
         table_Masterclasses.setModel(model);
     }
@@ -56,13 +56,13 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
         lbDeelnemer.setText(naam);
         //getD_Code to find Masterclasses in Volgt.
         dcode = deelnemer.getD_code();
-
+        dateFormat = "";
 
 
         try {
 
             //SQL Statement.
-            String sql = "Select m.*, heeft_betaald,datum_betaling from Masterclass m join volgt v on m.m_code = v.m_code"
+            String sql = "Select m.*, heeft_betaald,datum_betaling from volgt v left join masterclass m on m.m_code = v.m_code"
                     + " where d_code = ?";
 
             Connection conn;
@@ -85,7 +85,6 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
                 int docent = res.getInt("Docent");
                 int vindt_plaats_in = res.getInt("Vindt_plaats_in");
                 masterclass = new MasterclassZoeken(m_code,
-                        niveau,
                         prijs,
                         datum,
                         minimale_rating,
@@ -93,10 +92,14 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
                         vindt_plaats_in);
                 heeft_betaald = res.getString("Heeft_betaald");
                 masterclassZoeken.add(masterclass);
-
-                String DateFormat = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
+                try{
+                dateFormat = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
+                }catch(Exception e)
+                {
+                    
+                }
                 //String[] for setting values in the model.
-                String[] MC = new String[]{"" + masterclass.getNiveau(), "" + masterclass.getRating(), heeft_betaald,""+ DateFormat };
+                String[] MC = new String[]{"" + masterclass.getRating(), heeft_betaald,""+ dateFormat };
                 model.addRow(MC);
             }
 
