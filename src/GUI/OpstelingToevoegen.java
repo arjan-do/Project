@@ -55,21 +55,30 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
     
     private void CreateOpstelling(){
         
-        if (R_Code == 0){
+            
             int aantal = 0;
             String sql = "select count(D_Code) from heeft_betaald where inleggeld_betaald = 'j' and T_Code = ?";
            
+            if(R_Code != 0){
+                sql += " and D_Code in (select D_Code from plaats where Plaats = 1 and Ronde = ?)";
+            }
+            
             try{
                 Connection conn;
                 conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql); 
                 
                 stat.setInt(1, T_Code);
+            
+                if(R_Code != 0){
+                    stat.setInt(2, R_Code);
+                }
                 
                 ResultSet res = stat.executeQuery();
                 
                 while(res.next()){
                     aantal = res.getInt("count(D_Code)");
+                    System.out.println("run");
                 }
                 
             } catch (Exception ex) {
@@ -84,12 +93,20 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
             
             sql = "select voornaam, achternaam, D_Code from deelnemer where d_code in (select d_code from heeft_betaald where inleggeld_betaald = 'j' and t_code = ?)";
             
+            if(R_Code != 0){
+                sql += " and D_Code in (select D_Code from plaats where Plaats = 1 and Ronde = ?)";
+            }
+            
             try{
                 Connection conn;
                 conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql); 
 
                 stat.setInt(1, T_Code);
+                
+                if(R_Code != 0){
+                    stat.setInt(2, R_Code);
+                }
                 
                 ResultSet res = stat.executeQuery();
                 
@@ -124,7 +141,7 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
                     
                     step --;
                     
-                    OpstellingDeelnemer op = new OpstellingDeelnemer(R_Code, tavels_nr, d_code, voornaam, achternaam, 0);
+                    OpstellingDeelnemer op = new OpstellingDeelnemer(R_Code + 1, tavels_nr, d_code, voornaam, achternaam, 0);
                     deelnemers.add(op);
                     
                     if (step == 0){
@@ -139,6 +156,7 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
             }
             
             
+            
             for (int a = 0; a < deelnemers.size(); a ++){
                 OpstellingDeelnemer deelnemer = deelnemers.get(a);
                 model.addRow(deelnemer.torow());
@@ -146,7 +164,7 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
             
             
             
-        }
+        
         
         
     }
