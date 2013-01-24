@@ -88,6 +88,48 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
         }
     }
 
+    private boolean getBetalendMasterclass(int d_code) {
+
+        String sql = "select * from volgt where d_code = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, d_code);
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                String betaalCheck = res.getString("heeft_betaald");
+                if ("j".equals(betaalCheck)) {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return true;
+    }
+
+    private boolean getBetalendToernooi(int d_code) {
+
+        String sql = "select * from heeft_betaald where d_code = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, d_code);
+            ResultSet res = stat.executeQuery();
+
+            while (res.next()) {
+                String betaalCheck = res.getString("inleggeld_betaald");
+                if ("j".equals(betaalCheck)) {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -315,20 +357,50 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
                 for (int i = selected.length - 1; i > -1; i--) {
                     deelnemer = deelnemers.get(selected[i]);
                     d_code = deelnemer.getD_code();
-                    model.removeRow(selected[i]);
-
                     String sql = "delete from deelnemer where d_code = ?";
+                    String sql2 = "Delete from heeft_betaald where d_code = ?";
+                    String sql3 = "Delete from volgt where d_code = ?";
 
-                    try {
-                        Connection conn = SimpleDataSourceV2.getConnection();
-                        PreparedStatement stat = conn.prepareStatement(sql);
-                        stat.setInt(1, d_code);
-                        stat.execute();
+                    if (getBetalendMasterclass(d_code) == true && getBetalendToernooi(d_code) == true) {
 
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, "U kan deze deelnemer niet verwijderen: Deze persoon doet mee aan een Toernooi of Masterclass.");
+                        model.removeRow(selected[i]);
+
+
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql2);
+                            stat.setInt(1, d_code);
+                            stat.execute();
+
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(this, ex);
+                        }
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql3);
+                            stat.setInt(1, d_code);
+                            stat.execute();
+
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(this, ex);
+                        }
+
+                        try {
+                            Connection conn = SimpleDataSourceV2.getConnection();
+                            PreparedStatement stat = conn.prepareStatement(sql);
+                            stat.setInt(1, d_code);
+                            stat.execute();
+
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(this, ex);
+                        }
+                    }else if(!getBetalendMasterclass(d_code))
+                    {
+                        JOptionPane.showMessageDialog(this, "Deze deelnemer heeft betaald voor een Masterclass. Verander eerst de status.");
+                    }else if(!getBetalendToernooi(d_code))
+                    {
+                        JOptionPane.showMessageDialog(this, "Deze persoon staat nog ingeschreven voor een toernooi. Verander eerst de status.");
                     }
-
                 }
             }
             //Update de modelRows, clear de arraylist Deelnemers.
@@ -411,7 +483,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BekijkenActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
 
         int[] selected = Table_Deelnemers.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
@@ -461,8 +533,8 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btToernooiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToernooiActionPerformed
-        
-                int[] selected = Table_Deelnemers.getSelectedRows();
+
+        int[] selected = Table_Deelnemers.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
@@ -505,7 +577,7 @@ public class DeelnemerBeheer extends javax.swing.JFrame {
             new DeelnemerBekijkToernooien(deelnemer).setVisible(true);
             this.dispose();
         }
-        
+
     }//GEN-LAST:event_btToernooiActionPerformed
 
     /**
