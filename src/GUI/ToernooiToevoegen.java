@@ -263,13 +263,15 @@ public class ToernooiToevoegen extends javax.swing.JFrame {
             
             stat.execute();
             
+            new ToernooiBeheer().setVisible(true);
+            this.dispose();
+            
         } catch (Exception ex) {
             System.out.println(ex);
-            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Controleer alle Ingevoerde Waarde");
         }
          
-        new ToernooiBeheer().setVisible(true);
-        this.dispose();
+        
          
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 

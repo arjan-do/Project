@@ -300,14 +300,15 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
             stat.setInt(6, toernooi.getT_Code());
             
             stat.execute();
+            new ToernooiBeheer().setVisible(true);
+            this.dispose();
             
         } catch (Exception ex) {
             System.out.println(ex);
-            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Controleer alle Ingevoerde Waarde");
         }
          
-        new ToernooiBeheer().setVisible(true);
-        this.dispose();
+        
          
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
