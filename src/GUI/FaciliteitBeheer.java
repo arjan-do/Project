@@ -272,10 +272,15 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_VerwijderenActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+       try {
         Faciliteit selected = faciliteiten.get(TableFaciliteit.getSelectedRow());
         new FaciliteitWijzigen(selected).setVisible(true);
         this.dispose();
-        
+       }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(this, "Selecteer een faciliteit");
+        }
+    
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
