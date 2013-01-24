@@ -211,7 +211,7 @@ public class ToernooiStart extends javax.swing.JFrame {
         } else {
             if (spelers == 0){
                 
-                
+                // hier moet hij joshua
                 
             } else {
                 JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
