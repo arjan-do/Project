@@ -29,6 +29,16 @@ public class Toernooi {
         this.vind_plaats_in = vind_plaats_in;
     }
 
+    public Toernooi(int T_Code, int bedrag, int Min_aantal_spelers, Date datum, Time begintijd) {
+        this.T_Code = T_Code;
+        this.bedrag = bedrag;
+        this.Min_aantal_spelers = Min_aantal_spelers;
+        this.datum = datum;
+        this.begintijd = begintijd;
+    }
+    
+    
+
     public int getMin_aantal_spelers() {
         return Min_aantal_spelers;
     }

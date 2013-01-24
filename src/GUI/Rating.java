@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,7 +26,9 @@ public class Rating extends javax.swing.JFrame {
     private int R_Code;
     private int Tafel;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
+    OpstellingDeelnemer deelnemer;
     ArrayList<OpstellingDeelnemer> deelnemers = new ArrayList<>();
+    DefaultTableModel tModel = new DefaultTableModel();
     
     public Rating() {
         initComponents();
@@ -63,6 +66,16 @@ public class Rating extends javax.swing.JFrame {
         {
             System.out.println(e);
         }
+    }
+    
+        private int comboBoxSelectedValue() {
+        int selectedItem = 0;
+        Object selected = ComboBox_tafelselect.getSelectedItem();
+        if (selected != null) {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
     }
     
 
@@ -155,6 +168,31 @@ public class Rating extends javax.swing.JFrame {
 
     private void ComboBox_tafelselectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_tafelselectActionPerformed
         
+        String sql =  "Select d.* from deelnemer d join heeft_betaald h on d.d_code = h.d_code"
+                                                + "join plaats p on h.d_code = p.d_code "
+                                                + "where toernooi = ? and ronde = ? and tafel = ?";
+        int selectedTafel = comboBoxSelectedValue();
+        
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1,T_Code);
+            stat.setInt(2,R_Code);
+            stat.setInt(3,selectedTafel);
+            ResultSet res = stat.executeQuery();
+            
+            while(res.next())
+            {
+                deelnemer = new OpstellingDeelnemer(R_Code,selectedTafel,res.getInt("d.D_Code"), res.getString("voornaam"), res.getString("achternaam"), res.getInt("Rating"));
+                deelnemers.add(deelnemer);
+                String[] tabelAdd = new String[] {res.getString("Voornaam"), res.getString("Achternaam"), "" + res.getInt("rating")};
+                tModel.addRow(tabelAdd);
+            }
+            
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }
         
     }//GEN-LAST:event_ComboBox_tafelselectActionPerformed
 

@@ -7,10 +7,7 @@ package GUI;
 import Models.Deelnemer;
 import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -47,7 +44,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
     }
 
     private void fillComponents() {
-        String[] kolommen = {"Niveau", "Datum", "Minimale Rating", "Heeft Betaald"};
+        String[] kolommen = {"Niveau", "Minimale Rating", "Heeft Betaald", "Datum_betaald"};
         model = new DefaultTableModel(kolommen, 0);
         table_Masterclasses.setModel(model);
     }
@@ -65,7 +62,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
         try {
 
             //SQL Statement.
-            String sql = "Select m.*, heeft_betaald from Masterclass m join volgt v on m.m_code = v.m_code"
+            String sql = "Select m.*, heeft_betaald,datum_betaling from Masterclass m join volgt v on m.m_code = v.m_code"
                     + " where d_code = ?";
 
             Connection conn;
@@ -80,20 +77,26 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
 
             while (res.next()) {
 
-
-                masterclass = new MasterclassZoeken(res.getInt("m_code"),
-                        res.getInt("niveau"),
-                        res.getDouble("prijs"),
-                        res.getDate("datum"),
-                        res.getInt("minimale_rating"),
-                        res.getInt("Docent"),
-                        res.getInt("vindt_plaats_in"));
+                Date datum = res.getDate("datum");
+                int m_code = res.getInt("m_code");
+                int niveau = res.getInt("Niveau");
+                double prijs = res.getDouble("prijs");
+                int minimale_rating = res.getInt("Minimale_rating");
+                int docent = res.getInt("Docent");
+                int vindt_plaats_in = res.getInt("Vindt_plaats_in");
+                masterclass = new MasterclassZoeken(m_code,
+                        niveau,
+                        prijs,
+                        datum,
+                        minimale_rating,
+                        docent,
+                        vindt_plaats_in);
                 heeft_betaald = res.getString("Heeft_betaald");
                 masterclassZoeken.add(masterclass);
-                //Date Formatting: From SQLDate to String.
-                String dateFormat = DateUtil.fromSqlDateToString(masterclass.getDatum());
+
+                String DateFormat = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
                 //String[] for setting values in the model.
-                String[] MC = new String[]{"" + masterclass.getNiveau(), "" + dateFormat, "" + masterclass.getRating(), heeft_betaald};
+                String[] MC = new String[]{"" + masterclass.getNiveau(), "" + masterclass.getRating(), heeft_betaald,""+ DateFormat };
                 model.addRow(MC);
             }
 
