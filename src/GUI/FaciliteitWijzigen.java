@@ -38,7 +38,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
         initModels();
     }
     
-    public void initModels() {
+    private void initModels() {
         
      TextField_Naam.setText(faciliteit.getNaam());
      TextField_Straatnaam.setText(faciliteit.getStraat());

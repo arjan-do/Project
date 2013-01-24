@@ -5,6 +5,7 @@
 package GUI;
 
 import Models.Winnaar;
+import Models.Deelnemer;
 import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +22,8 @@ public class Winnaars extends javax.swing.JFrame {
     
     DefaultTableModel model = new DefaultTableModel();
     private ArrayList<Winnaar> winnaars = new ArrayList<>();
+    private int T_Code;
+    private int R_Code;
     Winnaar winnaar;
 
     /**
@@ -28,6 +31,13 @@ public class Winnaars extends javax.swing.JFrame {
      */
     public Winnaars() {
         initComponents();
+        
+    }
+    
+    public Winnaars(int R_Code, int T_Code){
+        initComponents();
+        this.T_Code = T_Code;
+        this.R_Code = R_Code;
         fillComponents();
         updateTable();
     }
@@ -38,34 +48,39 @@ public class Winnaars extends javax.swing.JFrame {
         //DefaultTableModel aanmaken waarin je aan de constructor de header kolommen meegeeft en het aantal lege start rijen 
          model = new DefaultTableModel(kolommen, 0);
         //model setten
-        jTable1.setModel(model);
+        Table_winnaars.setModel(model);
     }
     
     private void updateTable(){
-        
+                
+
         try {
 
             //SQL Statement.
-            String sql = "Select deelnemer.voornaam as voornaam, deelnemer.achternaam as achternaam, plaats.plaats as plaats from deelnemer left outer join plaats on deelnemer.d_code = plaats.d_code group by deelnemer.voornaam having deelnemer.voornaam like ? or deelnemer.achternaam like ? or plaats.plaats like ? ";
+            String sql = "Select deelnemer.voornaam as voornaam, deelnemer.achternaam as achternaam, plaats.plaats as plaats from deelnemer join plaats on deelnemer.d_code = plaats.d_code where plaats.toernooi = ? and plaats.ronde = ?";
+       
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
             
-//            stat.setString(1, '%' + zoeken + '%');
-//            stat.setString(2, '%' + zoeken + '%');
-//            stat.setString(3, '%' + zoeken + '%');
+            stat.setInt(1, T_Code);
+            stat.setInt(2, R_Code);
+            
+              
 
             ResultSet res = stat.executeQuery();
 
 
             while (res.next()) {
 
-                winnaar = new Winnaar(res.getInt("D_code"),
-                        res.getString("voornaam"),
-                        res.getString("achternaam"),
-                        res.getInt("plaats") );
-                                                       
+                int D_Code = res.getInt("deelnemer.d_code");
+                int T_Code = res.getInt("toernooi.t_code");
+                String voornaam = res.getString("deelnemer.voornaam");
+                String achternaam = res.getString("deelnemer.achternaam");
+                int plaats = res.getInt("plaats.plaats");
+                
+                Winnaar winnaar = new Winnaar(D_Code, T_Code, voornaam, achternaam, plaats);
                       
                 winnaars.add(winnaar);
                 model.addRow(winnaar.torow());
@@ -90,11 +105,11 @@ public class Winnaars extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Table_winnaars = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Table_winnaars.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -105,21 +120,22 @@ public class Winnaars extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Table_winnaars);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,7 +183,7 @@ public class Winnaars extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Table_winnaars;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
