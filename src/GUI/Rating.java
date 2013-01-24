@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,9 +27,8 @@ public class Rating extends javax.swing.JFrame {
     private int T_Code;
     private int R_Code;
     private int Tafel;
+    List<OpstellingDeelnemer> tafeldeelnemers= new ArrayList<OpstellingDeelnemer>();
     DefaultComboBoxModel model = new DefaultComboBoxModel();
-    OpstellingDeelnemer deelnemer;
-    ArrayList<OpstellingDeelnemer> deelnemers = new ArrayList<>();
     DefaultTableModel tModel = new DefaultTableModel();
     
     public Rating() {
@@ -40,45 +41,41 @@ public class Rating extends javax.swing.JFrame {
         this.T_Code = T_Code;
         this.R_Code = R_Code;
         initData();
+        inittable();
+        ComboBox_tafelselectActionPerformed(null);
     }
     
+    private void inittable(){
+        String[] kolommen = {"Voornaam", "Achternaam", "Plaats", "Rating"};
+        tModel = new DefaultTableModel(kolommen, 0);
+        Table_HuidigeTafel.setModel(tModel);
+    }
     
     private void initData()
     {
-        String CbSql = "Select Distinct tafel from plaats where Toernooi = ? and Ronde = ?";
+        String sql = "Select Distinct tafel from plaats where Toernooi = ? and Ronde = ?";
         
         try{
             Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(CbSql);
+            PreparedStatement stat = conn.prepareStatement(sql);
             stat.setInt(1,T_Code);
             stat.setInt(2,R_Code);
             ResultSet res = stat.executeQuery();
             while(res.next())
             {
                 Tafel = res.getInt("tafel");
-                
-                model.addElement(Tafel); 
+                String item = "Tafel " + Tafel;
+                model.addElement(item); 
             }
             
             ComboBox_tafelselect.setModel(model);
             
-        }catch(Exception e)
+        }catch(Exception ex)
         {
-            System.out.println(e);
+            System.out.println(ex);
         }
     }
     
-        private int comboBoxSelectedValue() {
-        int selectedItem = 0;
-        Object selected = ComboBox_tafelselect.getSelectedItem();
-        if (selected != null) {
-            String selectedItemStr = selected.toString();
-            selectedItem = Integer.parseInt(selectedItemStr);
-        }
-        return selectedItem;
-    }
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,6 +121,11 @@ public class Rating extends javax.swing.JFrame {
         });
 
         Button_Verloren.setText("Verloren");
+        Button_Verloren.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_VerlorenActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,26 +169,29 @@ public class Rating extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void ComboBox_tafelselectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_tafelselectActionPerformed
-        
-        String sql =  "Select d.* from deelnemer d join heeft_betaald h on d.d_code = h.d_code"
-                                                + "join plaats p on h.d_code = p.d_code "
-                                                + "where toernooi = ? and ronde = ? and tafel = ?";
-        int selectedTafel = comboBoxSelectedValue();
-        
+        tafeldeelnemers.clear();
+        tModel.setRowCount(0);
+        String sql =  "select deelnemer.d_code, deelnemer.voornaam, deelnemer.achternaam, deelnemer.rating, plaats.plaats from deelnemer join plaats on deelnemer.d_code = plaats.d_code where plaats.toernooi = ? and plaats.tafel = ? and plaats.ronde = ?";
+       
         try{
             Connection conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setInt(1,T_Code);
-            stat.setInt(2,R_Code);
-            stat.setInt(3,selectedTafel);
+            stat.setInt(2,ComboBox_tafelselect.getSelectedIndex() + 1);
+            stat.setInt(3,R_Code);
             ResultSet res = stat.executeQuery();
             
             while(res.next())
             {
-                deelnemer = new OpstellingDeelnemer(R_Code,selectedTafel,res.getInt("d.D_Code"), res.getString("voornaam"), res.getString("achternaam"), res.getInt("Rating"));
-                deelnemers.add(deelnemer);
-                String[] tabelAdd = new String[] {res.getString("Voornaam"), res.getString("Achternaam"), "" + res.getInt("rating")};
-                tModel.addRow(tabelAdd);
+                int d_code = res.getInt("deelnemer.d_code");
+                String voornaam = res.getString("deelnemer.voornaam");
+                String achternaam = res.getString("deelnemer.voornaam");
+                int rating = res.getInt("deelnemer.rating");
+                int plaats = res.getInt("plaats.plaats");
+                
+                OpstellingDeelnemer deelnemer = new OpstellingDeelnemer(R_Code, T_Code, d_code, voornaam, achternaam, plaats);
+                tafeldeelnemers.add(deelnemer);
+                tModel.addRow(new String[] {deelnemer.getNaam(), deelnemer.getAchternaam(), Integer.toString(deelnemer.getPlaats()), Integer.toString(rating)});
             }
             
         }catch(Exception e)
@@ -195,6 +200,61 @@ public class Rating extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_ComboBox_tafelselectActionPerformed
+
+    private void Button_VerlorenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerlorenActionPerformed
+        OpstellingDeelnemer deelnemer = tafeldeelnemers.get(Table_HuidigeTafel.getSelectedRow());
+        if (deelnemer.getPlaats() == 0){
+        
+        
+        int plaats = tafeldeelnemers.size();
+        
+        for(int a = 0; a < tafeldeelnemers.size(); a ++){        
+            if (tafeldeelnemers.get(a).getPlaats() != 0){
+                plaats --;
+            }
+        }
+        String sql = "update plaats set Plaats = ? where toernooi = ? and Ronde = ? and tafel = ? and d_code = ?";
+         
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1,plaats);
+            stat.setInt(2,T_Code);
+            stat.setInt(3,R_Code);
+            stat.setInt(4, ComboBox_tafelselect.getSelectedIndex() + 1);
+            stat.setInt(5, deelnemer.getD_Code());
+            
+            stat.execute();
+            
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }    
+        
+        if ((plaats == 1) || (plaats == 2)){
+            sql = "update deelnemer set rating = rating + 5 where d_code = ?";
+        } else {
+            sql = "update deelnemer set rating = rating - 5 where d_code = ?";
+        }
+        
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            
+            stat.setInt(1, deelnemer.getD_Code());
+            stat.execute();
+            
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }  
+        } else {
+            JOptionPane.showMessageDialog(this, "deze Speler is heeft al een plaats");
+        }
+        
+        
+        ComboBox_tafelselectActionPerformed(null);
+    }//GEN-LAST:event_Button_VerlorenActionPerformed
 
     /**
      * @param args the command line arguments

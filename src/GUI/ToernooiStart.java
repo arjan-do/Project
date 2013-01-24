@@ -210,7 +210,9 @@ public class ToernooiStart extends javax.swing.JFrame {
             }
         } else {
             if (spelers == 0){
-                JOptionPane.showMessageDialog(this, "einde van toernooi");
+                
+                
+                
             } else {
                 JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
             }
@@ -219,8 +221,12 @@ public class ToernooiStart extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_MaakOpstellingActionPerformed
 
     private void Button_RatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_RatingActionPerformed
-        new Rating(T_Code, R_Code).setVisible(true);
-        this.dispose();
+        if (spelers != 0){
+            new Rating(T_Code, R_Code).setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Er zijn geen spelers");
+        }
     }//GEN-LAST:event_Button_RatingActionPerformed
 
     /**
