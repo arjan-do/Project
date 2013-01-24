@@ -32,6 +32,7 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
     private int R_Code;
     List<OpstellingDeelnemer> deelnemers = new ArrayList();
     DefaultTableModel model = new DefaultTableModel();
+    private boolean includesecondplace = false;
     
     public OpstelingToevoegen() {
         initComponents();
@@ -78,7 +79,6 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
                 
                 while(res.next()){
                     aantal = res.getInt("count(D_Code)");
-                    System.out.println("run");
                 }
                 
             } catch (Exception ex) {
@@ -86,6 +86,13 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
             }
 
+            if ((R_Code != 0) && (aantal < 3)){
+                includesecondplace = true;
+                aantal += aantal;
+            }
+            
+            
+            
             int[] tavels = Opstelling_Generator.calculatetavels(aantal);
             System.out.println(aantal);
             int step = 0;
@@ -94,7 +101,12 @@ public class OpstelingToevoegen extends javax.swing.JFrame {
             sql = "select voornaam, achternaam, D_Code from deelnemer where d_code in (select d_code from heeft_betaald where inleggeld_betaald = 'j' and t_code = ?)";
             
             if(R_Code != 0){
-                sql += " and D_Code in (select D_Code from plaats where Plaats = 1 and Ronde = ?)";
+                sql += " and D_Code in (select D_Code from plaats where Plaats = 1 ";
+                if(includesecondplace) {
+                    sql += "or Plaats = 2 and Ronde = ?)";
+                } else {
+                    sql += "and Ronde = ?)";
+                }
             }
             
             try{

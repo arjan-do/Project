@@ -23,6 +23,7 @@ public class ToernooiStart extends javax.swing.JFrame {
     private int T_Code;
     private int R_Code = 0;
     private int spelers = 64;
+    boolean finale = false;
     
     
     public ToernooiStart() {
@@ -57,7 +58,7 @@ public class ToernooiStart extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
             }
             
-            sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ? and plaats is null;";
+            sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ? and plaats is null";
            
             try{
                 Connection conn;
@@ -79,9 +80,35 @@ public class ToernooiStart extends javax.swing.JFrame {
             }
             
             Label_Ronde.setText("Huidige Ronde: " + R_Code);
-            Label_Spelers.setText("Spelers Resterend " + spelers);
+            Label_Spelers.setText("Spelers Resterend: " + spelers);
             
             
+            int finalecontrole = 0;
+            sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ?";
+            try{
+                Connection conn;
+                conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql); 
+                
+                stat.setInt(1, T_Code);
+                stat.setInt(2, R_Code);
+                
+                ResultSet res = stat.executeQuery();
+                
+                while(res.next()){
+                    finalecontrole = res.getInt("count(*)");
+                }
+                
+            } catch (Exception ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            }
+            
+            if (finalecontrole <= 8){
+                Button_MaakOpstelling.setText("Einde toernooi");
+                finale = true;
+                Label_Ronde.setText("Huidige Ronde: Finale");
+            }
     }
     
     /**
@@ -171,12 +198,22 @@ public class ToernooiStart extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_MaakOpstellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_MaakOpstellingActionPerformed
-        if (spelers == 0){
-            new OpstelingToevoegen(T_Code, R_Code).setVisible(true);
-            this.dispose();
+        
+        if (!finale){
+            if (spelers == 0){
+                new OpstelingToevoegen(T_Code, R_Code).setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
+            if (spelers == 0){
+                JOptionPane.showMessageDialog(this, "einde van toernooi");
+            } else {
+                JOptionPane.showMessageDialog(this, "Er zijn nog spelers bezig");
+            }
         }
+        
     }//GEN-LAST:event_Button_MaakOpstellingActionPerformed
 
     private void Button_RatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_RatingActionPerformed
