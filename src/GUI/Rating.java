@@ -202,56 +202,60 @@ public class Rating extends javax.swing.JFrame {
     }//GEN-LAST:event_ComboBox_tafelselectActionPerformed
 
     private void Button_VerlorenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerlorenActionPerformed
-        OpstellingDeelnemer deelnemer = tafeldeelnemers.get(Table_HuidigeTafel.getSelectedRow());
-        if (deelnemer.getPlaats() == 0){
         
-        
-        int plaats = tafeldeelnemers.size();
-        
-        for(int a = 0; a < tafeldeelnemers.size(); a ++){        
-            if (tafeldeelnemers.get(a).getPlaats() != 0){
-                plaats --;
+        try{
+            OpstellingDeelnemer deelnemer = tafeldeelnemers.get(Table_HuidigeTafel.getSelectedRow());
+            if (deelnemer.getPlaats() == 0){
+
+
+            int plaats = tafeldeelnemers.size();
+
+            for(int a = 0; a < tafeldeelnemers.size(); a ++){        
+                if (tafeldeelnemers.get(a).getPlaats() != 0){
+                    plaats --;
+                }
             }
+            String sql = "update plaats set Plaats = ? where toernooi = ? and Ronde = ? and tafel = ? and d_code = ?";
+
+            try{
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1,plaats);
+                stat.setInt(2,T_Code);
+                stat.setInt(3,R_Code);
+                stat.setInt(4, ComboBox_tafelselect.getSelectedIndex() + 1);
+                stat.setInt(5, deelnemer.getD_Code());
+
+                stat.execute();
+
+            }catch(Exception e)
+            {
+                System.out.println(e);
+            }    
+
+            if ((plaats == 1) || (plaats == 2)){
+                sql = "update deelnemer set rating = rating + 5 where d_code = ?";
+            } else {
+                sql = "update deelnemer set rating = rating - 5 where d_code = ?";
+            }
+
+            try{
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+
+                stat.setInt(1, deelnemer.getD_Code());
+                stat.execute();
+
+            }catch(Exception e)
+            {
+                System.out.println(e);
+            }  
+            } else {
+                JOptionPane.showMessageDialog(this, "deze Speler is heeft al een plaats");
+            }
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, "Selecteer een toernooi");
         }
-        String sql = "update plaats set Plaats = ? where toernooi = ? and Ronde = ? and tafel = ? and d_code = ?";
-         
-        try{
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1,plaats);
-            stat.setInt(2,T_Code);
-            stat.setInt(3,R_Code);
-            stat.setInt(4, ComboBox_tafelselect.getSelectedIndex() + 1);
-            stat.setInt(5, deelnemer.getD_Code());
-            
-            stat.execute();
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }    
-        
-        if ((plaats == 1) || (plaats == 2)){
-            sql = "update deelnemer set rating = rating + 5 where d_code = ?";
-        } else {
-            sql = "update deelnemer set rating = rating - 5 where d_code = ?";
-        }
-        
-        try{
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            stat.setInt(1, deelnemer.getD_Code());
-            stat.execute();
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }  
-        } else {
-            JOptionPane.showMessageDialog(this, "deze Speler is heeft al een plaats");
-        }
-        
         
         ComboBox_tafelselectActionPerformed(null);
     }//GEN-LAST:event_Button_VerlorenActionPerformed

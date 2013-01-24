@@ -212,7 +212,7 @@ public class ToernooiStart extends javax.swing.JFrame {
             if (spelers == 0){
                 
                 // hier moet hij josua
-                new Winnaars(T_Code, R_Code).setVisible(true);
+                new Winnaars(R_Code, T_Code).setVisible(true);
                 this.dispose();
                 
             } else {

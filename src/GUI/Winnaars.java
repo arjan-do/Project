@@ -57,7 +57,7 @@ public class Winnaars extends javax.swing.JFrame {
         try {
 
             //SQL Statement.
-            String sql = "Select deelnemer.voornaam as voornaam, deelnemer.achternaam as achternaam, plaats.plaats as plaats from deelnemer join plaats on deelnemer.d_code = plaats.d_code where plaats.toernooi = ? and plaats.ronde = ?";
+            String sql = "Select deelnemer.voornaam as voornaam, deelnemer.achternaam as achternaam, plaats.plaats as plaats, deelnemer.d_code, plaats.toernooi from deelnemer join plaats on deelnemer.d_code = plaats.d_code where plaats.toernooi = ? and plaats.ronde = ? order by plaats asc";
        
 
             Connection conn;
@@ -75,12 +75,12 @@ public class Winnaars extends javax.swing.JFrame {
             while (res.next()) {
 
                 int D_Code = res.getInt("deelnemer.d_code");
-                int T_Code = res.getInt("toernooi.t_code");
-                String voornaam = res.getString("deelnemer.voornaam");
-                String achternaam = res.getString("deelnemer.achternaam");
-                int plaats = res.getInt("plaats.plaats");
+                int T_Code2 = res.getInt("plaats.toernooi");
+                String voornaam = res.getString("voornaam");
+                String achternaam = res.getString("achternaam");
+                int plaats = res.getInt("plaats");
                 
-                Winnaar winnaar = new Winnaar(D_Code, T_Code, voornaam, achternaam, plaats);
+                Winnaar winnaar = new Winnaar(D_Code, T_Code2, voornaam, achternaam, plaats);
                       
                 winnaars.add(winnaar);
                 model.addRow(winnaar.torow());

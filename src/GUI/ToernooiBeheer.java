@@ -299,10 +299,13 @@ public class ToernooiBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
         //todo: datum, locatie en aantal deelnemers uit lijst halen en meegeven als parameter
-
-        Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
-        new ToernooiWijzigen(selected).setVisible(true);
-        this.dispose();
+        try{       
+            Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
+            new ToernooiWijzigen(selected).setVisible(true);
+            this.dispose();
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, "Selecteer een toernooi");
+        }
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
@@ -417,15 +420,18 @@ public class ToernooiBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_ZoekenKeyReleased
 
     private void Button_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_StartActionPerformed
-        Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
-        Toernooizoeken zoek = toernooiszoeken.get(TableToernooi.getSelectedRow());
-        if (selected.getMin_aantal_spelers() <= zoek.getSpelers()) {
-            new ToernooiStart(selected.getT_Code()).setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Niet genoeg spelers");
+        try{
+            Toernooi selected = toernoois.get(TableToernooi.getSelectedRow());
+            Toernooizoeken zoek = toernooiszoeken.get(TableToernooi.getSelectedRow());
+            if (selected.getMin_aantal_spelers() <= zoek.getSpelers()) {
+                new ToernooiStart(selected.getT_Code()).setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Niet genoeg spelers");
+            }
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, "Selecteer een toernooi");
         }
-
     }//GEN-LAST:event_Button_StartActionPerformed
 
     /**
