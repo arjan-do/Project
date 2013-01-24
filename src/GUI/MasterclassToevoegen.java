@@ -23,12 +23,11 @@ int M_Code;
 int Niveau;
 int Prijs;
 Date Datum;
-Object Docent;
-Object Locatie;
+int Docent;
+int Locatie;
 String Achternaam;
 String LNaam;
-int DOCENT;
-int LOCATIE;
+
     /**
      * Creates new form MasterclassToevoegen
      */
@@ -54,17 +53,19 @@ int LOCATIE;
         TextField_Niveau = new javax.swing.JTextField();
         TextField_Dag = new javax.swing.JTextField();
         Button_Toevoegen = new javax.swing.JButton();
-        ComboBox_Locatie = new javax.swing.JComboBox();
         Button_Back = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        ComboBox_Docent = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         TextField_Prijs = new javax.swing.JTextField();
         TextField_Minimalerating = new javax.swing.JTextField();
         TextField_Maand = new javax.swing.JTextField();
         TextField_Jaar = new javax.swing.JTextField();
+        Label_Docent = new javax.swing.JLabel();
+        Label_Locatie = new javax.swing.JLabel();
+        ComboBox_Locatie = new javax.swing.JComboBox();
+        ComboBox_Docent = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,8 +80,6 @@ int LOCATIE;
             }
         });
 
-        ComboBox_Locatie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         Button_Back.setText("Back");
         Button_Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,16 +91,29 @@ int LOCATIE;
 
         jLabel5.setText("Docent");
 
+        jLabel6.setText("Prijs");
+
+        jLabel7.setText("Minimale rating");
+
+        TextField_Prijs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_PrijsActionPerformed(evt);
+            }
+        });
+
+        ComboBox_Locatie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboBox_Locatie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBox_LocatieActionPerformed(evt);
+            }
+        });
+
         ComboBox_Docent.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         ComboBox_Docent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBox_DocentActionPerformed(evt);
             }
         });
-
-        jLabel6.setText("Prijs");
-
-        jLabel7.setText("Minimale rating");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,39 +122,38 @@ int LOCATIE;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Button_Back)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextField_Minimalerating, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(Button_Toevoegen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(Label_Docent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Button_Toevoegen, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
                                 .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TextField_Jaar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.Alignment.TRAILING, 0, 89, Short.MAX_VALUE)
-                            .addComponent(ComboBox_Docent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TextField_Minimalerating))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,17 +177,21 @@ int LOCATIE;
                     .addComponent(TextField_Minimalerating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
+                    .addComponent(Label_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
+                    .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Button_Back)
-                    .addComponent(Button_Toevoegen))
+                    .addComponent(Button_Toevoegen)
+                    .addComponent(Button_Back))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -199,34 +214,8 @@ int LOCATIE;
             JOptionPane.showMessageDialog(this, "Voer de velden correct in.");
         }
         
-        Docent = ComboBox_Docent.getSelectedItem();
-        Locatie = ComboBox_Docent.getSelectedItem();
-        
-        if(Docent == "Hoekstra")
-        {
-            DOCENT = 1 ;
-        }
-        if(Docent == "Van Leersum")
-        {
-            DOCENT = 2 ;
-        }
-        if(Docent == "Tromp")
-        {
-            DOCENT = 3 ;
-        }
-        
-        if(Locatie == "Theehuis")
-        {
-            LOCATIE = 1 ;
-        }
-        if(Locatie == "Buurthuis")
-        {
-            LOCATIE = 2 ;
-        }
-        if(Locatie == "Cafe")
-        {
-            LOCATIE = 3 ;
-        }
+        Docent = comboBoxSelectedValueDocent();
+        Locatie = comboBoxSelectedValueLocatie();
         
         int Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
@@ -237,8 +226,8 @@ int LOCATIE;
                 stat.setInt(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
-                stat.setObject(5, DOCENT);
-                stat.setObject(6, LOCATIE);
+                stat.setInt(5, Docent);
+                stat.setInt(6, Locatie);
                 
                 stat.execute();
                 
@@ -250,15 +239,55 @@ int LOCATIE;
     
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
-    private void ComboBox_DocentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_DocentActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ComboBox_DocentActionPerformed
-
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
-        new HoofdMenu().setVisible(true);
+        new MasterclassBeheer().setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void ComboBox_LocatieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_LocatieActionPerformed
+        int f_code = comboBoxSelectedValueLocatie();
+
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Naam from faciliteit where F_Code = ?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, f_code);
+            ResultSet resultSet = stat.executeQuery();
+
+            while (resultSet.next()) {
+                LNaam = resultSet.getString("Naam");
+            }
+
+            Label_Locatie.setText(LNaam);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_ComboBox_LocatieActionPerformed
+
+    private void ComboBox_DocentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_DocentActionPerformed
+        int d_code = comboBoxSelectedValueDocent();
+
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Achternaam from deelnemer where D_Code = ?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, d_code);
+            ResultSet resultSet = stat.executeQuery();
+
+            while (resultSet.next()) {
+                Achternaam = resultSet.getString("Achternaam");
+            }
+
+            Label_Docent.setText(Achternaam);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_ComboBox_DocentActionPerformed
+
+    private void TextField_PrijsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_PrijsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextField_PrijsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,6 +335,8 @@ int LOCATIE;
     private javax.swing.JButton Button_Toevoegen;
     private javax.swing.JComboBox ComboBox_Docent;
     private javax.swing.JComboBox ComboBox_Locatie;
+    private javax.swing.JLabel Label_Docent;
+    private javax.swing.JLabel Label_Locatie;
     private javax.swing.JTextField TextField_Dag;
     private javax.swing.JTextField TextField_Jaar;
     private javax.swing.JTextField TextField_Maand;
@@ -324,14 +355,14 @@ int LOCATIE;
         DefaultComboBoxModel docent = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Achternaam from deelnemer";
+            String sql = "select D_Code from deelnemer where is_bekend = 'j'";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                Achternaam = resultSet.getString("Achternaam");
-                docent.addElement(Achternaam);
+                Docent = resultSet.getInt("D_Code");
+                docent.addElement(Docent);
             }
             
             ComboBox_Docent.setModel(docent);
@@ -345,14 +376,14 @@ int LOCATIE;
         DefaultComboBoxModel locatie = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Naam from faciliteit";
+            String sql = "select F_Code from faciliteit";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                LNaam = resultSet.getString("Naam");
-                locatie.addElement(LNaam);
+                Locatie = resultSet.getInt("F_Code");
+                locatie.addElement(Locatie);
             }
             
             ComboBox_Locatie.setModel(locatie);
@@ -360,5 +391,29 @@ int LOCATIE;
     {
         JOptionPane.showMessageDialog(this, e);
     }
+    }
+    
+    private int comboBoxSelectedValueDocent()
+    {
+        int selectedItem = 0;
+        Object selected = ComboBox_Docent.getSelectedItem();
+        if (selected != null)
+        {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
+    }
+    
+    private int comboBoxSelectedValueLocatie()
+    {
+        int selectedItem = 0;
+        Object selected = ComboBox_Locatie.getSelectedItem();
+        if (selected != null)
+        {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
     }
 }
