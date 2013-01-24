@@ -5,16 +5,14 @@
 package GUI;
 
 import Models.Faciliteit;
-import javax.swing.JOptionPane;
 import configuration.SimpleDataSourceV2;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -26,6 +24,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     private ArrayList<Faciliteit> faciliteiten = new ArrayList<>();
     int F_code;
     Faciliteit faciliteit;
+    
     /**
      * Creates new form FaciliteitBeheer
      */
@@ -42,12 +41,7 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
          model = new DefaultTableModel(kolommen, 0);
         //model setten
         TableFaciliteit.setModel(model);
-        //running the sql querry
-        
-       
-                    
-        
-        
+ 
     }
         
     private void VulTable() {
@@ -97,8 +91,9 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
         }
-                System.out.println("finish");
+                
 
     }
     
@@ -226,23 +221,25 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
+        //Open FaciliteitToevoegen scherm
         new FaciliteitToevoegen().setVisible(true);
+        //sluit huidig scherm
         this.dispose();
         
     }//GEN-LAST:event_Button_ToevoegenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
-        //Open Mainmenu
+        //Open Hoofdmenu
         new HoofdMenu().setVisible(true);
-        //Close current Window
+        //sluit huidig scherm
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
        int[] selected = TableFaciliteit.getSelectedRows();
-        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        //Als er niets geselecteerd is, verschijnt er een messagedialog.
         if (selected.length == 0) {
-            JOptionPane.showMessageDialog(this, "Selecteer een deelnemer.");
+            JOptionPane.showMessageDialog(this, "Selecteer een faciliteit.");
         } else {
             if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
 
@@ -262,12 +259,12 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
                         stat.execute();
 
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, "U kan deze deelnemer niet verwijderen: Deze persoon doet mee aan een Toernooi of Masterclass.");
+                        JOptionPane.showMessageDialog(this, "U kan deze Faciliteit niet verwijderen.");
                     }
 
                 }
             }
-            //Update de modelRows, clear de arraylist Deelnemers.
+            //Update tabelrijen, leeg arraylist Faciliteiten
             model.setRowCount(0);
             faciliteiten.clear();
             VulTable();
@@ -282,9 +279,8 @@ public class FaciliteitBeheer extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void TextField_ZoekopnaamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_ZoekopnaamKeyReleased
-         //setRowCount to refresh the model.
+        //Update tabelrijen, leeg arraylist Faciliteiten
         model.setRowCount(0);
-        //clear ArrayList for refreshing purposes.
         faciliteiten.clear();
         VulTable();
     }//GEN-LAST:event_TextField_ZoekopnaamKeyReleased

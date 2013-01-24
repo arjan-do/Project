@@ -4,14 +4,12 @@
  */
 package GUI;
 
+import Models.Faciliteit;
 import configuration.SimpleDataSourceV2;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import utils.DateUtil;
-import Models.Faciliteit;
 
 /**
  *
@@ -163,7 +161,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
         // Open DeelnemerBeheer
         new FaciliteitBeheer().setVisible(true);
-        // Close current Window
+        // Sluit huidig scherm
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
 
@@ -197,7 +195,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
 
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "SQL fout:" + ex.toString());
+            JOptionPane.showMessageDialog(this, "Database error:" + ex.toString());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, e);
         }
