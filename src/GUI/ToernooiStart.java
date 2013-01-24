@@ -82,32 +82,34 @@ public class ToernooiStart extends javax.swing.JFrame {
             Label_Ronde.setText("Huidige Ronde: " + R_Code);
             Label_Spelers.setText("Spelers Resterend: " + spelers);
             
-            
-            int finalecontrole = 0;
-            sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ?";
-            try{
-                Connection conn;
-                conn = SimpleDataSourceV2.getConnection();
-                PreparedStatement stat = conn.prepareStatement(sql); 
-                
-                stat.setInt(1, T_Code);
-                stat.setInt(2, R_Code);
-                
-                ResultSet res = stat.executeQuery();
-                
-                while(res.next()){
-                    finalecontrole = res.getInt("count(*)");
+            if (R_Code  != 0){
+                int finalecontrole = 0;
+                sql = "Select count(*) from plaats where Toernooi = ? and Ronde = ?";
+                try{
+                    Connection conn;
+                    conn = SimpleDataSourceV2.getConnection();
+                    PreparedStatement stat = conn.prepareStatement(sql); 
+
+                    stat.setInt(1, T_Code);
+                    stat.setInt(2, R_Code);
+
+                    ResultSet res = stat.executeQuery();
+
+                    while(res.next()){
+                        finalecontrole = res.getInt("count(*)");
+                    }
+
+                } catch (Exception ex) {
+                System.out.println(ex);
+                JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
                 }
-                
-            } catch (Exception ex) {
-            System.out.println(ex);
-            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
-            }
             
-            if (finalecontrole <= 8){
-                Button_MaakOpstelling.setText("Einde toernooi");
-                finale = true;
-                Label_Ronde.setText("Huidige Ronde: Finale");
+            
+                if ((finalecontrole <= 8) && (R_Code > 0)){
+                    Button_MaakOpstelling.setText("Einde toernooi");
+                    finale = true;
+                    Label_Ronde.setText("Huidige Ronde: Finale");
+                }
             }
     }
     

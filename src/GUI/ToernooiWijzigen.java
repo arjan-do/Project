@@ -7,6 +7,7 @@ package GUI;
 import Models.FaciliteitSimple;
 import Models.Toernooi;
 import configuration.SimpleDataSourceV2;
+import java.awt.Color;
 import java.sql.*;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
@@ -48,6 +49,16 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         
         TextField_TijdUren.setText(Integer.toString(toernooi.getBegintijd().getHours()));
         TextField_TijdMinuten.setText(Integer.toString(toernooi.getBegintijd().getMinutes()));
+        
+        TextField_Bedrag.setBackground(Color.green);
+        TextField_Dag.setBackground(Color.green);
+        TextField_Jaar.setBackground(Color.green);
+        TextField_Maand.setBackground(Color.green);
+        TextField_MinAantalSpelers.setBackground(Color.green);
+        TextField_TijdMinuten.setBackground(Color.green);
+        TextField_TijdUren.setBackground(Color.green);
+        
+        
     }
     
     
@@ -108,39 +119,44 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        TextField_Bedrag.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_BedragActionPerformed(evt);
+        TextField_Bedrag.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_BedragKeyReleased(evt);
             }
         });
 
-        TextField_MinAantalSpelers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_MinAantalSpelersActionPerformed(evt);
+        TextField_MinAantalSpelers.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_MinAantalSpelersKeyReleased(evt);
             }
         });
 
         TextField_Dag.setText("DD");
-        TextField_Dag.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_DagActionPerformed(evt);
+        TextField_Dag.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_DagKeyReleased(evt);
             }
         });
 
-        TextField_TijdUren.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_TijdUrenActionPerformed(evt);
+        TextField_TijdUren.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_TijdUrenKeyReleased(evt);
             }
         });
 
         TextField_Maand.setText("MM");
-        TextField_Maand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_MaandActionPerformed(evt);
+        TextField_Maand.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_MaandKeyReleased(evt);
             }
         });
 
         TextField_Jaar.setText("YYYY");
+        TextField_Jaar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_JaarKeyReleased(evt);
+            }
+        });
 
         ComboBox_Faciliteit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -165,6 +181,12 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         Button_Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_BackActionPerformed(evt);
+            }
+        });
+
+        TextField_TijdMinuten.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_TijdMinutenKeyReleased(evt);
             }
         });
 
@@ -242,26 +264,6 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TextField_BedragActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_BedragActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_BedragActionPerformed
-
-    private void TextField_MinAantalSpelersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_MinAantalSpelersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_MinAantalSpelersActionPerformed
-
-    private void TextField_DagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_DagActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_DagActionPerformed
-
-    private void TextField_TijdUrenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_TijdUrenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_TijdUrenActionPerformed
-
-    private void TextField_MaandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_MaandActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_MaandActionPerformed
-
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
         // Open ToernooiBeheer
         new ToernooiBeheer().setVisible(true);
@@ -308,6 +310,76 @@ public class ToernooiWijzigen extends javax.swing.JFrame {
         this.dispose();
          
     }//GEN-LAST:event_Button_WijzigenActionPerformed
+
+    private void TextField_BedragKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_BedragKeyReleased
+        String pattern = "[0-9]+";
+        
+        if (TextField_Bedrag.getText().matches(pattern)){
+            TextField_Bedrag.setBackground(Color.green);
+        } else {
+            TextField_Bedrag.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_BedragKeyReleased
+
+    private void TextField_MinAantalSpelersKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_MinAantalSpelersKeyReleased
+         String pattern = "[0-9]+";
+        
+        if (TextField_MinAantalSpelers.getText().matches(pattern)){
+            TextField_MinAantalSpelers.setBackground(Color.green);
+        } else {
+            TextField_MinAantalSpelers.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_MinAantalSpelersKeyReleased
+
+    private void TextField_DagKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_DagKeyReleased
+        String pattern = "[0-9]{2}";
+        
+        if (TextField_Dag.getText().matches(pattern)){
+            TextField_Dag.setBackground(Color.green);
+        } else {
+            TextField_Dag.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_DagKeyReleased
+
+    private void TextField_MaandKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_MaandKeyReleased
+        String pattern = "[0-9]{2}";
+        
+        if (TextField_Maand.getText().matches(pattern)){
+            TextField_Maand.setBackground(Color.green);
+        } else {
+            TextField_Maand.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_MaandKeyReleased
+
+    private void TextField_JaarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_JaarKeyReleased
+        String pattern = "[0-9]{4}";
+        
+        if (TextField_Jaar.getText().matches(pattern)){
+            TextField_Jaar.setBackground(Color.green);
+        } else {
+            TextField_Jaar.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_JaarKeyReleased
+
+    private void TextField_TijdUrenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_TijdUrenKeyReleased
+        String pattern = "[0-9]{2}";
+        
+        if (TextField_TijdUren.getText().matches(pattern)){
+            TextField_TijdUren.setBackground(Color.green);
+        } else {
+            TextField_TijdUren.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_TijdUrenKeyReleased
+
+    private void TextField_TijdMinutenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_TijdMinutenKeyReleased
+         String pattern = "[0-9]{2}";
+        
+        if (TextField_TijdMinuten.getText().matches(pattern)){
+            TextField_TijdMinuten.setBackground(Color.green);
+        } else {
+            TextField_TijdMinuten.setBackground(Color.RED);
+        }
+    }//GEN-LAST:event_TextField_TijdMinutenKeyReleased
 
     /**
      * @param args the command line arguments

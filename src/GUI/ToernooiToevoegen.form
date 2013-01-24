@@ -110,12 +110,12 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="TextField_Bedrag">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_BedragActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_BedragKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_MinAantalSpelers">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_MinAantalSpelersActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_MinAantalSpelersKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_Dag">
@@ -123,12 +123,12 @@
         <Property name="text" type="java.lang.String" value="DD"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_DagActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_DagKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_TijdUren">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_TijdUrenActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_TijdUrenKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_Maand">
@@ -136,13 +136,16 @@
         <Property name="text" type="java.lang.String" value="MM"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_MaandActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_MaandKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_Jaar">
       <Properties>
         <Property name="text" type="java.lang.String" value="YYYY"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_JaarKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="ComboBox_Faciliteit">
       <Properties>
@@ -198,6 +201,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TextField_TijdMinuten">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_TijdMinutenKeyReleased"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
