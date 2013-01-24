@@ -6,6 +6,7 @@ package GUI;
 
 import Models.Faciliteit;
 import configuration.SimpleDataSourceV2;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,6 +17,8 @@ import javax.swing.JOptionPane;
  * @author Josua
  */
 public class FaciliteitWijzigen extends javax.swing.JFrame {
+    
+    private boolean PostcodeCheck;
 
     /**
      * Creates new form FaciliteitWijzigen
@@ -26,6 +29,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     public FaciliteitWijzigen() {
         initComponents();
         initModels();
+        PostcodeCheck = false;
     }
     
     public FaciliteitWijzigen(Faciliteit faciliteit) {
@@ -45,6 +49,23 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     
     }
 
+    private void PostcodeCheck(String postcode){
+        
+           
+       String pattern = "[0-9]{4}[a-zA-z]{2}";
+        
+       if(postcode.matches(pattern)){
+            this.Label_PostcodeCheck.setForeground(Color.green);
+            this.Label_PostcodeCheck.setText("Postcode is in het juiste formaat");
+            PostcodeCheck = true;
+       }else{
+           this.Label_PostcodeCheck.setForeground(Color.red);
+            this.Label_PostcodeCheck.setText("Postcode is niet juist(1234AZ)");
+            PostcodeCheck = false;
+            
+       }
+       
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,6 +87,8 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
         TextField_Postcode = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         Button_Wijzigen = new javax.swing.JButton();
+        Label_PostcodeCheck = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,7 +103,13 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
 
         jLabel3.setText("Max. aantal spelers");
 
-        jLabel4.setText("Postcode en Plaats");
+        jLabel4.setText("Postcode");
+
+        TextField_Postcode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_PostcodeKeyReleased(evt);
+            }
+        });
 
         jLabel2.setText("Straatnaam en  Huisnr.");
 
@@ -90,6 +119,8 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
                 Button_WijzigenActionPerformed(evt);
             }
         });
+
+        jLabel5.setText("Plaats");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,28 +135,32 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
                         .addComponent(Button_Wijzigen)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 26, Short.MAX_VALUE)
+                        .addGap(0, 30, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(TextField_MaxAantalSpelers, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(TextField_Postcode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(TextField_Plaats, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(TextField_Straatnaam, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(TextField_Huisnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(TextField_Huisnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(TextField_Plaats, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(59, 59, 59))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(TextField_Naam, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(60, 60, 60))))))
+                                .addGap(60, 60, 60))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(TextField_Postcode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Label_PostcodeCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,15 +175,20 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
                     .addComponent(TextField_Huisnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(TextField_Postcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(Label_PostcodeCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextField_Postcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextField_Plaats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_MaxAantalSpelers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Back)
                     .addComponent(Button_Wijzigen))
@@ -166,11 +206,12 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+        
+        if (PostcodeCheck == true)  {
         try {
            
             
-     
-            //Connectie opvragen
+             //Connectie opvragen
             Connection conn = SimpleDataSourceV2.getConnection();
 
             //(Prepared)SQL statement opbouwen
@@ -197,9 +238,16 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database error:" + ex.toString());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, e);
+            JOptionPane.showMessageDialog(this, "vul alle velden in!");
+        }
         }
     }//GEN-LAST:event_Button_WijzigenActionPerformed
+
+    private void TextField_PostcodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PostcodeKeyReleased
+       //checkPostcode is checked whenever a character is added to the textfield.
+        String postCode = this.TextField_Postcode.getText();
+        PostcodeCheck(postCode);
+    }//GEN-LAST:event_TextField_PostcodeKeyReleased
 
     /**
      * @param args the command line arguments
@@ -245,6 +293,7 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Back;
     private javax.swing.JButton Button_Wijzigen;
+    private javax.swing.JLabel Label_PostcodeCheck;
     private javax.swing.JTextField TextField_Huisnummer;
     private javax.swing.JTextField TextField_MaxAantalSpelers;
     private javax.swing.JTextField TextField_Naam;
@@ -255,5 +304,6 @@ public class FaciliteitWijzigen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }

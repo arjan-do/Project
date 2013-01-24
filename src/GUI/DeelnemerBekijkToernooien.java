@@ -27,7 +27,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
     private int dcode;
     private int t_code;
     private String heeft_betaald;
-
+    private String dateFormatBetaling;
     /**
      * Creates new form DeelnemerBekijkToernooien
      */
@@ -59,16 +59,11 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         dcode = deelnemer.getD_code();
 
 
-
-        boolean faciliteitCheck = getFaciliteitCheck();
-        boolean datumCheck = getDatumCheck();
-
-        if (faciliteitCheck&& datumCheck) {
             try {
 
                 //SQL Statement.
-                String sql = "select t.*,f.naam, inleggeld_betaald,datum_betaling from toernooi t join heeft_betaald v on t.t_code = v.t_code"
-                        + " join faciliteit f on vindt_plaats_in = f.f_code where d_code = ?";
+                String sql = "select t.*,f.naam, inleggeld_betaald,datum_betaling from heeft_betaald h join toernooi t on t.t_code = h.t_code"
+                        + " left join faciliteit f on vindt_plaats_in = f.f_code where d_code = ?";
 
                 Connection conn;
                 conn = SimpleDataSourceV2.getConnection();
@@ -91,7 +86,12 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
                             res.getInt("vindt_plaats_in"));
                     toernoois.add(toernooi);
                     //Date Formatting: From SQLDate to String.
-                    String dateFormatBetaling = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
+                    try{
+                    dateFormatBetaling = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
+                    }catch(Exception e)
+                    {
+                        
+                    }
                     String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
                     //String[] for setting values in the model.
                     String f_naam = res.getString("naam");
@@ -101,129 +101,13 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
 
 
             } catch (Exception ex) {
-                System.out.println(ex);
-            }
-        } else if (!faciliteitCheck && datumCheck) {
-            try {
-
-                //SQL Statement.
-                String sql = "select t.*, inleggeld_betaald, datum_betaling from toernooi t join heeft_betaald v on t.t_code = v.t_code"
-                        + "  where d_code = ?";
-
-                Connection conn;
-                conn = SimpleDataSourceV2.getConnection();
-                PreparedStatement stat = conn.prepareStatement(sql);
-
-                //input of the textfield + "%" for the SQL Statement.
-                stat.setInt(1, dcode);
-
-                ResultSet res = stat.executeQuery();
-
-
-                while (res.next()) {
-
-
-                    toernooi = new Toernooi(res.getInt("T_Code"),
-                            res.getInt("bedrag"),
-                            res.getInt("min_aantal_spelers"),
-                            res.getDate("datum"),
-                            res.getTime("begintijd"));
-                    toernoois.add(toernooi);
-                    //Date Formatting: From SQLDate to String.
-                    String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
-                    String dateFormatBetaald = DateUtil.fromSqlDateToString(res.getDate("datum_betaling"));
-                    //String[] for setting values in the model.
-                    String[] MC = new String[]{"" + dateFormat, "", "" + toernooi.getBedrag(), res.getString("Inleggeld_betaald"), "" + dateFormatBetaald};
-                    model.addRow(MC);
-                }
-
-
-            } catch (Exception ex) {
-                System.out.println(ex + "Faciliteitcheck");
-            }
-        } else if (!datumCheck && faciliteitCheck == true) {
-            try {
-
-                //SQL Statement.
-                String sql = "select t.*,f.naam inleggeld_betaald,  from toernooi t join heeft_betaald v on t.t_code = v.t_code"
-                        + "join faciliteit f on f.f_code = t.vindt_plaats_in "
-                        + "  where d_code = ?";
-
-                Connection conn;
-                conn = SimpleDataSourceV2.getConnection();
-                PreparedStatement stat = conn.prepareStatement(sql);
-
-                //input of the textfield + "%" for the SQL Statement.
-                stat.setInt(1, dcode);
-
-                ResultSet res = stat.executeQuery();
-
-
-                while (res.next()) {
-
-
-                    toernooi = new Toernooi(res.getInt("T_Code"),
-                            res.getInt("bedrag"),
-                            res.getInt("min_aantal_spelers"),
-                            res.getDate("datum"),
-                            res.getTime("begintijd"));
-                    toernoois.add(toernooi);
-                    //Date Formatting: From SQLDate to String.
-                    String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
-
-                    //String[] for setting values in the model.
-                    String[] MC = new String[]{"" + dateFormat, "" + res.getString("f.naam"), "" + toernooi.getBedrag(), res.getString("Inleggeld_betaald"), ""};
-                    model.addRow(MC);
-                }
-
-
-            } catch (Exception ex) {
-                System.out.println(ex );
             }
 
-        } else {
-            try {
-
-                //SQL Statement.
-                String sql = "select t.*, inleggeld_betaald,  from toernooi t join heeft_betaald v on t.t_code = v.t_code"
-                        + "  where d_code = ?";
-
-                Connection conn;
-                conn = SimpleDataSourceV2.getConnection();
-                PreparedStatement stat = conn.prepareStatement(sql);
-
-                //input of the textfield + "%" for the SQL Statement.
-                stat.setInt(1, dcode);
-
-                ResultSet res = stat.executeQuery();
-
-
-                while (res.next()) {
-
-
-                    toernooi = new Toernooi(res.getInt("T_Code"),
-                            res.getInt("bedrag"),
-                            res.getInt("min_aantal_spelers"),
-                            res.getDate("datum"),
-                            res.getTime("begintijd"));
-                    toernoois.add(toernooi);
-                    //Date Formatting: From SQLDate to String.
-                    String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
-              
-                    //String[] for setting values in the model.
-                    String[] MC = new String[]{"" + dateFormat, "", "" + toernooi.getBedrag(), res.getString("Inleggeld_betaald"), ""};
-                    model.addRow(MC);
-                }
-
-
-            } catch (Exception ex) {
-                System.out.println(ex );
-            }
         }
 
 
 
-    }
+    
 
     private boolean getFaciliteitCheck() {
 

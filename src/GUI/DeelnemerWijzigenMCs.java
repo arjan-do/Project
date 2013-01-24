@@ -137,12 +137,10 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btSave = new javax.swing.JButton();
         btBack = new javax.swing.JButton();
         lbDeelnemer = new javax.swing.JLabel();
         lbMasterclass = new javax.swing.JLabel();
-        lbNiveau = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         rbJa = new javax.swing.JRadioButton();
@@ -156,8 +154,6 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
         jLabel1.setText("Deelnemer : ");
 
         jLabel2.setText("MasterClass : ");
-
-        jLabel3.setText("Niveau : ");
 
         btSave.setText("Sla Op");
         btSave.addActionListener(new java.awt.event.ActionListener() {
@@ -211,11 +207,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(5, 5, 5)
-                                .addComponent(lbMasterclass)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbNiveau))
+                                .addComponent(lbMasterclass))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
@@ -243,9 +235,7 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(lbMasterclass)
-                    .addComponent(lbNiveau))
+                    .addComponent(lbMasterclass))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -369,12 +359,10 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
     private javax.swing.JButton btSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel lbDeelnemer;
     private javax.swing.JLabel lbMasterclass;
-    private javax.swing.JLabel lbNiveau;
     private javax.swing.JRadioButton rbJa;
     private javax.swing.JRadioButton rbNee;
     private javax.swing.JTextField tfDag;
