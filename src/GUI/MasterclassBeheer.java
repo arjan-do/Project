@@ -32,47 +32,40 @@ public class MasterclassBeheer extends javax.swing.JFrame {
     
     private void tabelMaken()
     {
-        String[] kolommen = {"Code","Niveau", "Prijs", "Datum", "Rating", "Docent", "Locatie"};
+        String[] kolommen = {"Code", "Prijs", "Datum", "Rating", "Docent", "Locatie"};
         tabel = new DefaultTableModel(kolommen, 0);
         Table_Masterclass.setModel(tabel);
         
-        sqlUpdateTabel("");
+        sqlUpdateTabel();
     }
     
-    private void sqlUpdateTabel(String zoeken)
+    private void sqlUpdateTabel()
     {
         tabel.setRowCount(0);
         
         try{
             //SQL Statement.
-            String sql = "select M_Code, Niveau , Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in from masterclass having M_Code like ? or Niveau like ? or Prijs like ? or Datum like ? or Minimale_rating like ? or Docent like ? or Vindt_plaats_in like ?";
+            String sql = "select M_Code, Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in from masterclass";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
             PreparedStatement stat = conn.prepareStatement(sql);
 
-            stat.setString(1, zoeken + '%');
-            stat.setString(2, zoeken + '%');
-            stat.setString(3, zoeken + '%');
-            stat.setString(4, zoeken + '%');
-            stat.setString(5, zoeken + '%');
-            stat.setString(6, zoeken + '%');
-            stat.setString(7, zoeken + '%');
+
             
             ResultSet res = stat.executeQuery();
 
             while (res.next()) {
                  int M_Code = res.getInt("M_Code");
-                 int Niveau = res.getInt("Niveau");
                  Double Prijs = res.getDouble("Prijs");
                  Date Datum = res.getDate("Datum");
                  int Rating = res.getInt("Minimale_rating");
                  int Docent = res.getInt("Docent");
                  int Locatie = res.getInt("Vindt_plaats_in");
-                 masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getInt("Niveau"), res.getDouble("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
+                 masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getDouble("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
                  masterclasses.add(masterclass);
                  String DateFormat = DateUtil.fromSqlDateToString(Datum);
-                 String[] mczoek = new String[]{"" + M_Code, "" + Niveau, "" + Prijs, "" + DateFormat, "" + Rating, "" + Docent, "" + Locatie};
+                 String[] mczoek = new String[]{"" + M_Code, "" + Prijs, "" + DateFormat, "" + Rating, "" + Docent, "" + Locatie};
 
                  tabel.addRow(mczoek);
                 
@@ -83,7 +76,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         }catch(Exception ex){
             System.out.println(ex);
         }
-        System.out.println("finish");
+
     }
 
     /**
@@ -210,7 +203,6 @@ public class MasterclassBeheer extends javax.swing.JFrame {
                 while (res.next()) {
                     //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
                     masterclass = new MasterclassZoeken(res.getInt("M_Code"),
-                            res.getInt("Niveau"),
                             res.getDouble("Prijs"),
                             res.getDate("Datum"),
                             res.getInt("Minimale_rating"),

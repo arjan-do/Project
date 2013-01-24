@@ -23,7 +23,6 @@ import utils.DateUtil;
 public class MasterclassWijzigen extends javax.swing.JFrame {
 MasterclassZoeken masterclass;
 int M_Code;
-int Niveau;
 Date Datum;
 double Prijs;
 int Minimale_rating;
@@ -52,9 +51,6 @@ String LNaam;
         vulLocatie();
         this.masterclass = masterclass;
         M_Code = masterclass.getM_Code();
-        
-        String niveau = Integer.toString(masterclass.getNiveau());
-        TextField_Niveau.setText(niveau);
         
         String prijs = Double.toString(masterclass.getPrijs());
         TextField_Prijs.setText(prijs);
@@ -97,10 +93,8 @@ String LNaam;
         Button_Wijzigen = new javax.swing.JButton();
         Button_Back = new javax.swing.JButton();
         ComboBox_Locatie = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        TextField_Niveau = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -134,8 +128,6 @@ String LNaam;
             }
         });
 
-        jLabel1.setText("Niveau");
-
         jLabel2.setText("Datum (DD-MM-JJJJ)");
 
         jLabel3.setText("Locatie");
@@ -162,29 +154,13 @@ String LNaam;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(Button_Back)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
                     .addComponent(jLabel5)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextField_Jaar))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TextField_Minimalerating, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -194,17 +170,25 @@ String LNaam;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(Label_Docent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Jaar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,7 +220,7 @@ String LNaam;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Back)
                     .addComponent(Button_Wijzigen))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -252,7 +236,6 @@ String LNaam;
         Locatie = comboBoxSelectedValueLocatie();
         
         try{
-        Niveau = Integer.parseInt(TextField_Niveau.getText());
         Prijs = Double.parseDouble(TextField_Prijs.getText());
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         
@@ -272,16 +255,15 @@ String LNaam;
         
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
-                String sql = "update masterclass set Niveau = ?, Prijs = ?, Datum = ?, Minimale_rating = ?, Docent = ?, Vindt_plaats_in = ? where M_Code = ?";
+                String sql = "update masterclass set Prijs = ?, Datum = ?, Minimale_rating = ?, Docent = ?, Vindt_plaats_in = ? where M_Code = ?";
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, Niveau);
-                stat.setDouble(2, Prijs);
-                stat.setDate(3, Datum);
-                stat.setInt(4, Minimale_rating);
-                stat.setInt(5, Docent);
-                stat.setInt(6, Locatie);
-                stat.setInt(7, M_Code);
+                stat.setDouble(1, Prijs);
+                stat.setDate(2, Datum);
+                stat.setInt(3, Minimale_rating);
+                stat.setInt(4, Docent);
+                stat.setInt(5, Locatie);
+                stat.setInt(6, M_Code);
                 
                 stat.execute();
                 
@@ -386,9 +368,7 @@ String LNaam;
     private javax.swing.JTextField TextField_Jaar;
     private javax.swing.JTextField TextField_Maand;
     private javax.swing.JTextField TextField_Minimalerating;
-    private javax.swing.JTextField TextField_Niveau;
     private javax.swing.JTextField TextField_Prijs;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;

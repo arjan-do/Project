@@ -20,7 +20,6 @@ import utils.DateUtil;
  */
 public class MasterclassToevoegen extends javax.swing.JFrame {
 int M_Code;
-int Niveau;
 double Prijs;
 Date Datum;
 int Docent;
@@ -50,11 +49,9 @@ String LNaam;
 
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        TextField_Niveau = new javax.swing.JTextField();
         TextField_Dag = new javax.swing.JTextField();
         Button_Toevoegen = new javax.swing.JButton();
         Button_Back = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -87,8 +84,6 @@ String LNaam;
             }
         });
 
-        jLabel1.setText("Niveau");
-
         jLabel5.setText("Docent");
 
         jLabel6.setText("Prijs");
@@ -119,13 +114,12 @@ String LNaam;
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Button_Back)
-                            .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5))
@@ -145,24 +139,17 @@ String LNaam;
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(TextField_Jaar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jLabel7)
                     .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextField_Niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -200,7 +187,6 @@ String LNaam;
 
     private void Button_ToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ToevoegenActionPerformed
         try{
-        Niveau = Integer.parseInt(TextField_Niveau.getText());
         Prijs = Double.parseDouble(TextField_Prijs.getText());
         
         Datum = null;
@@ -219,15 +205,14 @@ String LNaam;
         
         int Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
-                String sql = "insert into masterclass (Niveau, Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in) values (?,?,?,?,?,?)";
+                String sql = "insert into masterclass (Prijs, Datum, Minimale_rating, Docent, Vindt_plaats_in) values (?,?,?,?,?)";
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, Niveau);
-                stat.setDouble(2, Prijs);
-                stat.setDate(3, Datum);
-                stat.setInt(4, Minimale_rating);
-                stat.setInt(5, Docent);
-                stat.setInt(6, Locatie);
+                stat.setDouble(1, Prijs);
+                stat.setDate(2, Datum);
+                stat.setInt(3, Minimale_rating);
+                stat.setInt(4, Docent);
+                stat.setInt(5, Locatie);
                 
                 stat.execute();
                 
@@ -341,9 +326,7 @@ String LNaam;
     private javax.swing.JTextField TextField_Jaar;
     private javax.swing.JTextField TextField_Maand;
     private javax.swing.JTextField TextField_Minimalerating;
-    private javax.swing.JTextField TextField_Niveau;
     private javax.swing.JTextField TextField_Prijs;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;

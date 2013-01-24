@@ -95,11 +95,11 @@ public class DeelnemerWijzigenMCs extends javax.swing.JFrame {
         m_code = masterclass.getM_Code();
         d_code = deelnemer.getD_code();
 
-        int niveau = masterclass.getNiveau();
+        
 
         lbDeelnemer.setText(naam);
         lbMasterclass.setText(Integer.toString(m_code));
-        lbNiveau.setText(Integer.toString(niveau));
+        
 
         String sql = "Select * from volgt where m_code = ? and d_code = ?";
 
