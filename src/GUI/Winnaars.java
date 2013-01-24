@@ -69,19 +69,14 @@ public class Winnaars extends javax.swing.JFrame {
                       
                 winnaars.add(winnaar);
                 model.addRow(winnaar.torow());
-                                  
-                    
-
-                  
-                
+             
 
             }
 
 
-
         } catch (Exception ex) {
             System.out.println(ex);
-            JOptionPane.showMessageDialog(this, "Database Error" + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage());
         }
     }
 
