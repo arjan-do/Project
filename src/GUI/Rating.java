@@ -185,7 +185,7 @@ public class Rating extends javax.swing.JFrame {
             {
                 int d_code = res.getInt("deelnemer.d_code");
                 String voornaam = res.getString("deelnemer.voornaam");
-                String achternaam = res.getString("deelnemer.voornaam");
+                String achternaam = res.getString("deelnemer.achternaam");
                 int rating = res.getInt("deelnemer.rating");
                 int plaats = res.getInt("plaats.plaats");
                 
