@@ -8,6 +8,7 @@ import Models.Deelnemer;
 import Models.MasterclassZoeken;
 import configuration.SimpleDataSourceV2;
 import java.sql.*;
+import java.awt.Color;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -30,6 +31,9 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private String sqlVoegToe;
     private boolean voegToeCheck;
     private Date datum;
+    private boolean dagCheck;
+    private boolean maandCheck;
+    private boolean jaarCheck;
 
     /**
      * Creates new form DeelnemerToevoegenMCs
@@ -52,9 +56,12 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         ButtonGroup betaald = new ButtonGroup();
         betaald.add(rbJa);
         betaald.add(rbNee);
+        dagCheck = false;
+        maandCheck = false;
+        jaarCheck = false;
 
     }
-    
+
     //initScreen used to find m_code.
     private void initScreen() {
         String sql = "Select m_code from masterclass";
@@ -101,6 +108,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         }
     }
     //Finds selectedItem of the combobox.
+
     private int comboBoxSelectedValue() {
         int selectedItem = 0;
         Object selected = cbMasterclass.getSelectedItem();
@@ -185,6 +193,42 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
         jLabel3.setText("Datum Betaling : (DD/MM/YYYY)");
 
+        tfDag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfDagActionPerformed(evt);
+            }
+        });
+        tfDag.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfDagKeyReleased(evt);
+            }
+        });
+
+        tfMaand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfMaandActionPerformed(evt);
+            }
+        });
+        tfMaand.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfMaandKeyReleased(evt);
+            }
+        });
+
+        tfJaar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfJaarActionPerformed(evt);
+            }
+        });
+        tfJaar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfJaarKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfJaarKeyTyped(evt);
+            }
+        });
+
         jLabel4.setText("Deelnemer:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -268,8 +312,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     }//GEN-LAST:event_cbMasterclassMouseClicked
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
-
-
     }//GEN-LAST:event_cbMasterclassActionPerformed
 
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
@@ -288,6 +330,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private void btVoegToeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoegToeActionPerformed
         sqlVoegToe = "insert into volgt(d_code,m_code,datum_betaling,heeft_betaald) values(?,?,?,?)";
         voegToeCheck = true;
+
         datum = null;
 
         m_code = comboBoxSelectedValue();
@@ -313,18 +356,23 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         } else if (rbNee.isSelected() && voegToeCheck != false) {
             heeft_betaald = "n";
             voegToeCheck = true;
+            dagCheck = true;
+            maandCheck = true;
+            jaarCheck = true;
         } else if (!rbNee.isSelected() && !rbJa.isSelected()) {
             JOptionPane.showMessageDialog(this, "Selecteer een waarde bij 'heeft betaald'.");
             voegToeCheck = false;
         }
 
-        if (voegToeCheck != false) {
+        if (voegToeCheck != false && dagCheck != false && maandCheck != false && jaarCheck != false) {
             try {
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sqlVoegToe);
                 stat.setInt(1, d_code);
                 stat.setInt(2, m_code);
+
                 stat.setDate(3, datum);
+
                 stat.setString(4, heeft_betaald);
 
                 stat.execute();
@@ -334,9 +382,68 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Deze deelnemer staat al ingeschreven bij deze masterclass.");
             }
+        } else if (dagCheck == false || maandCheck == false || jaarCheck == false) {
+            JOptionPane.showMessageDialog(this, "De gegevens van Datum_betaald zijn incorrect.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Deze deelnemer staat al ingeschreven bij deze masterclass.");
         }
 
+
     }//GEN-LAST:event_btVoegToeActionPerformed
+
+    private void tfDagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDagActionPerformed
+    }//GEN-LAST:event_tfDagActionPerformed
+
+    private void tfMaandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMaandActionPerformed
+    }//GEN-LAST:event_tfMaandActionPerformed
+
+    private void tfJaarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfJaarActionPerformed
+    }//GEN-LAST:event_tfJaarActionPerformed
+
+    private void tfDagKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDagKeyReleased
+
+        String pattern = "[0-9]{2}";
+
+        if (tfDag.getText().matches(pattern)) {
+            tfDag.setBackground(Color.green);
+            dagCheck = true;
+        } else {
+            tfDag.setBackground(Color.RED);
+            dagCheck = false;
+
+        }
+    }//GEN-LAST:event_tfDagKeyReleased
+
+    private void tfMaandKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfMaandKeyReleased
+
+        String pattern = "[0-9]{2}";
+
+        if (tfMaand.getText().matches(pattern)) {
+            tfMaand.setBackground(Color.green);
+            maandCheck = true;
+        } else {
+            tfMaand.setBackground(Color.RED);
+            maandCheck = false;
+        }
+
+    }//GEN-LAST:event_tfMaandKeyReleased
+
+    private void tfJaarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfJaarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfJaarKeyTyped
+
+    private void tfJaarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfJaarKeyReleased
+        String pattern = "[0-9]{4}";
+
+        if (tfJaar.getText().matches(pattern)) {
+            tfJaar.setBackground(Color.green);
+            jaarCheck = true;
+        } else {
+            tfJaar.setBackground(Color.RED);
+            jaarCheck = false;
+        }
+
+    }//GEN-LAST:event_tfJaarKeyReleased
 
     /**
      * @param args the command line arguments

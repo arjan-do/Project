@@ -95,10 +95,7 @@
                                   <Component id="cbMasterclass" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lbDeelnemer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="lbDeelnemer" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -182,10 +179,19 @@
     <Component class="javax.swing.JLabel" name="lbDeelnemer">
     </Component>
     <Component class="javax.swing.JTextField" name="tfDag">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfDagKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfMaand">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfMaandKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfJaar">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfJaarKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbJa">
       <Properties>

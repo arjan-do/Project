@@ -162,10 +162,19 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfDag">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfDagKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfMaand">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfMaandKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfJaar">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfJaarKeyReleased"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

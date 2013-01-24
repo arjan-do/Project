@@ -7,6 +7,7 @@ package GUI;
 import Models.Deelnemer;
 import Models.Toernooi;
 import configuration.SimpleDataSourceV2;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -28,35 +29,37 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
     Deelnemer deelnemer;
     Toernooi toernooi;
     private Date datum;
-    private int d_code; 
+    private int d_code;
     private int t_code;
     private String betaald;
     private boolean checkInvoer;
-    
+    private boolean dagCheck;
+    private boolean maandCheck;
+    private boolean jaarCheck;
+
     public DeelnemerWijzigenToernooien() {
         initComponents();
     }
-    
-    public DeelnemerWijzigenToernooien(Deelnemer deelnemer, Toernooi toernooi)
-    {
+
+    public DeelnemerWijzigenToernooien(Deelnemer deelnemer, Toernooi toernooi) {
         initComponents();
-        
+
         ButtonGroup button = new ButtonGroup();
         button.add(rbJa);
         button.add(rbNee);
-        
+
         this.deelnemer = deelnemer;
         this.toernooi = toernooi;
-        
+
         String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
         String toernooinummer = Integer.toString(toernooi.getT_Code());
-        
+
         lbDeelnemer.setText(naam);
         lbToernooi.setText(toernooinummer);
         initValues();
         radioButtonCheck();
-        
-                if (tfDag.isVisible()) {
+
+        if (tfDag.isVisible()) {
 
             java.util.Calendar cal = java.util.Calendar.getInstance();
             cal.clear();
@@ -75,9 +78,9 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
             tfDag.setText(DAG);
         }
 
-        
+
     }
-    
+
     private void radioButtonCheck() {
         if (rbNee.isSelected()) {
             tfDag.setVisible(false);
@@ -96,8 +99,8 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
             jLabel4.setVisible(false);
         }
     }
-    
-        private void initValues() {
+
+    private void initValues() {
         t_code = toernooi.getT_Code();
         d_code = deelnemer.getD_code();
 
@@ -121,11 +124,13 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
 
         if ("j".equals(betaald)) {
             rbJa.setSelected(true);
+            dagCheck = true;
+            maandCheck = true;
+            jaarCheck = true;
         } else if ("n".equals(betaald)) {
             rbNee.setSelected(true);
         }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,6 +178,24 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
         });
 
         jLabel4.setText("Datum (DD/MM/YYYY) :");
+
+        tfDag.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfDagKeyReleased(evt);
+            }
+        });
+
+        tfMaand.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfMaandKeyReleased(evt);
+            }
+        });
+
+        tfJaar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfJaarKeyReleased(evt);
+            }
+        });
 
         btBack.setText("Back");
         btBack.addActionListener(new java.awt.event.ActionListener() {
@@ -273,7 +296,7 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
     }//GEN-LAST:event_btBackActionPerformed
 
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
-       checkInvoer = true;
+        checkInvoer = true;
         if (tfDag.isVisible()) {
             try {
                 int dag = Integer.parseInt(tfDag.getText());
@@ -289,12 +312,15 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
         } else {
             datum = null;
             betaald = "n";
+            dagCheck = true;
+            maandCheck = true;
+            jaarCheck = true;
         }
 
 
         String sql = "Update heeft_betaald set datum_betaling=?, inleggeld_betaald=? where d_code = ? and t_code = ?";
 
-        if (checkInvoer != false) {
+        if (checkInvoer != false && dagCheck != false && maandCheck != false && jaarCheck != false) {
 
             try {
                 Connection conn = SimpleDataSourceV2.getConnection();
@@ -311,8 +337,46 @@ public class DeelnemerWijzigenToernooien extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println(e);
             }
+        } else if (dagCheck == false || maandCheck == false || jaarCheck == false) {
+            JOptionPane.showMessageDialog(this, "De gegevens van datum_betaald zijn incorrect.");
         }
     }//GEN-LAST:event_btWijzigenActionPerformed
+
+    private void tfDagKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDagKeyReleased
+        String pattern = "[0-9]{2}";
+
+        if (tfDag.getText().matches(pattern)) {
+            tfDag.setBackground(Color.green);
+            dagCheck = true;
+        } else {
+            tfDag.setBackground(Color.RED);
+            dagCheck = false;
+        }
+    }//GEN-LAST:event_tfDagKeyReleased
+
+    private void tfMaandKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfMaandKeyReleased
+        String pattern = "[0-9]{2}";
+
+        if (tfMaand.getText().matches(pattern)) {
+            tfMaand.setBackground(Color.green);
+            maandCheck = true;
+        } else {
+            tfMaand.setBackground(Color.RED);
+            maandCheck = false;
+        }
+    }//GEN-LAST:event_tfMaandKeyReleased
+
+    private void tfJaarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfJaarKeyReleased
+        String pattern = "[0-9]{4}";
+
+        if (tfJaar.getText().matches(pattern)) {
+            tfJaar.setBackground(Color.green);
+            jaarCheck = true;
+        } else {
+            tfJaar.setBackground(Color.RED);
+            jaarCheck = false;
+        }
+    }//GEN-LAST:event_tfJaarKeyReleased
 
     /**
      * @param args the command line arguments
