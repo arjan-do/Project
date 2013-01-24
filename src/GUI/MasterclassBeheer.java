@@ -64,15 +64,15 @@ public class MasterclassBeheer extends javax.swing.JFrame {
             while (res.next()) {
                  int M_Code = res.getInt("M_Code");
                  int Niveau = res.getInt("Niveau");
-                 int Prijs = res.getInt("Prijs");
+                 Double Prijs = res.getDouble("Prijs");
                  Date Datum = res.getDate("Datum");
-                 int Rating = res.getInt("Rating");
+                 int Rating = res.getInt("Minimale_rating");
                  int Docent = res.getInt("Docent");
                  int Locatie = res.getInt("Vindt_plaats_in");
-                 masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getInt("Niveau"), res.getInt("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
+                 masterclass = new MasterclassZoeken(res.getInt("M_Code"), res.getInt("Niveau"), res.getDouble("Prijs"), res.getDate("Datum"), res.getInt("Minimale_rating"), res.getInt("Docent"), res.getInt("Vindt_plaats_in"));
                  masterclasses.add(masterclass);
                  String DateFormat = DateUtil.fromSqlDateToString(Datum);
-                 String[] mczoek = new String[]{"" + M_Code, "" + Niveau, "" + Prijs, "" + Datum, "" + Rating, "" + Docent, "" + Locatie};
+                 String[] mczoek = new String[]{"" + M_Code, "" + Niveau, "" + Prijs, "" + DateFormat, "" + Rating, "" + Docent, "" + Locatie};
 
                  tabel.addRow(mczoek);
                 
@@ -95,8 +95,6 @@ public class MasterclassBeheer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        TextField_Zoeken = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table_Masterclass = new javax.swing.JTable();
         Button_Toevoegen = new javax.swing.JButton();
@@ -105,8 +103,6 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         Button_Back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Zoeken:");
 
         Table_Masterclass.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,6 +132,11 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         });
 
         Button_Verwijderen.setText("Verwijderen");
+        Button_Verwijderen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_VerwijderenActionPerformed(evt);
+            }
+        });
 
         Button_Back.setText("Back");
         Button_Back.addActionListener(new java.awt.event.ActionListener() {
@@ -151,10 +152,6 @@ public class MasterclassBeheer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(TextField_Zoeken))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Button_Toevoegen, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,18 +167,14 @@ public class MasterclassBeheer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(TextField_Zoeken, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Toevoegen)
                     .addComponent(Button_Wijzigen)
                     .addComponent(Button_Verwijderen)
                     .addComponent(Button_Back))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,6 +187,7 @@ public class MasterclassBeheer extends javax.swing.JFrame {
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
         int[] selected = Table_Masterclass.getSelectedRows();
+        System.out.println(selected.length);
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een Masterclass.");
@@ -204,10 +198,35 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         } else {
             int row = Table_Masterclass.getSelectedRow();
             masterclass = masterclasses.get(row);
-            
+            M_Code = masterclass.getM_Code();
+            System.out.println(M_Code);
+            try {
+                String sql = "Select * from masterclass where M_Code = ?";
+                Connection conn = SimpleDataSourceV2.getConnection();
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, M_Code);
+
+                ResultSet res = stat.executeQuery();
+                while (res.next()) {
+                    //Maakt een nieuwe deelnemer met alle bijbehorende attributen.
+                    masterclass = new MasterclassZoeken(res.getInt("M_Code"),
+                            res.getInt("Niveau"),
+                            res.getDouble("Prijs"),
+                            res.getDate("Datum"),
+                            res.getInt("Minimale_rating"),
+                            res.getInt("Docent"),
+                            res.getInt("Vindt_plaats_in"));
+                            }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }    
+                    new MasterclassWijzigen(masterclass).setVisible(true);
+                    this.dispose();
         }
-        new MasterclassWijzigen(masterclass).setVisible(true);
-        this.dispose();
+        
+        
+
     }//GEN-LAST:event_Button_WijzigenActionPerformed
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
@@ -215,9 +234,43 @@ public class MasterclassBeheer extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
+        int[] selected = Table_Masterclass.getSelectedRows();
+        //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
+        if (selected.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecteer een Masterclass.");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Weet u zeker dat U de geselecteerde rij(en) wilt verwijderen?") == JOptionPane.YES_OPTION) {
+
+
+                //Omgedraaide for-loop vanwege problemen met de normale constructie
+                for (int i = selected.length - 1; i > -1; i--) {
+                    masterclass = masterclasses.get(selected[i]);
+                    M_Code = masterclass.getM_Code();
+                    tabel.removeRow(selected[i]);
+
+                    String sql = "delete from masterclass where M_Code = ?";
+
+                    try {
+                        Connection conn = SimpleDataSourceV2.getConnection();
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setInt(1, M_Code);
+                        stat.execute();
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, ex);
+                    }
+
+                }
+            }
+            //Update de modelRows, clear de arraylist Deelnemers.
+            tabel.setRowCount(0);
+            masterclasses.clear();
+            tabelMaken();
+        }
+    }//GEN-LAST:event_Button_VerwijderenActionPerformed
+
+
     public static void main(String args[]) {
         /*
          * Set the Nimbus look and feel
@@ -262,8 +315,6 @@ public class MasterclassBeheer extends javax.swing.JFrame {
     private javax.swing.JButton Button_Verwijderen;
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JTable Table_Masterclass;
-    private javax.swing.JTextField TextField_Zoeken;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

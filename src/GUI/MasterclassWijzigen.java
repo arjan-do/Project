@@ -25,7 +25,7 @@ MasterclassZoeken masterclass;
 int M_Code;
 int Niveau;
 Date Datum;
-int Prijs;
+double Prijs;
 int Minimale_rating;
 int Docent;
 int Locatie;
@@ -34,8 +34,6 @@ int maand;
 int dag;
 String Achternaam;
 String LNaam;
-int DOCENT;
-int LOCATIE;
         
         
     /**
@@ -43,22 +41,46 @@ int LOCATIE;
      */
     public MasterclassWijzigen() {
         initComponents();
-        vulNiveau();
-        vulDatum();
-        vulPrijs();
-        vulMinRating();
+
         vulDocent();
         vulLocatie();
     }
     public MasterclassWijzigen(MasterclassZoeken masterclass){
         initComponents();
-        vulNiveau();
-        vulDatum();
-        vulPrijs();
-        vulMinRating();
+
         vulDocent();
         vulLocatie();
         this.masterclass = masterclass;
+        M_Code = masterclass.getM_Code();
+        
+        String niveau = Integer.toString(masterclass.getNiveau());
+        TextField_Niveau.setText(niveau);
+        
+        String prijs = Double.toString(masterclass.getPrijs());
+        TextField_Prijs.setText(prijs);
+        
+        Datum = masterclass.getDatum();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.clear();
+            cal.setTime(Datum);
+            jaar = cal.get(Calendar.YEAR);
+            maand = cal.get(Calendar.MONTH);
+            dag = cal.get(Calendar.DAY_OF_MONTH);
+            maand++;
+
+            String JAAR = Integer.toString(jaar);
+            String MAAND = Integer.toString(maand);
+            String DAG = Integer.toString(dag);
+
+            TextField_Jaar.setText(JAAR);
+            TextField_Maand.setText(MAAND);
+            TextField_Dag.setText(DAG);
+            
+         String minimale_rating = Integer.toString(masterclass.getRating());
+         TextField_Minimalerating.setText(minimale_rating);
+         
+        
+        
     }
 
     /**
@@ -86,6 +108,8 @@ int LOCATIE;
         TextField_Jaar = new javax.swing.JTextField();
         TextField_Dag = new javax.swing.JTextField();
         TextField_Maand = new javax.swing.JTextField();
+        Label_Docent = new javax.swing.JLabel();
+        Label_Locatie = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,10 +128,15 @@ int LOCATIE;
         });
 
         ComboBox_Locatie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboBox_Locatie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBox_LocatieActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Niveau");
 
-        jLabel2.setText("Datum");
+        jLabel2.setText("Datum (DD-MM-JJJJ)");
 
         jLabel3.setText("Locatie");
 
@@ -118,6 +147,11 @@ int LOCATIE;
         jLabel5.setText("Docent");
 
         ComboBox_Docent.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboBox_Docent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBox_DocentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,36 +160,41 @@ int LOCATIE;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(Button_Back)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(66, 66, 66)
                         .addComponent(TextField_Prijs, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.Alignment.TRAILING, 0, 89, Short.MAX_VALUE)
-                            .addComponent(ComboBox_Docent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TextField_Minimalerating)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(Button_Back)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(TextField_Dag, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TextField_Maand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(TextField_Jaar))
-                            .addComponent(Button_Wijzigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                            .addComponent(TextField_Niveau, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Jaar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextField_Minimalerating, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(Label_Docent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -180,32 +219,41 @@ int LOCATIE;
                     .addComponent(TextField_Minimalerating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ComboBox_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Label_Docent, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Label_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ComboBox_Locatie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button_Back)
                     .addComponent(Button_Wijzigen))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
-        new HoofdMenu().setVisible(true);
+        new MasterclassBeheer().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_BackActionPerformed
 
     private void Button_WijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_WijzigenActionPerformed
+        Docent = comboBoxSelectedValueDocent();
+        Locatie = comboBoxSelectedValueLocatie();
+        
         try{
         Niveau = Integer.parseInt(TextField_Niveau.getText());
-        Prijs = Integer.parseInt(TextField_Prijs.getText());
+        Prijs = Double.parseDouble(TextField_Prijs.getText());
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         
         Datum = null;
@@ -219,34 +267,8 @@ int LOCATIE;
             JOptionPane.showMessageDialog(this, "Voer de velden correct in.");
         }
         
-        Docent = ComboBox_Docent.getWidth();
-        Locatie = ComboBox_Docent.getWidth();
+
         
-        if("Hoekstra".equals(Achternaam))
-        {
-            DOCENT = 1 ;
-        }
-        if("Van Leersum".equals(Achternaam))
-        {
-            DOCENT = 2 ;
-        }
-        if("Tromp".equals(Achternaam))
-        {
-            DOCENT = 3 ;
-        }
-        
-        if("Theehuis".equals(LNaam))
-        {
-            LOCATIE = 1 ;
-        }
-        if("Buurthuis".equals(LNaam))
-        {
-            LOCATIE = 2 ;
-        }
-        if("Cafe".equals(LNaam))
-        {
-            LOCATIE = 3 ;
-        }
         
         Minimale_rating = Integer.parseInt(TextField_Minimalerating.getText());
         try {
@@ -254,11 +276,11 @@ int LOCATIE;
                 Connection conn = SimpleDataSourceV2.getConnection();
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setInt(1, Niveau);
-                stat.setInt(2, Prijs);
+                stat.setDouble(2, Prijs);
                 stat.setDate(3, Datum);
                 stat.setInt(4, Minimale_rating);
-                stat.setInt(5, DOCENT);
-                stat.setInt(6, LOCATIE);
+                stat.setInt(5, Docent);
+                stat.setInt(6, Locatie);
                 stat.setInt(7, M_Code);
                 
                 stat.execute();
@@ -269,6 +291,48 @@ int LOCATIE;
                 JOptionPane.showMessageDialog(this, "Databasefout" + ex.toString());
             }
     }//GEN-LAST:event_Button_WijzigenActionPerformed
+
+    private void ComboBox_DocentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_DocentActionPerformed
+        int d_code = comboBoxSelectedValueDocent();
+        
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Achternaam from deelnemer where D_Code = ?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1,d_code);
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                Achternaam = resultSet.getString("Achternaam");
+            }
+            
+            Label_Docent.setText(Achternaam);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }//GEN-LAST:event_ComboBox_DocentActionPerformed
+
+    private void ComboBox_LocatieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_LocatieActionPerformed
+        int f_code = comboBoxSelectedValueLocatie();
+        
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            String sql = "select Naam from faciliteit where F_Code = ?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1,f_code);
+            ResultSet resultSet = stat.executeQuery();
+            
+            while(resultSet.next()){
+                LNaam = resultSet.getString("Naam");
+            }
+            
+            Label_Locatie.setText(LNaam);
+    }catch(SQLException e)
+    {
+        JOptionPane.showMessageDialog(this, e);
+    }
+    }//GEN-LAST:event_ComboBox_LocatieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,6 +380,8 @@ int LOCATIE;
     private javax.swing.JButton Button_Wijzigen;
     private javax.swing.JComboBox ComboBox_Docent;
     private javax.swing.JComboBox ComboBox_Locatie;
+    private javax.swing.JLabel Label_Docent;
+    private javax.swing.JLabel Label_Locatie;
     private javax.swing.JTextField TextField_Dag;
     private javax.swing.JTextField TextField_Jaar;
     private javax.swing.JTextField TextField_Maand;
@@ -331,114 +397,20 @@ int LOCATIE;
     // End of variables declaration//GEN-END:variables
 
 
-    private void vulNiveau() {
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Niveau from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            while(resultSet.next()){
-                Niveau = resultSet.getInt("Niveau");
-            }
-            String niveau = Integer.toString(Niveau);
-            TextField_Niveau.setText(niveau);
-            
-            
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    }
-
-    private void vulDatum() {
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Datum from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            while(resultSet.next()){
-                Datum = resultSet.getDate("Datum");
-                
-                java.util.Calendar cal = java.util.Calendar.getInstance();
-                cal.clear();
-                cal.setTime(Datum);
-                jaar = cal.get(Calendar.YEAR);
-                maand = cal.get(Calendar.MONTH);
-                dag = cal.get(Calendar.DAY_OF_MONTH);
-                maand++;
-                
-                String JAAR = Integer.toString(jaar);
-                String MAAND = Integer.toString(maand);
-                String DAG = Integer.toString(dag);
-                
-                TextField_Jaar.setText(JAAR);
-                TextField_Maand.setText(MAAND);
-                TextField_Dag.setText(DAG);
-            
-            }
-            
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    }
-
-    private void vulPrijs() {
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Prijs from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            while(resultSet.next()){
-                Prijs = resultSet.getInt("Prijs");
-            }
-            String prijs = Integer.toString(Prijs);
-            TextField_Prijs.setText(prijs);
-            
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    }
-
-    private void vulMinRating() {
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Minimale_rating from masterclass";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            
-            ResultSet resultSet = stat.executeQuery();
-            
-            while(resultSet.next()){
-                Minimale_rating = resultSet.getInt("Minimale_rating");
-            }
-            String rating = Integer.toString(Minimale_rating);
-            TextField_Minimalerating.setText(rating);
-            
-    }catch(SQLException e)
-    {
-        JOptionPane.showMessageDialog(this, e);
-    }
-    }
+   
 
     private void vulDocent() {
         DefaultComboBoxModel docent = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Achternaam from deelnemer";
+            String sql = "select D_Code from deelnemer where is_bekend = 'j'";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                Achternaam = resultSet.getString("Achternaam");
-                docent.addElement(Achternaam);
+                Docent = resultSet.getInt("D_Code");
+                docent.addElement(Docent);
             }
             
             ComboBox_Docent.setModel(docent);
@@ -452,14 +424,14 @@ int LOCATIE;
         DefaultComboBoxModel locatie = new DefaultComboBoxModel();
         try {
             Connection conn = SimpleDataSourceV2.getConnection();
-            String sql = "select Naam from faciliteit";
+            String sql = "select F_Code from faciliteit";
             PreparedStatement stat = conn.prepareStatement(sql);
             
             ResultSet resultSet = stat.executeQuery();
             
             while(resultSet.next()){
-                LNaam = resultSet.getString("Naam");
-                locatie.addElement(LNaam);
+                Locatie = resultSet.getInt("F_Code");
+                locatie.addElement(Locatie);
             }
             
             ComboBox_Locatie.setModel(locatie);
@@ -467,5 +439,29 @@ int LOCATIE;
     {
         JOptionPane.showMessageDialog(this, e);
     }
+    }
+    
+    private int comboBoxSelectedValueDocent()
+    {
+        int selectedItem = 0;
+        Object selected = ComboBox_Docent.getSelectedItem();
+        if (selected != null)
+        {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
+    }
+    
+    private int comboBoxSelectedValueLocatie()
+    {
+        int selectedItem = 0;
+        Object selected = ComboBox_Locatie.getSelectedItem();
+        if (selected != null)
+        {
+            String selectedItemStr = selected.toString();
+            selectedItem = Integer.parseInt(selectedItemStr);
+        }
+        return selectedItem;
     }
 }

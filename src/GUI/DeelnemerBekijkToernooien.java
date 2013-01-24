@@ -23,7 +23,6 @@ import utils.DateUtil;
  */
 public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
 
-    
     DefaultTableModel model = new DefaultTableModel();
     private Deelnemer deelnemer;
     private Toernooi toernooi;
@@ -31,13 +30,14 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
     private int dcode;
     private int t_code;
     private String heeft_betaald;
+    private int empty;
     /**
      * Creates new form DeelnemerBekijkToernooien
      */
     public DeelnemerBekijkToernooien() {
         initComponents();
     }
-    
+
     public DeelnemerBekijkToernooien(Deelnemer deelnemer) {
         initComponents();
         fillComponenten();
@@ -45,18 +45,14 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         model.setRowCount(0);
         toernoois.clear();
         updateTabel();
-        
     }
-    
-        private void fillComponenten() {
+
+    private void fillComponenten() {
         String[] kolommen = {"Datum", "Locatie", "Bedrag", "heeft_betaald"};
         model = new DefaultTableModel(kolommen, 0);
         table_Toernooien.setModel(model);
     }
-        
-        
-        
-        
+
     private void updateTabel() {
         //Voornaam & Achternaam in 1 String.
         String naam = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
@@ -66,12 +62,17 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         dcode = deelnemer.getD_code();
 
 
+        
+        boolean faciliteitCheck = getFaciliteitCheck();
 
+        
+        if(faciliteitCheck == true)
+        {
         try {
 
             //SQL Statement.
             String sql = "select t.*,f.naam, inleggeld_betaald from toernooi t join heeft_betaald v on t.t_code = v.t_code"
-                                                        + " join faciliteit f on vindt_plaats_in = f.f_code where d_code = ?";
+                    + " join faciliteit f on vindt_plaats_in = f.f_code where d_code = ?";
 
             Connection conn;
             conn = SimpleDataSourceV2.getConnection();
@@ -97,7 +98,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
                 String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
                 //String[] for setting values in the model.
                 String f_naam = res.getString("naam");
-                String[] MC = new String[]{"" + dateFormat, f_naam,""+ toernooi.getBedrag(), res.getString("Inleggeld_betaald")};
+                String[] MC = new String[]{"" + dateFormat, f_naam, "" + toernooi.getBedrag(), res.getString("Inleggeld_betaald")};
                 model.addRow(MC);
             }
 
@@ -107,6 +108,72 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
         }
     }
         
+        else
+        {
+                    try {
+
+            //SQL Statement.
+            String sql = "select t.*, inleggeld_betaald from toernooi t join heeft_betaald v on t.t_code = v.t_code"
+                    + "  where d_code = ?";
+
+            Connection conn;
+            conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            //input of the textfield + "%" for the SQL Statement.
+            stat.setInt(1, dcode);
+
+            ResultSet res = stat.executeQuery();
+
+
+            while (res.next()) {
+
+
+                toernooi = new Toernooi(res.getInt("T_Code"),
+                        res.getInt("bedrag"),
+                        res.getInt("min_aantal_spelers"),
+                        res.getDate("datum"),
+                        res.getTime("begintijd"),
+                        empty);
+                toernoois.add(toernooi);
+                //Date Formatting: From SQLDate to String.
+                String dateFormat = DateUtil.fromSqlDateToString(toernooi.getDatum());
+                //String[] for setting values in the model.
+                String[] MC = new String[]{"" + dateFormat, "", "" + toernooi.getBedrag(), res.getString("Inleggeld_betaald")};
+                model.addRow(MC);
+            }
+
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+            
+            
+        
+    }
+    
+    private boolean getFaciliteitCheck() {
+
+        try {
+            String sql = "Select vindt_plaats_in from toernooi t join heeft_betaald h on t.t_code = h.t_code where d_code = ?";
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, dcode);
+            ResultSet res = stat.executeQuery();
+            while (res.next()) {
+                
+                int vindt_plaats_in = res.getInt("vindt_plaats_in");
+                if (vindt_plaats_in != 0) {
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -229,7 +296,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
     }//GEN-LAST:event_btBackActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                int[] selected = table_Toernooien.getSelectedRows();
+        int[] selected = table_Toernooien.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
             JOptionPane.showMessageDialog(this, "Selecteer een Toernooi.");
@@ -284,7 +351,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
             toernoois.clear();
             updateTabel();
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btToevoegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btToevoegenActionPerformed
@@ -293,7 +360,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
     }//GEN-LAST:event_btToevoegenActionPerformed
 
     private void btWijzigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btWijzigenActionPerformed
-                //Counts selected rows
+        //Counts selected rows
         int[] selected = table_Toernooien.getSelectedRows();
         //If 0 selected or more than 1: error messages.
         if (selected.length == 0) {
@@ -309,7 +376,7 @@ public class DeelnemerBekijkToernooien extends javax.swing.JFrame {
             this.dispose();
         }
 
-        
+
     }//GEN-LAST:event_btWijzigenActionPerformed
 
     /**
