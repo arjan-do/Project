@@ -41,8 +41,6 @@
                                   <Group type="102" attributes="0">
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="cbMasterclass" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="lbNiveau" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
@@ -86,7 +84,6 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cbMasterclass" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbNiveau" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -151,8 +148,6 @@
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cbMasterclassMousePressed"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbMasterclassActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbNiveau">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>

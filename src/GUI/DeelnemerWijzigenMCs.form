@@ -41,10 +41,6 @@
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                               <Component id="lbMasterclass" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lbNiveau" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -82,9 +78,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lbMasterclass" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbNiveau" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -121,11 +115,6 @@
         <Property name="text" type="java.lang.String" value="MasterClass : "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Niveau : "/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btSave">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sla Op"/>
@@ -145,8 +134,6 @@
     <Component class="javax.swing.JLabel" name="lbDeelnemer">
     </Component>
     <Component class="javax.swing.JLabel" name="lbMasterclass">
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbNiveau">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>

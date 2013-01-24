@@ -124,7 +124,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
         btVoegToe = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cbMasterclass = new javax.swing.JComboBox();
-        lbNiveau = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         rbJa = new javax.swing.JRadioButton();
         rbNee = new javax.swing.JRadioButton();
@@ -208,9 +207,7 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lbNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(99, 99, 99)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +238,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbMasterclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbNiveau)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -273,28 +269,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
 
     private void cbMasterclassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMasterclassActionPerformed
 
-        //If a masterclass has been selected, show the related niveau.
-        
-        m_code = comboBoxSelectedValue();
-        String sql = "select niveau from masterclass where m_code = ?";
-        try {
-            Connection conn = SimpleDataSourceV2.getConnection();
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setInt(1, m_code);
-            ResultSet res = stat.executeQuery();
-
-            while (res.next()) {
-                niveau = res.getInt("niveau");
-            }
-
-            lbNiveau.setText("Niveau : " + niveau);
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-
-        lbNiveau.setText("Niveau : " + Integer.toString(niveau));
 
     }//GEN-LAST:event_cbMasterclassActionPerformed
 
@@ -414,7 +388,6 @@ public class DeelnemerToevoegenMCs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lbDeelnemer;
-    private javax.swing.JLabel lbNiveau;
     private javax.swing.JRadioButton rbJa;
     private javax.swing.JRadioButton rbNee;
     private javax.swing.JTextField tfDag;
