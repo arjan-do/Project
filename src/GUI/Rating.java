@@ -4,6 +4,14 @@
  */
 package GUI;
 
+import Models.OpstellingDeelnemer;
+import configuration.SimpleDataSourceV2;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author arjandoets
@@ -13,9 +21,50 @@ public class Rating extends javax.swing.JFrame {
     /**
      * Creates new form Rating
      */
+    private int T_Code;
+    private int R_Code;
+    private int Tafel;
+    DefaultComboBoxModel model = new DefaultComboBoxModel();
+    ArrayList<OpstellingDeelnemer> deelnemers = new ArrayList<>();
+    
     public Rating() {
         initComponents();
     }
+    
+    public Rating(int T_Code, int R_Code)
+    {
+        initComponents();
+        this.T_Code = T_Code;
+        this.R_Code = R_Code;
+        initData();
+    }
+    
+    
+    private void initData()
+    {
+        String CbSql = "Select Distinct tafel from plaats where Toernooi = ? and Ronde = ?";
+        
+        try{
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(CbSql);
+            stat.setInt(1,T_Code);
+            stat.setInt(2,R_Code);
+            ResultSet res = stat.executeQuery();
+            while(res.next())
+            {
+                Tafel = res.getInt("tafel");
+                
+                model.addElement(Tafel); 
+            }
+            
+            ComboBox_tafelselect.setModel(model);
+            
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,6 +84,11 @@ public class Rating extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ComboBox_tafelselect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboBox_tafelselect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBox_tafelselectActionPerformed(evt);
+            }
+        });
 
         Table_HuidigeTafel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -50,6 +104,11 @@ public class Rating extends javax.swing.JFrame {
         jScrollPane1.setViewportView(Table_HuidigeTafel);
 
         Button_Back.setText("Back");
+        Button_Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_BackActionPerformed(evt);
+            }
+        });
 
         Button_Verloren.setText("Verloren");
 
@@ -88,6 +147,16 @@ public class Rating extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_BackActionPerformed
+            new ToernooiStart(T_Code).setVisible(true);
+            this.dispose();
+    }//GEN-LAST:event_Button_BackActionPerformed
+
+    private void ComboBox_tafelselectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_tafelselectActionPerformed
+        
+        
+    }//GEN-LAST:event_ComboBox_tafelselectActionPerformed
 
     /**
      * @param args the command line arguments
