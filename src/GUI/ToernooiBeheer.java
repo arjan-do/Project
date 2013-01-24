@@ -80,6 +80,23 @@ public class ToernooiBeheer extends javax.swing.JFrame {
         return true;
     }
 
+    private boolean toernooiIsGestart(int t_code) {
+        String sql = "Select * from plaats where Toernooi = ?";
+        try {
+            Connection conn = SimpleDataSourceV2.getConnection();
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setInt(1, t_code);
+            ResultSet res = stat.executeQuery();
+            while (res.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     private boolean getBetalend(int t_code) {
 
         String sql = "select * from heeft_betaald where t_code = ?";
@@ -291,8 +308,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
     private void Button_VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_VerwijderenActionPerformed
 
         int t_code = 0;
-        boolean checkLaatsteRonde;
-        boolean checkGeenNullPlaats;
+
         int[] selected = TableToernooi.getSelectedRows();
         //Als selected.length 0 is (als er niets geselecteerd is), verschijnt er een messagedialog.
         if (selected.length == 0) {
@@ -306,17 +322,15 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                     toernooi = toernoois.get(selected[i]);
                     t_code = toernooi.getT_Code();
 
-
-                    checkLaatsteRonde = laatsteRonde(t_code);
-                    checkGeenNullPlaats = geenNullPlaats(t_code);
-
-
-
-                    if (getBetalend(toernooi.getT_Code()) != true) {
-                        JOptionPane.showMessageDialog(this, "Kan het toernooi niet verwijderen; Er zijn nog deelnemers die betaald hebben.");
-                    } else {
                         String sql = "delete from heeft_betaald where t_code = ?";
                         String sql2 = "delete from toernooi where t_code = ?";
+                        String sql4 = "delete from opstelling where toernooi = ?";
+                        
+
+                    if (getBetalend(toernooi.getT_Code()) != true && toernooiIsGestart(t_code) != true) {
+                        JOptionPane.showMessageDialog(this, "Kan het toernooi niet verwijderen; Er zijn nog deelnemers die betaald hebben.");
+                    } else if(getBetalend(toernooi.getT_Code()) == true && toernooiIsGestart(t_code)!=true){
+
 
                         try {
                             Connection conn = SimpleDataSourceV2.getConnection();
@@ -325,7 +339,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                             stat.execute();
 
                         } catch (SQLException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex + "exBetaald");
                         }
 
                         try {
@@ -334,31 +348,19 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                             stat.setInt(1, t_code);
                             stat.execute();
                         } catch (SQLException exc) {
-                            JOptionPane.showMessageDialog(this, exc);
+                            JOptionPane.showMessageDialog(this, exc + "excBetaald");
                         }
                         model.removeRow(selected[i]);
 
                     }
 
-                    if (checkLaatsteRonde != true && checkGeenNullPlaats != true || checkLaatsteRonde != true || checkGeenNullPlaats != true) {
+                    else if(toernooiIsGestart(t_code) == true && laatsteRonde(t_code)==false ||toernooiIsGestart(t_code)==true &&geenNullPlaats(t_code)==false) {
                         JOptionPane.showMessageDialog(this, "Kan dit toernooi niet verwijderen: het is nog gaande.");
 
-                    } else {
+                    } else if(toernooiIsGestart(t_code)==true && laatsteRonde(t_code)==true &&geenNullPlaats(t_code)==true){
 
-                        String sql3 = "delete from plaats where t_code = ?";
-                        String sql4 = "delete from opstelling where t_code = ?";
-                        String sql = "delete from heeft_betaald where t_code = ?";
-                        String sql2 = "delete from toernooi where t_code = ?";
 
-                        try {
-                            Connection conn = SimpleDataSourceV2.getConnection();
-                            PreparedStatement stat = conn.prepareStatement(sql3);
-                            stat.setInt(1, t_code);
-                            stat.execute();
-
-                        } catch (SQLException ex) {
-                            System.out.println(ex);
-                        }
+  
 
                         try {
                             Connection conn = SimpleDataSourceV2.getConnection();
@@ -367,7 +369,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                             stat.execute();
 
                         } catch (SQLException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex + "sql4");
                         }
 
 
@@ -378,7 +380,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                             stat.execute();
 
                         } catch (SQLException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex + "sql");
                         }
 
                         try {
@@ -387,7 +389,7 @@ public class ToernooiBeheer extends javax.swing.JFrame {
                             stat.setInt(1, t_code);
                             stat.execute();
                         } catch (SQLException exc) {
-                            JOptionPane.showMessageDialog(this, exc);
+                            JOptionPane.showMessageDialog(this, exc + "sql2");
                         }
                         model.removeRow(selected[i]);
                     }
