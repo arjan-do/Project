@@ -83,7 +83,7 @@ public class DeelnemerBekijkMCs extends javax.swing.JFrame {
 
                 masterclass = new MasterclassZoeken(res.getInt("m_code"),
                         res.getInt("niveau"),
-                        res.getInt("prijs"),
+                        res.getDouble("prijs"),
                         res.getDate("datum"),
                         res.getInt("minimale_rating"),
                         res.getInt("Docent"),

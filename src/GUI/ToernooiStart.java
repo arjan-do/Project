@@ -180,7 +180,7 @@ public class ToernooiStart extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_MaakOpstellingActionPerformed
 
     private void Button_RatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_RatingActionPerformed
-        new Rating().setVisible(true);
+        new Rating(T_Code, R_Code).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Button_RatingActionPerformed
 
